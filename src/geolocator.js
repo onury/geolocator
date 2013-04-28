@@ -1,10 +1,10 @@
 /* 
- *  (CutePilot) Geolocator Javascript Lib
- *  version:    0.92
- *  author:     Onur YILDIRIM
- *  website:    www.cutepilot.com
- *  contact:    onur@cutepilot.com
- *  copyright:  © 2012. MIT License.
+ *  Geolocator Javascript Lib
+ *  version:        0.92
+ *  author:         Onur YILDIRIM
+ *  contact:        onur@cutepilot.com
+ *  project page:   https://github.com/onury/geolocator
+ *  copyright:      © 2012. MIT License.
  */
 var geolocator = (function() {
 
