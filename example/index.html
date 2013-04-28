@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Geolocator Example</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+	<script type="text/javascript" src="../src/geolocator.js"></script>
+	<script type="text/javascript">
+		function onGeoSuccess(location) {
+		    console.log(location);
+		    var strLocation = '<b>Latitude:</b> ' + location.coords.latitude + '<br />' + 
+		                    '<b>Longitude:</b> ' + location.coords.longitude + '<br />' + 
+		                    '<b>City:</b> ' + location.address.city + '<br />' + 
+		                    '<b>Country:</b> ' + location.address.country + '<br />' + 
+		                    '<b>Country Code:</b> ' + location.address.countryCode + '<br />' + 
+		                    '<b>Region:</b> ' + location.address.region + '<br />' +
+                            '<br /><span class="info">See console logs for the full properties of the "location" object.</span>'
+		    document.getElementById('geo-details').innerHTML = strLocation;
+		}
+
+		function onGeoError(message) {
+		    console.log(message);
+		}
+
+		window.onload = function() {
+            // Locate by IP on load
+            geolocator.locateByIP(onGeoSuccess, onGeoError, 0, 'map-canvas');
+            // Configure controls
+            var cmbSource = document.getElementById('cmb-source');
+            var btnLocateByIP = document.getElementById('btn-locate-ip');
+            var btnLocateHTML5 = document.getElementById('btn-locate');
+            btnLocateByIP.onclick = function() {
+                geolocator.locateByIP(onGeoSuccess, onGeoError, cmbSource.selectedIndex, 'map-canvas');
+            }
+            btnLocateHTML5.onclick = function() {
+                var html5Options = { enableHighAccuracy: true, timeout: 3000, maximumAge: 0 };
+                geolocator.locate(onGeoSuccess, onGeoError, cmbSource.selectedIndex, html5Options, 'map-canvas');
+            }
+		}
+	</script>
+
+</head>
+
+<body>
+
+    <p class="title">Geolocator Example</p>
+    <div id="container">
+        <div id="controls">
+            Geo IP Source: <select id="cmb-source">
+                <option value="0">Google</option>
+                <option value="1">Free GeoIP</option>
+                <option value="2">Geo Plugin</option>
+                <option value="3">Wikimedia</option>
+            </select>&nbsp;<button id="btn-locate-ip">Locate by IP</button> | <button id="btn-locate">Locate (HTML5)</button>
+            <br /><span class="info">(Geo IP Source is also used as a fallback when user rejects HTML5 Geo-location.)</span><br />
+        </div>
+        <div id="map-canvas"></div>
+        <div id="geo-details"></div>
+    </div>
+
+</body>
+
+</html>
