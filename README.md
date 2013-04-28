@@ -1,5 +1,5 @@
-## Geolocator Javascript Lib v.0.92
-Author: Onur Yildirim © 2012, MIT License.
+## Geolocator Javascript Lib
+Version: 0.92,   Author: Onur Yildirim © 2012, MIT License.
 
 ###Features:
 
@@ -12,6 +12,9 @@ Author: Onur Yildirim © 2012, MIT License.
  - Supports Google Loader (loads Google Maps dynamically)
  - Dynamically creates Google Maps (with marker, info window, auto-adjusted zoom)
  - Non-blocking script loading (external sources are loaded on the fly without interrupting page load)
+ - No library/framework dependencies (such as jQuery, MooTools, etc...)
+
+![Geolocator Example Screenshot](https://raw.github.com/onury/geolocator/master/screenshots/geolocator-example.jpg)
 
 ###Usage:
 
@@ -50,15 +53,15 @@ Use this method to get the location via HTML5 geolocation.
 
 **Parameters:**
 
-> **`successCallback`**   *Function*  
+> - `successCallback`   *Function*  
 > &nbsp; A callback function to be executed when the location is successfully fetched.  
 > &nbsp; The recent `geolocator.location` object is passed to this callback, as the only argument.
   
-> **`errorCallback`**   *Function  (optional, default: `null`)*  
+> - `errorCallback`   *Function  (optional, default: `null`)*  
 > &nbsp; A callback function to be executed when the location could not be fetched due to an error.  
 > &nbsp; The recent error message `String` is passed to this callback, as the only argument. 
   
-> **`fallbackToIP`**   *Boolean|Integer (optional, default: `false`)*  
+> - `fallbackToIP`   *Boolean|Integer (optional, default: `false`)*  
 > &nbsp; Specifies whether geolocator should fallback to IP geo-lookup when HTML5 geolocation is not  
 > &nbsp; supported or rejected by the user. A positive `Integer` value will indicate the index of the source  
 > &nbsp; ip-geo service (if the value is in range). Boolean `true` will set the default ip-geo service index  
@@ -67,10 +70,10 @@ Use this method to get the location via HTML5 geolocation.
 > &nbsp; `2` (use GeoPlugin for ip-geo fallback), `3` (use Wikimedia for ip-geo fallback), `false` or `-1` or  
 > &nbsp; `null` or any other value (will disable ip-geo fallback)*  
   
-> **`html5Options`**   *Object (optional, default: `null`)*  
+> - `html5Options`   *Object (optional, default: `null`)*  
 > &nbsp; HTML5 geolocation options.  
   
-> **`mapCanvasId`**   *String (optional, default: `null`)*  
+> - `mapCanvasId`   *String (optional, default: `null`)*  
 > &nbsp; HTML element ID for the Google Maps canvas. If set to null, no map is drawn.    
 
 **Example:**
@@ -85,19 +88,19 @@ Use this method to get the location from the user's IP.
 
 **Parameters:**
 
-> **`successCallback`**   *Function*  
+> - `successCallback`   *Function*  
 > &nbsp; A callback function to be executed when the location is successfully fetched.  
 > &nbsp; The recent `geolocator.location` object is passed to this callback, as the only argument.  
   
-> **`errorCallback`**   *Function (optional, default: `null`)*  
+> - `errorCallback`   *Function (optional, default: `null`)*  
 > &nbsp; A callback function to be executed when the location could not be fetched due to an error.  
 > &nbsp; The recent error message `String` is passed to this callback, as the only argument.  
   
-> **`ipGeoSourceIndex`**   *Integer (optional, default: `0`)*  
+> - `ipGeoSourceIndex`   *Integer (optional, default: `0`)*  
 > &nbsp; Indicates the index of the IP geo-lookup service.  
 > &nbsp; Valid values: *`0` (Google), `1` (FreeGeoIP), `2` (GeoPlugin), `3` (Wikimedia)*   
   
-> **`mapCanvasId`**   *String (optional, default: `null`)*  
+> - `mapCanvasId`   *String (optional, default: `null`)*  
 > &nbsp; HTML element ID for the Google Maps canvas. If set to null, no map is drawn.  
 
 **Example:**
