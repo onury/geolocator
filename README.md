@@ -1,6 +1,5 @@
-
 ## Geolocator Javascript Lib v.0.92
-Author: Onur YILDIRIM (www.cutepilot.com) © 2012. MIT License.
+Author: Onur Yildirim © 2012, MIT License.
 
 ###Features:
 
