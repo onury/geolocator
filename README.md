@@ -4,7 +4,7 @@ Version: 0.95,   Author: Onur Yildirim © 2012, MIT License.
 ###Features:
 
  - HTML5 geolocation (by user permission)
- - Location by IP (Supported source services: Google, freegeoip, geoplugin, wikimedia)
+ - Location by IP (Supported source services: FreeGeoIP, GeoPlugin, WikiMedia)
  - Reverse Geocoding (address lookup)
  - Full address information (street, town, neighborhood, region,
    country, country code, postal code, etc...)
@@ -67,9 +67,9 @@ Use this method to get the location via HTML5 geolocation.
 > &nbsp; Specifies whether geolocator should fallback to IP geo-lookup when HTML5 geolocation is not  
 > &nbsp; supported or rejected by the user. A positive `Integer` value will indicate the index of the source  
 > &nbsp; ip-geo service (if the value is in range). Boolean `true` will set the default ip-geo service index  
-> &nbsp; which is `0` (Google).  
-> &nbsp; Valid values: *`0` or `true` (use Google for ip-geo fallback), `1` (use FreeGeoIP for ip-geo fallback),  
-> &nbsp; `2` (use GeoPlugin for ip-geo fallback), `3` (use Wikimedia for ip-geo fallback), `false` or `-1` or  
+> &nbsp; which is `0` (FreeGeoIP).  
+> &nbsp; Valid values: *`0` or `true` (use FreeGeoIP for ip-geo fallback), 
+> &nbsp; `1` (use GeoPlugin for ip-geo fallback), `2` (use Wikimedia for ip-geo fallback), `false` or `-1` or  
 > &nbsp; `null` or any other value (will disable ip-geo fallback)*  
   
 > - `html5Options`   *Object (optional, default: `null`)*  
@@ -100,7 +100,7 @@ Use this method to get the location from the user's IP.
   
 > - `ipGeoSourceIndex`   *Integer (optional, default: `0`)*  
 > &nbsp; Indicates the index of the IP geo-lookup service.  
-> &nbsp; Valid values: *`0` (Google), `1` (FreeGeoIP), `2` (GeoPlugin), `3` (Wikimedia)*   
+> &nbsp; Valid values: *`0` (FreeGeoIP), `1` (GeoPlugin), `2` (Wikimedia)*   
   
 > - `mapCanvasId`   *String (optional, default: `null`)*  
 > &nbsp; HTML element ID for the Google Maps canvas. If set to null, no map is drawn.  
