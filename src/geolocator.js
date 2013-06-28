@@ -1,6 +1,6 @@
 /* 
  *  Geolocator Javascript Lib
- *  version:        0.92
+ *  version:        0.95
  *  author:         Onur YILDIRIM
  *  contact:        onur@cutepilot.com
  *  project page:   https://github.com/onury/geolocator
@@ -22,14 +22,13 @@ var geolocator = (function() {
         _googleMapsURL = 'http://maps.googleapis.com/maps/api/js',
         /* Array of source services that provide location-by-IP information. */
         _ipGeoSources = [
-            {url: _googleLoaderURL, cbParam: 'callback'}, // 0
-            {url: 'http://freegeoip.net/json/', cbParam: 'callback'}, // 1
-            {url: 'http://www.geoplugin.net/json.gp', cbParam: 'jsoncallback'}, // 2
-            {url: 'http://geoiplookup.wikimedia.org/', cbParam: ''} // 3
+            {url: 'http://freegeoip.net/json/', cbParam: 'callback'}, // 0
+            {url: 'http://www.geoplugin.net/json.gp', cbParam: 'jsoncallback'}, // 1
+            {url: 'http://geoiplookup.wikimedia.org/', cbParam: ''} // 2
             //,{url: 'http://j.maxmind.com/app/geoip.js', cbParam: ''} // Not implemented. Requires attribution. See http://dev.maxmind.com/geoip/javascript
         ],
         /* The index of the current IP source service. */
-        _ipGeoSourceIndex = 0; // default (Google)
+        _ipGeoSourceIndex = 0; // default (freegeoip)
 
     /*-------- PRIVATE METHODS --------*/
 
@@ -246,14 +245,7 @@ var geolocator = (function() {
         
         _loadGoogleMaps(_gLoadCallback);
         function _gLoadCallback() { 
-            if (_ipGeoSourceIndex === 0) { // Google
-                if (typeof google !== 'undefined' && typeof google.loader !== 'undefined' && 
-                    typeof google.loader.ClientLocation !== 'undefined') {
-                    _buildLocation(0, google.loader.ClientLocation);
-                    _initialized = true;
-                }
-            } 
-            else if (_ipGeoSourceIndex === 3) { // Wikimedia
+            if (_ipGeoSourceIndex === 2) { // Wikimedia
                 if (typeof window.Geo !== 'undefined') {
                     _buildLocation(_ipGeoSourceIndex, window.Geo);
                     delete window.Geo;
@@ -281,21 +273,7 @@ var geolocator = (function() {
     function _buildLocation(sourceIndex, data) {
         switch(sourceIndex)
         {
-            case 0: // Google
-                geolocator.location = { 
-                    coords: {
-                        latitude: data.latitude,
-                        longitude: data.longitude
-                    },
-                    address: {
-                        city: data.address.city,
-                        country: data.address.country,
-                        countryCode: data.address.country_code,
-                        region: data.address.region
-                    }
-                };
-                break;
-            case 1: // freegeoip
+            case 0: // freegeoip
                 geolocator.location = { 
                     coords: {
                         latitude: data.latitude,
@@ -309,7 +287,7 @@ var geolocator = (function() {
                     }
                 };
                 break;
-            case 2: // geoplugin
+            case 1: // geoplugin
                 geolocator.location = { 
                     coords: {
                         latitude: data.geoplugin_latitude,
@@ -323,7 +301,7 @@ var geolocator = (function() {
                     }
                 };
                 break;
-            case 3: // Wikimedia
+            case 2: // Wikimedia
                 geolocator.location = { 
                     coords: {
                         latitude: data.lat,
