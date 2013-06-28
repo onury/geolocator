@@ -1,5 +1,5 @@
 ## Geolocator Javascript Lib
-Version: 0.92,   Author: Onur Yildirim © 2012, MIT License.
+Version: 0.95,   Author: Onur Yildirim © 2012, MIT License.
 
 ###Features:
 
@@ -148,6 +148,11 @@ Provides the recent geo-location information.
         ipGeoSource: null,
         timestamp: 1360582737790
     }
+
+###Change Log:
+**version 0.95**
+ - Google has deprecated `google.loader.ClientLocation` API. As a result; Google (Loader) is removed from IP-Geo Sources.
+ - Indexes changed for IP-Geo sources. New Indexes: FreeGeoIP (0), GeoPlugin (1), Wikimedia (2)
 
 
   [1]: http://onuryildirim.com/files/geolocator.js
