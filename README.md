@@ -14,7 +14,7 @@ Version: 1.1,   Author: Onur Yildirim © 2012, MIT License.
  - Non-blocking script loading (external sources are loaded on the fly without interrupting page load)
  - No library/framework dependencies (such as jQuery, MooTools, etc...)
 
-**Download:** [Full Version](https://raw.github.com/onury/geolocator/master/src/geolocator.js) (~15 kb), [Minified Version](https://raw.github.com/onury/geolocator/master/src/geolocator.min.js) (~5 kb)
+**Download:** [Full Version](https://raw.github.com/onury/geolocator/master/src/geolocator.js) (~13 kb), [Minified Version](https://raw.github.com/onury/geolocator/master/src/geolocator.min.js) (~4 kb)
 
 ![Geolocator Example Screenshot](https://raw.github.com/onury/geolocator/master/screenshots/geolocator-example.jpg)
 
@@ -150,9 +150,11 @@ Provides the recent geo-location information.
     }
 
 ###Change Log:
+
 **version 1.1**
  - JSLint compliant code.
  - Minor code revisions.
+
 **version 0.95**
  - Google has deprecated `google.loader.ClientLocation` API. As a result; Google (Loader) is removed from IP-Geo Sources.
  - Indexes changed for IP-Geo sources. New Indexes: FreeGeoIP (0), GeoPlugin (1), Wikimedia (2)
