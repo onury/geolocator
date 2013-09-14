@@ -10,11 +10,11 @@
 	<script type="text/javascript">
 		function onGeoSuccess(location) {
 		    console.log(location);
-		    var strLocation = '<b>Latitude:</b> ' + location.coords.latitude + '<br />' + 
-		                    '<b>Longitude:</b> ' + location.coords.longitude + '<br />' + 
-		                    '<b>City:</b> ' + location.address.city + '<br />' + 
-		                    '<b>Country:</b> ' + location.address.country + '<br />' + 
-		                    '<b>Country Code:</b> ' + location.address.countryCode + '<br />' + 
+		    var strLocation = '<b>Latitude:</b> ' + location.coords.latitude + '<br />' +
+		                    '<b>Longitude:</b> ' + location.coords.longitude + '<br />' +
+		                    '<b>City:</b> ' + location.address.city + '<br />' +
+		                    '<b>Country:</b> ' + location.address.country + '<br />' +
+		                    '<b>Country Code:</b> ' + location.address.countryCode + '<br />' +
 		                    '<b>Region:</b> ' + location.address.region + '<br />' +
                             '<br /><span class="info">See console logs for the full properties of the "location" object.</span>'
 		    document.getElementById('geo-details').innerHTML = strLocation;
@@ -24,7 +24,7 @@
 		    console.log(message);
 		}
 
-		window.onload = function() {
+		window.onload = function () {
             // Locate by IP on load
             geolocator.locateByIP(onGeoSuccess, onGeoError, 0, 'map-canvas');
             // Configure controls
@@ -59,7 +59,7 @@
         <div id="geo-details"></div>
         <br />
         View <a href="https://github.com/onury/geolocator">project page</a> (and documentation) at GitHub.<br />
-        Geolocator 0.95 - Copyright © Onur Yildirim, 2012. MIT License.
+        Geolocator 1.1 - Copyright © Onur Yildirim, 2012. MIT License.
         <br /><br />
     </div>
 
