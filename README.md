@@ -13,6 +13,7 @@ Version: 1.1,   Author: Onur Yildirim © 2012, MIT License.
  - Dynamically creates Google Maps (with marker, info window, auto-adjusted zoom)
  - Non-blocking script loading (external sources are loaded on the fly without interrupting page load)
  - No library/framework dependencies (such as jQuery, MooTools, etc...)
+ - Browser Support: IE 9+, Chrome, Safari, Firefox, Opera...
 
 **Download:** [Full Version](https://raw.github.com/onury/geolocator/master/src/geolocator.js) (~13 kb), [Minified Version](https://raw.github.com/onury/geolocator/master/src/geolocator.min.js) (~4 kb)
 

@@ -197,16 +197,16 @@ var geolocator = (function () {
         }
 
         function geoError(error) {
-            switch (error.code) {
-            case error.PERMISSION_DENIED:
-                break;
-            case error.POSITION_UNAVAILABLE:
-                break;
-            case error.TIMEOUT:
-                break;
-            case error.UNKNOWN_ERROR:
-                break;
-            }
+            // switch (error.code) {
+            // case error.PERMISSION_DENIED:
+            //     break;
+            // case error.POSITION_UNAVAILABLE:
+            //     break;
+            // case error.TIMEOUT:
+            //     break;
+            // case error.UNKNOWN_ERROR:
+            //     break;
+            // }
             fallback(error.message);
         }
 

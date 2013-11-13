@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 	<script type="text/javascript" src="../src/geolocator.js"></script>
 	<script type="text/javascript">
+        // Success Callback
 		function onGeoSuccess(location) {
 		    console.log(location);
 		    var strLocation = '<b>Latitude:</b> ' + location.coords.latitude + '<br />' +
@@ -19,18 +20,19 @@
                             '<br /><span class="info">See console logs for the full properties of the "location" object.</span>'
 		    document.getElementById('geo-details').innerHTML = strLocation;
 		}
-
+        // Error Callback
 		function onGeoError(message) {
 		    console.log(message);
 		}
-
+        // Load Event Handler
 		window.onload = function () {
             // Locate by IP on load
             geolocator.locateByIP(onGeoSuccess, onGeoError, 0, 'map-canvas');
             // Configure controls
-            var cmbSource = document.getElementById('cmb-source');
-            var btnLocateByIP = document.getElementById('btn-locate-ip');
-            var btnLocateHTML5 = document.getElementById('btn-locate');
+            var cmbSource = document.getElementById('cmb-source'),
+                btnLocateByIP = document.getElementById('btn-locate-ip'),
+                btnLocateHTML5 = document.getElementById('btn-locate');
+            // Click Event Handlers
             btnLocateByIP.onclick = function() {
                 geolocator.locateByIP(onGeoSuccess, onGeoError, cmbSource.selectedIndex, 'map-canvas');
             }
