@@ -1,5 +1,5 @@
 ## Geolocator Javascript Lib
-Version: 1.1,   Author: Onur Yildirim © 2012, MIT License.
+Version: 1.2,   Author: Onur Yildirim © 2012-2014, MIT License.
 
 ###Features:
 
@@ -15,7 +15,7 @@ Version: 1.1,   Author: Onur Yildirim © 2012, MIT License.
  - No library/framework dependencies (such as jQuery, MooTools, etc...)
  - Browser Support: IE 9+, Chrome, Safari, Firefox, Opera...
 
-**Download:** [Full Version](https://raw.github.com/onury/geolocator/master/src/geolocator.js) (~13 kb), [Minified Version](https://raw.github.com/onury/geolocator/master/src/geolocator.min.js) (~4 kb)
+**Download:** [Full Version](https://raw.github.com/onury/geolocator/master/src/geolocator.js) 12.4KB *(3.2KB gzipped)*, [Minified Version](https://raw.github.com/onury/geolocator/master/src/geolocator.min.js) 4KB *(1.6KB gzipped)*
 
 ![Geolocator Example Screenshot](https://raw.github.com/onury/geolocator/master/screenshots/geolocator-example.jpg)
 
@@ -35,15 +35,15 @@ Inside the `<head>` of your HTML:
         }
 
         window.onload = function() {
-            //geolocator.locateByIP(onGeoSuccess, onGeoError, 2, 'map_canvas');
+            //geolocator.locateByIP(onGeoSuccess, onGeoError, 2, 'map-canvas');
             var html5Options = { enableHighAccuracy: true, timeout: 3000, maximumAge: 0 };
-            geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map_canvas');
+            geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map-canvas');
         }
     </script>
 
 Also place the line below, inside your `<body>` if you want to dynamically draw a map (you should also pass the element ID to the corresponding method for the map to be drawn):
 
-    <div id="map_canvas" style="width:600px;height:400px"></div>
+    <div id="map-canvas" style="width:600px;height:400px"></div>
 
 geolocator.js provides 2 useful methods:
 
@@ -82,7 +82,7 @@ Use this method to get the location via HTML5 geolocation.
 **Example:**
 
     var html5Options = { enableHighAccuracy: true, timeout: 3000, maximumAge: 0 };
-    geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map_canvas');
+    geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map-canvas');
 
 ###`geolocator.locateByIP()`
 Use this method to get the location from the user's IP.
@@ -108,7 +108,7 @@ Use this method to get the location from the user's IP.
 
 **Example:**
 
-    geolocator.locateByIP(onGeoSuccess, onGeoError, 0, 'map_canvas');
+    geolocator.locateByIP(onGeoSuccess, onGeoError, 0, 'map-canvas');
 
 ##Properties
 
@@ -151,6 +151,10 @@ Provides the recent geo-location information.
     }
 
 ###Change Log:
+
+**version 1.2**
+ - Code optimizations.
+ - Now loads the latest release version of *Google Maps* (3.15).
 
 **version 1.1**
  - JSLint compliant code.

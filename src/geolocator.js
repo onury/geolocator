@@ -1,23 +1,23 @@
 /*jslint browser:true, nomen:true */
-//for jsLint implied variable warnings:
 /*global google:false */
 
-/*
- *  Geolocator Javascript Lib
- *  version:        1.1
- *  author:         Onur YILDIRIM
- *  contact:        onur@cutepilot.com
- *  project page:   https://github.com/onury/geolocator
- *  copyright:      © 2012. MIT License.
+
+/** @license  Geolocator Javascript Lib v.1.1
+ *  (c) 2012-2014 Onur Yildirim (onur@cutepilot.com)
+ *  https://github.com/onury/geolocator
+ *  MIT License
  */
 var geolocator = (function () {
 
     'use strict';
 
-    /*-------- PRIVATE PROPERTIES & FIELDS --------*/
+    // ---------------------------------------
+    // PRIVATE PROPERTIES & FIELDS
+    // ---------------------------------------
 
+    var
         /* Storage for the callback function to be executed when the location is successfully fetched. */
-    var onSuccess,
+        onSuccess,
         /* Storage for the callback function to be executed when the location could not be fetched due to an error. */
         onError,
         /* HTML element ID for the Google Maps. */
@@ -34,9 +34,11 @@ var geolocator = (function () {
         /* The index of the current IP source service. */
         ipGeoSourceIndex = 0; // default (freegeoip)
 
-    /*-------- PRIVATE METHODS --------*/
+    // ---------------------------------------
+    // PRIVATE METHODS
+    // ---------------------------------------
 
-    /*  Non-blocking method for loading scripts dynamically.
+    /** Non-blocking method for loading scripts dynamically.
      */
     function loadScript(url, callback, type) {
         var script = document.createElement('script');
@@ -60,12 +62,12 @@ var geolocator = (function () {
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 
-    /*  Loads Google Maps API and executes the callback function when done.
+    /** Loads Google Maps API and executes the callback function when done.
      */
     function loadGoogleMaps(callback) {
         function loadMaps() {
             if (geolocator.__glcb) { delete geolocator.__glcb; }
-            google.load('maps', '3', {other_params: 'sensor=false', callback: callback});
+            google.load('maps', '3.15', {other_params: 'sensor=false', callback: callback});
         }
         if (window.google !== undefined && google.maps !== undefined) {
             if (callback) { callback(); }
@@ -79,7 +81,7 @@ var geolocator = (function () {
         }
     }
 
-    /*  Draws the map from the fetched geo information.
+    /** Draws the map from the fetched geo information.
      */
     function drawMap(elemId, mapOptions, infoContent) {
         var map, marker, infowindow,
@@ -108,7 +110,7 @@ var geolocator = (function () {
         }
     }
 
-    /*  Runs a reverse-geo lookup for the specified lat-lon coords.
+    /** Runs a reverse-geo lookup for the specified lat-lon coords.
      */
     function reverseGeoLookup(latlng, callback) {
         var geocoder = new google.maps.Geocoder();
@@ -120,46 +122,40 @@ var geolocator = (function () {
         geocoder.geocode({'latLng': latlng}, onReverseGeo);
     }
 
-    /*  Fetches additional details (from the reverse-geo result) for the address property of the location object.
+    /** Fetches additional details (from the reverse-geo result) for the address property of the location object.
      */
     function fetchDetailsFromLookup(data) {
-        if (data.length > 0) {
-            var i, comp, comps = data[0].address_components;
-            geolocator.location.formattedAddress = data[0].formatted_address;
-
+        if (data && data.length > 0) {
+            var i, c, o = {},
+                comps = data[0].address_components;
             for (i = 0; i < comps.length; i += 1) {
-                comp = comps[i];
-                if (comp.types.indexOf('route') >= 0) {
-                    geolocator.location.address.street = comp.long_name;
-                } else if (comp.types.indexOf('neighborhood') >= 0) {
-                    geolocator.location.address.neighborhood = comp.long_name;
-                } else if (comp.types.indexOf('sublocality') >= 0) {
-                    geolocator.location.address.town = comp.long_name;
-                } else if (comp.types.indexOf('locality') >= 0) {
-                    geolocator.location.address.city = comp.long_name;
-                } else if (comp.types.indexOf('administrative_area_level_1') >= 0) {
-                    geolocator.location.address.region = comp.long_name;
-                } else if (comp.types.indexOf('country') >= 0) {
-                    geolocator.location.address.country = comp.long_name;
-                    geolocator.location.address.countryCode = comp.short_name;
-                } else if (comp.types.indexOf('postal_code') >= 0) {
-                    geolocator.location.address.postalCode = comp.long_name;
-                } else if (comp.types.indexOf('street_number') >= 0) {
-                    geolocator.location.address.streetNumber = comp.long_name;
+                c = comps[i];
+                if (c.types && c.types.length > 0) {
+                    o[c.types[0]] = c.long_name;
+                    o[c.types[0] + '_s'] = c.short_name;
                 }
             }
+            geolocator.location.formattedAddress = data[0].formatted_address;
+            geolocator.location.address = {
+                street: o.route || '',
+                neighborhood: o.neighborhood || '',
+                town: o.sublocality || '',
+                city: o.locality || '',
+                region: o.administrative_area_level_1 || '',
+                country: o.country || '',
+                countryCode: o.country_s || '',
+                postalCode: o.postal_code || '',
+                streetNumber: o.street_number || ''
+            };
         }
     }
 
-    /*  Finalizes the location object via reverse-geocoding and draws the map (if required).
+    /** Finalizes the location object via reverse-geocoding and draws the map (if required).
      */
     function finalize(coords) {
         var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
         function onGeoLookup(data) {
-            if (data.length > 0) {
-                fetchDetailsFromLookup(data);
-            }
-
+            fetchDetailsFromLookup(data);
             var zoom = geolocator.location.ipGeoSource === null ? 14 : 7, //zoom out if we got the lcoation from IP.
                 mapOptions = {
                     zoom: zoom,
@@ -172,7 +168,7 @@ var geolocator = (function () {
         reverseGeoLookup(latlng, onGeoLookup);
     }
 
-    /*  Gets the geo-position via HTML5 geolocation (if supported).
+    /** Gets the geo-position via HTML5 geolocation (if supported).
      */
     function getPosition(fallbackToIP, html5Options) {
         geolocator.location = null;
@@ -190,23 +186,12 @@ var geolocator = (function () {
             geolocator.location = {
                 ipGeoSource: null,
                 coords: position.coords,
-                timestamp: (new Date()).getTime(), //overwrite timestamp (Safari-Mac and iOS devices use different epoch; so better use this).
-                address: {}
+                timestamp: (new Date()).getTime() //overwrite timestamp (Safari-Mac and iOS devices use different epoch; so better use this).
             };
             finalize(geolocator.location.coords);
         }
 
         function geoError(error) {
-            // switch (error.code) {
-            // case error.PERMISSION_DENIED:
-            //     break;
-            // case error.POSITION_UNAVAILABLE:
-            //     break;
-            // case error.TIMEOUT:
-            //     break;
-            // case error.UNKNOWN_ERROR:
-            //     break;
-            // }
             fallback(error.message);
         }
 
@@ -217,7 +202,7 @@ var geolocator = (function () {
         }
     }
 
-    /*  Builds the location object from the source data.
+    /** Builds the location object from the source data.
      */
     function buildLocation(sourceIndex, data) {
         switch (sourceIndex) {
@@ -276,7 +261,7 @@ var geolocator = (function () {
         }
     }
 
-    /*  The callback that is executed when the location data is fetched from the source.
+    /** The callback that is executed when the location data is fetched from the source.
      */
     function onGeoSourceCallback(data) {
         var initialized = false;
@@ -307,7 +292,7 @@ var geolocator = (function () {
         loadGoogleMaps(gLoadCallback);
     }
 
-    /*  Loads the (jsonp) source. If the source does not support json-callbacks;
+    /** Loads the (jsonp) source. If the source does not support json-callbacks;
      *  the callback is executed dynamically when the source is loaded completely.
      */
     function loadIpGeoSource(source) {
@@ -320,15 +305,19 @@ var geolocator = (function () {
 
     return {
 
-        /*-------- PUBLIC PROPERTIES --------*/
+        // ---------------------------------------
+        // PUBLIC PROPERTIES
+        // ---------------------------------------
 
-        /* The recent location information fetched as an object.
+        /** The recent location information fetched as an object.
          */
         location: null,
 
-        /*-------- PUBLIC METHODS --------*/
+        // ---------------------------------------
+        // PUBLIC METHODS
+        // ---------------------------------------
 
-        /* Gets the geo-location by requesting user's permission.
+        /** Gets the geo-location by requesting user's permission.
          */
         locate: function (successCallback, errorCallback, fallbackToIP, html5Options, mapCanvasId) {
             onSuccess = successCallback;
@@ -337,7 +326,8 @@ var geolocator = (function () {
             function gLoadCallback() { getPosition(fallbackToIP, html5Options); }
             loadGoogleMaps(gLoadCallback);
         },
-        /* Gets the geo-location from the user's IP.
+
+        /** Gets the geo-location from the user's IP.
          */
         locateByIP: function (successCallback, errorCallback, sourceIndex, mapCanvasId) {
             ipGeoSourceIndex = (sourceIndex === undefined ||
