@@ -1,5 +1,8 @@
-## Geolocator Javascript Lib
-Version: 1.2,   Author: Onur Yildirim © 2012-2014, MIT License.
+## Geolocator Javascript Library
+> Version: 1.2.1  
+> Author: Onur Yildirim © 2012-2014.  
+> Source code licensed under the MIT License.  
+> Please see the [Disclaimer and License][license].
 
 ###Features:
 
@@ -152,6 +155,9 @@ Provides the recent geo-location information.
 
 ###Change Log:
 
+**version 1.2.1**
+ - Added [License][license].
+
 **version 1.2**
  - Code optimizations.
  - Now loads the latest release version of *Google Maps* (3.15).
@@ -165,5 +171,5 @@ Provides the recent geo-location information.
  - Indexes changed for IP-Geo sources. New Indexes: FreeGeoIP (0), GeoPlugin (1), Wikimedia (2)
 
 
-  [1]: http://onuryildirim.com/files/geolocator.js
-  [2]: http://onuryildirim.com/files/geolocator.min.js
+ 
+  [license]: https://github.com/onury/geolocator/blob/master/LICENSE
