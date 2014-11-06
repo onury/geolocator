@@ -25,28 +25,30 @@
 ###Usage:
 
 Inside the `<head>` of your HTML:
+```html
+<script type="text/javascript" src="geolocator.js"></script>
+<script type="text/javascript">
+    //The callback function executed when the location is fetched successfully.
+    function onGeoSuccess(location) {
+        console.log(location);
+    }
+    //The callback function executed when the location could not be fetched.
+    function onGeoError(message) {
+        console.log(message);
+    }
 
-    <script type="text/javascript" src="geolocator.js"></script>
-    <script type="text/javascript">
-        //The callback function executed when the location is fetched successfully.
-        function onGeoSuccess(location) {
-            console.log(location);
-        }
-        //The callback function executed when the location could not be fetched.
-        function onGeoError(message) {
-            console.log(message);
-        }
-
-        window.onload = function() {
-            //geolocator.locateByIP(onGeoSuccess, onGeoError, 2, 'map-canvas');
-            var html5Options = { enableHighAccuracy: true, timeout: 3000, maximumAge: 0 };
-            geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map-canvas');
-        }
-    </script>
+    window.onload = function() {
+        //geolocator.locateByIP(onGeoSuccess, onGeoError, 2, 'map-canvas');
+        var html5Options = { enableHighAccuracy: true, timeout: 3000, maximumAge: 0 };
+        geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map-canvas');
+    }
+</script>
+```
 
 Also place the line below, inside your `<body>` if you want to dynamically draw a map (you should also pass the element ID to the corresponding method for the map to be drawn):
-
-    <div id="map-canvas" style="width:600px;height:400px"></div>
+```html
+<div id="map-canvas" style="width:600px;height:400px"></div>
+```
 
 geolocator.js provides 2 useful methods:
 
@@ -54,8 +56,9 @@ geolocator.js provides 2 useful methods:
 
 ###`geolocator.locate()`
 Use this method to get the location via HTML5 geolocation.
-
-    geolocator.locate( successCallback, [errorCallback], [fallbackToIP], [html5Options], [mapCanvasId] )
+```js
+geolocator.locate( successCallback, [errorCallback], [fallbackToIP], [html5Options], [mapCanvasId] )
+```
 
 **Parameters:**
 
@@ -83,14 +86,16 @@ Use this method to get the location via HTML5 geolocation.
 > &nbsp; HTML element ID for the Google Maps canvas. If set to null, no map is drawn.
 
 **Example:**
-
-    var html5Options = { enableHighAccuracy: true, timeout: 3000, maximumAge: 0 };
-    geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map-canvas');
+```js
+var html5Options = { enableHighAccuracy: true, timeout: 3000, maximumAge: 0 };
+geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map-canvas');
+```
 
 ###`geolocator.locateByIP()`
 Use this method to get the location from the user's IP.
-
-    geolocator.locateByIP( successCallback, [errorCallback], [ipSourceIndex], [mapCanvasId] )
+```js
+geolocator.locateByIP( successCallback, [errorCallback], [ipSourceIndex], [mapCanvasId] )
+```
 
 **Parameters:**
 
@@ -110,8 +115,9 @@ Use this method to get the location from the user's IP.
 > &nbsp; HTML element ID for the Google Maps canvas. If set to null, no map is drawn.
 
 **Example:**
-
-    geolocator.locateByIP(onGeoSuccess, onGeoError, 0, 'map-canvas');
+```js
+geolocator.locateByIP(onGeoSuccess, onGeoError, 0, 'map-canvas');
+```
 
 ##Properties
 
@@ -119,39 +125,40 @@ Use this method to get the location from the user's IP.
 Provides the recent geo-location information.
 
 **Example Output:**
-
-    {
-        address: {
-            city: "New York",
-            country: "United States",
-            countryCode: "US",
-            neighborhood: "Williamsburg",
-            postalCode: "11211",
-            region: "New York",
-            street: "Bedford Avenue",
-            street_number: "285",
-            town: "Brooklyn"
-            },
-        coords: {
-            accuracy: 65,
-            altitude: null,
-            altitudeAccuracy: null,
-            heading: null,
-            latitude: 40.714224,
-            longitude: -73.961452,
-            speed: null
-            },
-        map: {
-            canvas: HTMLDivElement, //DOM element for the map
-            map: Object, //google.maps.Map
-            options: Object, //map options
-            infoWindow: Object, //google.maps.InfoWindow
-            marker: Object //google.maps.Marker
-            },
-        formattedAddress: "285 Bedford Avenue, Brooklyn, NY 11211, USA",
-        ipGeoSource: null,
-        timestamp: 1360582737790
-    }
+```js
+{
+    address: {
+        city: "New York",
+        country: "United States",
+        countryCode: "US",
+        neighborhood: "Williamsburg",
+        postalCode: "11211",
+        region: "New York",
+        street: "Bedford Avenue",
+        street_number: "285",
+        town: "Brooklyn"
+        },
+    coords: {
+        accuracy: 65,
+        altitude: null,
+        altitudeAccuracy: null,
+        heading: null,
+        latitude: 40.714224,
+        longitude: -73.961452,
+        speed: null
+        },
+    map: {
+        canvas: HTMLDivElement, //DOM element for the map
+        map: Object, //google.maps.Map
+        options: Object, //map options
+        infoWindow: Object, //google.maps.InfoWindow
+        marker: Object //google.maps.Marker
+        },
+    formattedAddress: "285 Bedford Avenue, Brooklyn, NY 11211, USA",
+    ipGeoSource: null,
+    timestamp: 1360582737790
+}
+```
 
 ###Change Log:
 
