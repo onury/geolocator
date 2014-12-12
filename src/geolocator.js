@@ -198,7 +198,6 @@ var geolocator = (function () {
         }
 
         function geoSuccess(position) {
-            console.log('success');
             geolocator.location = {
                 ipGeoSource: null,
                 coords: position.coords,
@@ -208,7 +207,6 @@ var geolocator = (function () {
         }
 
         function geoError(error) {
-            console.log('error', error);
             fallback(error.message);
         }
 
