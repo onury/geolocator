@@ -1,6 +1,7 @@
 ## Geolocator Javascript Library
+
 > Version: 1.2.4  
-> Author: Onur Yildirim © 2012-2014.  
+> Author: Onur Yildirim © 2014  
 > Source code licensed under the MIT License.  
 > Please see the [Disclaimer and License][license].
 
@@ -162,7 +163,7 @@ Provides the recent geo-location information.
 
 ###Change Log:
 
-**version 1.2.3**
+**version 1.2.4**
 - Revision: Source scripts are now automatically removed from DOM after result is received.
 - Bug-Fix: `errorCallback` would not be invoked if IP geo-source service is not available. Fixes #6.
 - Revision: Changed default IP source to GeoPlugin (index:`1`); since FreeGeoIP is occasionally down these days.
@@ -184,4 +185,4 @@ Provides the recent geo-location information.
 
 
  
-  [license]: https://github.com/onury/geolocator/blob/master/LICENSE
+[license]: https://github.com/onury/geolocator/blob/master/LICENSE
