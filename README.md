@@ -181,4 +181,4 @@ Provides the recent geo-location information.
 
  
 [license]: https://github.com/onury/geolocator/blob/master/LICENSE
-[demo]: https://rawgit.com/onury/geolocator/master/example/index.html
+[demo]: http://rawgit.com/onury/geolocator/master/example/index.html
