@@ -165,7 +165,7 @@ Provides the recent geo-location information.
 
 **version 1.2.4**
 - Revision: Source scripts are now automatically removed from DOM after result is received.
-- Bug-Fix: `errorCallback` would not be invoked if IP geo-source service is not available. Fixes [#6](https://github.com/onury/geolocator/issues/6).
+- Bug-Fix: `errorCallback` would not be invoked if IP geo-source service is not available. Fixes issue [#6](https://github.com/onury/geolocator/issues/6).
 - Revision: Changed default IP source to GeoPlugin (index:`1`); since FreeGeoIP is occasionally down these days.
 
 **version 1.2.1**
