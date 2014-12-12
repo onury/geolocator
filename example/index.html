@@ -37,7 +37,7 @@
                 geolocator.locateByIP(onGeoSuccess, onGeoError, cmbSource.selectedIndex, 'map-canvas');
             }
             btnLocateHTML5.onclick = function() {
-                var html5Options = { enableHighAccuracy: true, timeout: 3000, maximumAge: 0 };
+                var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
                 geolocator.locate(onGeoSuccess, onGeoError, cmbSource.selectedIndex, html5Options, 'map-canvas');
             }
 		}
@@ -55,7 +55,7 @@
                 <option selected value="1">Geo Plugin</option>
                 <option value="2">Wikimedia</option>
             </select>&nbsp;<button id="btn-locate-ip">Locate by IP</button> | <button id="btn-locate">Locate (HTML5)</button>
-            <br /><span class="info">(Geo IP Source is also used as a fallback when user rejects HTML5 Geo-location.)</span><br />
+            <br /><span class="info">(Geo IP Source is also used as a fallback when user rejects HTML5 Geo-location or timeout expires.)</span><br />
         </div>
         <div id="map-canvas"></div>
         <div id="geo-details"></div>

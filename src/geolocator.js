@@ -16,23 +16,27 @@ var geolocator = (function () {
     // ---------------------------------------
 
     var
-        /* Storage for the callback function to be executed when the location is successfully fetched. */
+        // Storage for the callback function to be executed when the location
+        // is successfully fetched.
         onSuccess,
-        /* Storage for the callback function to be executed when the location could not be fetched due to an error. */
+        // Storage for the callback function to be executed when the location
+        // could not be fetched due to an error.
         onError,
-        /* HTML element ID for the Google Maps. */
+        // HTML element ID for the Google Maps.
         mCanvasId,
-        /* Google Maps URL. */
+        // Google Maps URL.
         googleLoaderURL = 'https://www.google.com/jsapi',
-        /* Array of source services that provide location-by-IP information. */
+        // Array of source services that provide location-by-IP information.
         ipGeoSources = [
             { url: 'http://freegeoip.net/json/', cbParam: 'callback' }, // 0
             { url: 'http://www.geoplugin.net/json.gp', cbParam: 'jsoncallback' }, // 1
             { url: 'http://geoiplookup.wikimedia.org/', cbParam: '' } // 2
-            //,{ url: 'http://j.maxmind.com/app/geoip.js', cbParam: '' } // Not implemented. Requires attribution. See http://dev.maxmind.com/geoip/javascript
+            // maxmind Not implemented. Requires attribution.
+            // See http://dev.maxmind.com/geoip/javascript
+            //,{ url: 'http://j.maxmind.com/app/geoip.js', cbParam: '' }
         ],
         defaultSourceIndex = 1, // (geoplugin)
-        /* The index of the current IP source service. */
+        // The index of the current IP source service.
         sourceIndex;
 
     // ---------------------------------------
@@ -194,6 +198,7 @@ var geolocator = (function () {
         }
 
         function geoSuccess(position) {
+            console.log('success');
             geolocator.location = {
                 ipGeoSource: null,
                 coords: position.coords,
@@ -203,6 +208,7 @@ var geolocator = (function () {
         }
 
         function geoError(error) {
+            console.log('error', error);
             fallback(error.message);
         }
 

@@ -19,7 +19,9 @@
  - No library/framework dependencies (such as jQuery, MooTools, etc...)
  - Browser Support: IE 9+, Chrome, Safari, Firefox, Opera...
 
-**Download:** [Full Version](https://raw.github.com/onury/geolocator/master/src/geolocator.js) 12.4KB *(3.2KB gzipped)*, [Minified Version](https://raw.github.com/onury/geolocator/master/src/geolocator.min.js) 4KB *(1.6KB gzipped)*
+**Download:** [Full Version](https://raw.github.com/onury/geolocator/master/src/geolocator.js) 12.4KB *(3.2KB gzipped)*, [Minified Version](https://raw.github.com/onury/geolocator/master/src/geolocator.min.js) 4KB *(1.6KB gzipped)*  
+
+See a live [**demo here**][demo].  
 
 ![Geolocator Example Screenshot](https://raw.github.com/onury/geolocator/master/screenshots/geolocator-example.jpg)
 
@@ -40,7 +42,7 @@ Inside the `<head>` of your HTML:
 
     window.onload = function() {
         //geolocator.locateByIP(onGeoSuccess, onGeoError, 2, 'map-canvas');
-        var html5Options = { enableHighAccuracy: true, timeout: 3000, maximumAge: 0 };
+        var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
         geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map-canvas');
     }
 </script>
@@ -64,31 +66,24 @@ geolocator.locate( successCallback, [errorCallback], [fallbackToIP], [html5Optio
 **Parameters:**
 
 > - `successCallback`   *Function*
-> &nbsp; A callback function to be executed when the location is successfully fetched.
-> &nbsp; The recent `geolocator.location` object is passed to this callback, as the only argument.
+> A callback function to be executed when the location is successfully fetched. The recent `geolocator.location` object is passed to this callback, as the only argument.
 
 > - `errorCallback`   *Function  (optional, default: `null`)*
-> &nbsp; A callback function to be executed when the location could not be fetched due to an error.
-> &nbsp; The recent error message `String` is passed to this callback, as the only argument.
+> A callback function to be executed when the location could not be fetched due to an error. The recent error message `String` is passed to this callback, as the only argument.
 
 > - `fallbackToIP`   *Boolean|Integer (optional, default: `false`)*
-> &nbsp; Specifies whether geolocator should fallback to IP geo-lookup when HTML5 geolocation is not
-> &nbsp; supported or rejected by the user. A positive `Integer` value will indicate the index of the source
-> &nbsp; ip-geo service (if the value is in range). Boolean `true` will set the default ip-geo service index
-> &nbsp; which is `0` (FreeGeoIP).
-> &nbsp; Valid values: *`0` or `true` (use FreeGeoIP for ip-geo fallback),
-> &nbsp; `1` (use GeoPlugin for ip-geo fallback), `2` (use Wikimedia for ip-geo fallback), `false` or `-1` or
-> &nbsp; `null` or any other value (will disable ip-geo fallback)*
+> Specifies whether geolocator should fallback to IP geo-lookup when HTML5 geolocation is not supported, timeout expired, position is unavailable or permission rejected by the user. A positive `Integer` value will indicate the index of the source ip-geo service (if the value is in range). Boolean `true` will set the default ip-geo service index which is `1` (GeoPlugin). Valid values: *`0` or `true` (use FreeGeoIP for ip-geo fallback), `1` (use GeoPlugin for ip-geo fallback), `2` (use Wikimedia for ip-geo fallback), `false` or `-1` or `null` or any other value (will disable ip-geo fallback)*
 
 > - `html5Options`   *Object (optional, default: `null`)*
-> &nbsp; HTML5 geolocation options.
+> HTML5 geolocation options. e.g. `{ enableHighAccuracy: true, timeout: 6000, maximumAge: 0 }`  
+> Note: Set the `timeout` value to at least `5000` milliseconds; otherwise this may produce a timeout error (which will fallback to IP geo-lookups if enabled.)
 
 > - `mapCanvasId`   *String (optional, default: `null`)*
-> &nbsp; HTML element ID for the Google Maps canvas. If set to null, no map is drawn.
+> HTML element ID for the Google Maps canvas. If set to null, no map is drawn.
 
 **Example:**
 ```js
-var html5Options = { enableHighAccuracy: true, timeout: 3000, maximumAge: 0 };
+var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
 geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map-canvas');
 ```
 
@@ -101,19 +96,19 @@ geolocator.locateByIP( successCallback, [errorCallback], [ipSourceIndex], [mapCa
 **Parameters:**
 
 > - `successCallback`   *Function*
-> &nbsp; A callback function to be executed when the location is successfully fetched.
-> &nbsp; The recent `geolocator.location` object is passed to this callback, as the only argument.
+> A callback function to be executed when the location is successfully fetched.
+> The recent `geolocator.location` object is passed to this callback, as the only argument.
 
 > - `errorCallback`   *Function (optional, default: `null`)*
-> &nbsp; A callback function to be executed when the location could not be fetched due to an error.
-> &nbsp; The recent error message `String` is passed to this callback, as the only argument.
+> A callback function to be executed when the location could not be fetched due to an error.
+> The recent error message `String` is passed to this callback, as the only argument.
 
 > - `ipGeoSourceIndex`   *Integer (optional, default: `0`)*
-> &nbsp; Indicates the index of the IP geo-lookup service.
-> &nbsp; Valid values: *`0` (FreeGeoIP), `1` (GeoPlugin), `2` (Wikimedia)*
+> Indicates the index of the IP geo-lookup service.
+> Valid values: *`0` (FreeGeoIP), `1` (GeoPlugin), `2` (Wikimedia)*
 
 > - `mapCanvasId`   *String (optional, default: `null`)*
-> &nbsp; HTML element ID for the Google Maps canvas. If set to null, no map is drawn.
+> HTML element ID for the Google Maps canvas. If set to null, no map is drawn.
 
 **Example:**
 ```js
@@ -186,3 +181,4 @@ Provides the recent geo-location information.
 
  
 [license]: https://github.com/onury/geolocator/blob/master/LICENSE
+[demo]: https://rawgit.com/onury/geolocator/master/example/index.html
