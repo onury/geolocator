@@ -112,7 +112,7 @@ geolocator.locateByIP( successCallback, [errorCallback], [ipSourceIndex], [mapCa
 
 **Example:**
 ```js
-geolocator.locateByIP(onGeoSuccess, onGeoError, 0, 'map-canvas');
+geolocator.locateByIP(onGeoSuccess, onGeoError, 1, 'map-canvas');
 ```
 
 ##Properties
