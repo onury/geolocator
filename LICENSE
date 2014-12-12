@@ -1,0 +1,39 @@
+Geolocator Source Code is licensed under the MIT License.
+
+-- DISCLAMIER --
+
+Internally, this piece of software uses or implements other software or
+services which are provided by another person or company. Your use of these
+other services, software or goods may be subject to separate terms between you
+and the company or person concerned. If so, the Terms do not affect your legal
+relationship with these other companies or individuals.
+
+GeoPlugin: http://www.geoplugin.com/aup
+FreeGeoIP: http://freegeoip.net
+Wikimedia: http://wikimediafoundation.org/wiki/Terms_of_Use
+Google Maps API: https://developers.google.com/maps/terms
+
+-- MIT License --
+
+Copyright 2014 Onur Yıldırım. All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to
+deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.
+
+https://developers.google.com/maps/faq
+See https://developers.google.com/maps/terms

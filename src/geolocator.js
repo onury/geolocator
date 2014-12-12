@@ -2,8 +2,8 @@
 /*global google:false */
 
 
-/** @license  Geolocator Javascript Lib v.1.2
- *  (c) 2012-2014 Onur Yildirim (onur@cutepilot.com)
+/** @license  Geolocator Javascript Lib v.1.2.4
+ *  (c) 2014-2015 Onur Yildirim (onur@cutepilot.com)
  *  https://github.com/onury/geolocator
  *  MIT License
  */
@@ -26,13 +26,14 @@ var geolocator = (function () {
         googleLoaderURL = 'https://www.google.com/jsapi',
         /* Array of source services that provide location-by-IP information. */
         ipGeoSources = [
-            {url: 'http://freegeoip.net/json/', cbParam: 'callback'}, // 0
-            {url: 'http://www.geoplugin.net/json.gp', cbParam: 'jsoncallback'}, // 1
-            {url: 'http://geoiplookup.wikimedia.org/', cbParam: ''} // 2
-            //,{url: 'http://j.maxmind.com/app/geoip.js', cbParam: ''} // Not implemented. Requires attribution. See http://dev.maxmind.com/geoip/javascript
+            { url: 'http://freegeoip.net/json/', cbParam: 'callback' }, // 0
+            { url: 'http://www.geoplugin.net/json.gp', cbParam: 'jsoncallback' }, // 1
+            { url: 'http://geoiplookup.wikimedia.org/', cbParam: '' } // 2
+            //,{ url: 'http://j.maxmind.com/app/geoip.js', cbParam: '' } // Not implemented. Requires attribution. See http://dev.maxmind.com/geoip/javascript
         ],
+        defaultSourceIndex = 1, // (geoplugin)
         /* The index of the current IP source service. */
-        ipGeoSourceIndex = 0; // default (freegeoip)
+        sourceIndex;
 
     // ---------------------------------------
     // PRIVATE METHODS
@@ -40,25 +41,35 @@ var geolocator = (function () {
 
     /** Non-blocking method for loading scripts dynamically.
      */
-    function loadScript(url, callback, type) {
+    function loadScript(url, callback, removeOnCallback) {
         var script = document.createElement('script');
-        script.type = (type === undefined) ? 'text/javascript' : type;
+        script.async = true;
 
-        if (typeof callback === 'function') {
-            if (script.readyState) {
-                script.onreadystatechange = function () {
-                    if (script.readyState === 'loaded' || script.readyState === 'complete') {
-                        script.onreadystatechange = null;
-                        callback();
-                    }
-                };
-            } else {
-                script.onload = function () { callback(); };
+        function execCb(cb, data) {
+            if (removeOnCallback && script.parentNode) {
+                script.parentNode.removeChild(script);
+            }
+            if (typeof cb === 'function') {
+                cb(data);
             }
         }
 
+        if (script.readyState) {
+            script.onreadystatechange = function (e) {
+                if (script.readyState === 'loaded' || script.readyState === 'complete') {
+                    script.onreadystatechange = null;
+                    execCb(callback);
+                }
+            };
+        } else {
+            script.onload = function (e) { execCb(callback); };
+        }
+
+        script.onerror = function (e) {
+            execCb(onError, 'Could not load source at ' + String(url).replace(/\?.*$/, ''));
+        };
+
         script.src = url;
-        //document.body.appendChild(script);
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 
@@ -178,7 +189,7 @@ var geolocator = (function () {
             if (ipsIndex >= 0) {
                 geolocator.locateByIP(onSuccess, onError, ipsIndex, mCanvasId);
             } else {
-                if (onError) { onError.call(null, errMsg); }
+                if (onError) { onError(errMsg); }
             }
         }
 
@@ -204,8 +215,8 @@ var geolocator = (function () {
 
     /** Builds the location object from the source data.
      */
-    function buildLocation(sourceIndex, data) {
-        switch (sourceIndex) {
+    function buildLocation(ipSourceIndex, data) {
+        switch (ipSourceIndex) {
         case 0: // freegeoip
             geolocator.location = {
                 coords: {
@@ -256,7 +267,7 @@ var geolocator = (function () {
             geolocator.location.coords.heading = null;
             geolocator.location.coords.speed = null;
             geolocator.location.timestamp = new Date().getTime();
-            geolocator.location.ipGeoSource = ipGeoSources[sourceIndex];
+            geolocator.location.ipGeoSource = ipGeoSources[ipSourceIndex];
             geolocator.location.ipGeoSource.data = data;
         }
     }
@@ -269,15 +280,15 @@ var geolocator = (function () {
         delete geolocator.__ipscb;
 
         function gLoadCallback() {
-            if (ipGeoSourceIndex === 2) { // Wikimedia
+            if (sourceIndex === 2) { // Wikimedia
                 if (window.Geo !== undefined) {
-                    buildLocation(ipGeoSourceIndex, window.Geo);
+                    buildLocation(sourceIndex, window.Geo);
                     delete window.Geo;
                     initialized = true;
                 }
             } else {
-                if (data !== undefined) {
-                    buildLocation(ipGeoSourceIndex, data);
+                if (data !== undefined && typeof data !== 'string') {
+                    buildLocation(sourceIndex, data);
                     initialized = true;
                 }
             }
@@ -285,7 +296,7 @@ var geolocator = (function () {
             if (initialized === true) {
                 finalize(geolocator.location.coords);
             } else {
-                if (onError) { onError('Could not get location.'); }
+                if (onError) { onError(data || 'Could not get location.'); }
             }
         }
 
@@ -297,9 +308,9 @@ var geolocator = (function () {
      */
     function loadIpGeoSource(source) {
         if (source.cbParam === undefined || source.cbParam === null || source.cbParam === '') {
-            loadScript(source.url, onGeoSourceCallback);
+            loadScript(source.url, onGeoSourceCallback, true);
         } else {
-            loadScript(source.url + '?' + source.cbParam + '=geolocator.__ipscb'); //ip source callback
+            loadScript(source.url + '?' + source.cbParam + '=geolocator.__ipscb', undefined, true); //ip source callback
         }
     }
 
@@ -329,14 +340,14 @@ var geolocator = (function () {
 
         /** Gets the geo-location from the user's IP.
          */
-        locateByIP: function (successCallback, errorCallback, sourceIndex, mapCanvasId) {
-            ipGeoSourceIndex = (sourceIndex === undefined ||
-                (sourceIndex < 0 || sourceIndex >= ipGeoSources.length)) ? 0 : sourceIndex;
+        locateByIP: function (successCallback, errorCallback, ipSourceIndex, mapCanvasId) {
+            sourceIndex = (typeof ipSourceIndex !== 'number' ||
+                (ipSourceIndex < 0 || ipSourceIndex >= ipGeoSources.length)) ? defaultSourceIndex : ipSourceIndex;
             onSuccess = successCallback;
             onError = errorCallback;
             mCanvasId = mapCanvasId;
             geolocator.__ipscb = onGeoSourceCallback;
-            loadIpGeoSource(ipGeoSources[ipGeoSourceIndex]);
+            loadIpGeoSource(ipGeoSources[sourceIndex]);
         }
     };
 }());

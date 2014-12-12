@@ -27,7 +27,7 @@
         // Load Event Handler
 		window.onload = function () {
             // Locate by IP on load
-            geolocator.locateByIP(onGeoSuccess, onGeoError, 0, 'map-canvas');
+            geolocator.locateByIP(onGeoSuccess, onGeoError, 1, 'map-canvas');
             // Configure controls
             var cmbSource = document.getElementById('cmb-source'),
                 btnLocateByIP = document.getElementById('btn-locate-ip'),
@@ -52,7 +52,7 @@
         <div id="controls">
             Geo IP Source: <select id="cmb-source">
                 <option value="0">Free GeoIP</option>
-                <option value="1">Geo Plugin</option>
+                <option selected value="1">Geo Plugin</option>
                 <option value="2">Wikimedia</option>
             </select>&nbsp;<button id="btn-locate-ip">Locate by IP</button> | <button id="btn-locate">Locate (HTML5)</button>
             <br /><span class="info">(Geo IP Source is also used as a fallback when user rejects HTML5 Geo-location.)</span><br />
