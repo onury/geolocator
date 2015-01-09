@@ -1,6 +1,6 @@
 ## Geolocator Javascript Library
 
-> Version: 1.2.4  
+> Version: 1.2.6  
 > Author: Onur Yildirim © 2014  
 > Source code licensed under the MIT License.  
 > Please see the [Disclaimer and License][license].
