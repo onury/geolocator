@@ -19,7 +19,7 @@
  - No library/framework dependencies (such as jQuery, MooTools, etc...)
  - Browser Support: IE 9+, Chrome, Safari, Firefox, Opera...
 
-**Download:** [Full Version](https://raw.github.com/onury/geolocator/master/src/geolocator.js) 12.4KB *(3.2KB gzipped)*, [Minified Version](https://raw.github.com/onury/geolocator/master/src/geolocator.min.js) 4KB *(1.6KB gzipped)*  
+**Download:** [Full Version](https://raw.github.com/onury/geolocator/master/src/geolocator.js) 13KB *(3.5KB gzipped)*, [Minified Version](https://raw.github.com/onury/geolocator/master/src/geolocator.min.js) 4KB *(1.8KB gzipped)*  
 
 See a live [**demo here**][demo].  
 
@@ -36,8 +36,8 @@ Inside the `<head>` of your HTML:
         console.log(location);
     }
     //The callback function executed when the location could not be fetched.
-    function onGeoError(message) {
-        console.log(message);
+    function onGeoError(error) {
+        console.log(error);
     }
 
     window.onload = function() {
@@ -53,7 +53,7 @@ Also place the line below, inside your `<body>` if you want to dynamically draw 
 <div id="map-canvas" style="width:600px;height:400px"></div>
 ```
 
-geolocator.js provides 2 useful methods:
+geolocator.js provides 3 useful methods:
 
 ##Methods
 
@@ -69,7 +69,7 @@ geolocator.locate( successCallback, [errorCallback], [fallbackToIP], [html5Optio
 > A callback function to be executed when the location is successfully fetched. The recent `geolocator.location` object is passed to this callback, as the only argument.
 
 > - `errorCallback`   *Function  (optional, default: `null`)*
-> A callback function to be executed when the location could not be fetched due to an error. The recent error message `String` is passed to this callback, as the only argument.
+> A callback function to be executed when the location could not be fetched due to an error. The recent `PositionError` object is passed to this callback, as the only argument.
 
 > - `fallbackToIP`   *Boolean|Integer (optional, default: `false`)*
 > Specifies whether geolocator should fallback to IP geo-lookup when HTML5 geolocation is not supported, timeout expired, position is unavailable or permission rejected by the user. A positive `Integer` value will indicate the index of the source ip-geo service (if the value is in range). Boolean `true` will set the default ip-geo service index which is `1` (GeoPlugin). Valid values: *`0` or `true` (use FreeGeoIP for ip-geo fallback), `1` (use GeoPlugin for ip-geo fallback), `2` (use Wikimedia for ip-geo fallback), `false` or `-1` or `null` or any other value (will disable ip-geo fallback)*
@@ -101,7 +101,7 @@ geolocator.locateByIP( successCallback, [errorCallback], [ipSourceIndex], [mapCa
 
 > - `errorCallback`   *Function (optional, default: `null`)*
 > A callback function to be executed when the location could not be fetched due to an error.
-> The recent error message `String` is passed to this callback, as the only argument.
+> The recent `Error` object is passed to this callback, as the only argument.
 
 > - `ipGeoSourceIndex`   *Integer (optional, default: `0`)*
 > Indicates the index of the IP geo-lookup service.
@@ -114,6 +114,17 @@ geolocator.locateByIP( successCallback, [errorCallback], [ipSourceIndex], [mapCa
 ```js
 geolocator.locateByIP(onGeoSuccess, onGeoError, 1, 'map-canvas');
 ```
+
+###`geolocator.isPositionError()`
+Checks whether the type of the given object is HTML5 `PositionError` and returns a `Boolean` value.
+```js
+geolocator.isPositionError( error )
+```
+
+**Parameters:**
+
+> - `error`   *Object*
+> Object to be checked.
 
 ##Properties
 
@@ -157,6 +168,11 @@ Provides the recent geo-location information.
 ```
 
 ###Change Log:
+
+**version 1.2.6**
+- Revision: The recent `Error` or `PositionError` (HTML5) is passed to error callbacks instead of `String` error message. See updated documentation. Fixes issue [#7](https://github.com/onury/geolocator/issues/7). *(This shouldn't be a breaking-change but do test your app if you decide to upgrade.)*
+- Feature: Added new method: `isPositionError()`.
+- Updated example. (Added checkbox for HTML5-to-IP fallback.)
 
 **version 1.2.4**
 - Revision: Source scripts are now automatically removed from DOM after result is received.

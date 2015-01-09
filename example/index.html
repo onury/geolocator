@@ -21,8 +21,10 @@
 		    document.getElementById('geo-details').innerHTML = strLocation;
 		}
         // Error Callback
-		function onGeoError(message) {
-		    console.log(message);
+		function onGeoError(error) {
+		    console.log(error);
+            // To check if this is a HTML5 `PositionError`:
+            // console.log(geolocator.isPositionError(error));
 		}
         // Load Event Handler
 		window.onload = function () {
@@ -31,14 +33,17 @@
             // Configure controls
             var cmbSource = document.getElementById('cmb-source'),
                 btnLocateByIP = document.getElementById('btn-locate-ip'),
-                btnLocateHTML5 = document.getElementById('btn-locate');
+                btnLocateHTML5 = document.getElementById('btn-locate'),
+                chkFallback = document.getElementById('chk-fallback');
             // Click Event Handlers
             btnLocateByIP.onclick = function() {
                 geolocator.locateByIP(onGeoSuccess, onGeoError, cmbSource.selectedIndex, 'map-canvas');
             }
             btnLocateHTML5.onclick = function() {
-                var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
-                geolocator.locate(onGeoSuccess, onGeoError, cmbSource.selectedIndex, html5Options, 'map-canvas');
+                var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 },
+                    ipFallbackIndex = chkFallback.checked ? cmbSource.selectedIndex : -1;
+                geolocator.locate(onGeoSuccess, onGeoError, ipFallbackIndex, html5Options, 'map-canvas');
+                console.log('IP Fallback is ' + (ipFallbackIndex === -1 ? 'disabled' : 'enabled'));
             }
 		}
 	</script>
@@ -55,13 +60,14 @@
                 <option selected value="1">Geo Plugin</option>
                 <option value="2">Wikimedia</option>
             </select>&nbsp;<button id="btn-locate-ip">Locate by IP</button> | <button id="btn-locate">Locate (HTML5)</button>
+            <input id="chk-fallback" type="checkbox" checked /> Fallback to IP
             <br /><span class="info">(Geo IP Source is also used as a fallback when user rejects HTML5 Geo-location or timeout expires.)</span><br />
         </div>
         <div id="map-canvas"></div>
         <div id="geo-details"></div>
         <br />
         View <a href="https://github.com/onury/geolocator">project page</a> (and documentation) at GitHub.<br />
-        Geolocator 1.2.4 - Copyright © Onur Yildirim, 2014. MIT License.
+        Geolocator 1.2.6 - Copyright © Onur Yildirim, 2014. MIT License.
         <br /><br />
     </div>
 

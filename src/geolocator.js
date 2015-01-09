@@ -1,8 +1,8 @@
-/*jslint browser:true, nomen:true */
+/*jslint browser:true, nomen:true, regexp:true, unparam:true */
 /*global google:false */
 
 
-/** @license  Geolocator Javascript Lib v.1.2.4
+/** @license  Geolocator Javascript Lib v.1.2.6
  *  (c) 2014-2015 Onur Yildirim (onur@cutepilot.com)
  *  https://github.com/onury/geolocator
  *  MIT License
@@ -70,7 +70,8 @@ var geolocator = (function () {
         }
 
         script.onerror = function (e) {
-            execCb(onError, 'Could not load source at ' + String(url).replace(/\?.*$/, ''));
+            var errMsg = 'Could not load source at ' + String(url).replace(/\?.*$/, '');
+            execCb(onError, new Error(errMsg));
         };
 
         script.src = url;
@@ -188,12 +189,12 @@ var geolocator = (function () {
     function getPosition(fallbackToIP, html5Options) {
         geolocator.location = null;
 
-        function fallback(errMsg) {
+        function fallback(error) {
             var ipsIndex = fallbackToIP === true ? 0 : (typeof fallbackToIP === 'number' ? fallbackToIP : -1);
             if (ipsIndex >= 0) {
                 geolocator.locateByIP(onSuccess, onError, ipsIndex, mCanvasId);
             } else {
-                if (onError) { onError(errMsg); }
+                if (onError) { onError(error); }
             }
         }
 
@@ -207,13 +208,13 @@ var geolocator = (function () {
         }
 
         function geoError(error) {
-            fallback(error.message);
+            fallback(error);
         }
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(geoSuccess, geoError, html5Options);
         } else { // not supported
-            fallback('geolocation is not supported.');
+            fallback(new Error('geolocation is not supported.'));
         }
     }
 
@@ -300,7 +301,7 @@ var geolocator = (function () {
             if (initialized === true) {
                 finalize(geolocator.location.coords);
             } else {
-                if (onError) { onError(data || 'Could not get location.'); }
+                if (onError) { onError(new Error(data || 'Could not get location.')); }
             }
         }
 
@@ -352,6 +353,13 @@ var geolocator = (function () {
             mCanvasId = mapCanvasId;
             geolocator.__ipscb = onGeoSourceCallback;
             loadIpGeoSource(ipGeoSources[sourceIndex]);
+        },
+
+        /** Checks whether the type of the given object is HTML5
+         *  `PositionError` and returns a `Boolean` value.
+         */
+        isPositionError: function (error) {
+            return Object.prototype.toString.call(error) === '[object PositionError]';
         }
     };
 }());
