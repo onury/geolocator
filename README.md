@@ -71,8 +71,8 @@ geolocator.locate( successCallback, [errorCallback], [fallbackToIP], [html5Optio
 > - `errorCallback`   *Function  (optional, default: `null`)*
 > A callback function to be executed when the location could not be fetched due to an error. The recent `PositionError` object is passed to this callback, as the only argument.
 
-> - `fallbackToIP`   *Boolean|Integer (optional, default: `false`)*
-> Specifies whether geolocator should fallback to IP geo-lookup when HTML5 geolocation is not supported, timeout expired, position is unavailable or permission rejected by the user. A positive `Integer` value will indicate the index of the source ip-geo service (if the value is in range). Boolean `true` will set the default ip-geo service index which is `1` (GeoPlugin). Valid values: *`0` or `true` (use FreeGeoIP for ip-geo fallback), `1` (use GeoPlugin for ip-geo fallback), `2` (use Wikimedia for ip-geo fallback), `false` or `-1` or `null` or any other value (will disable ip-geo fallback)*
+> - `fallbackToIP`   *Boolean|Number (optional, default: `false`)*
+> Specifies whether geolocator should fallback to IP geo-lookup when HTML5 geolocation is not supported, timeout expired, position is unavailable or permission rejected by the user. A positive integer value will indicate the index of the source ip-geo service (if the value is in range). Boolean `true` will set the default ip-geo service index which is `1` (GeoPlugin). Valid values: *`0` (use FreeGeoIP for ip-geo fallback), `1` or `true` (use GeoPlugin for ip-geo fallback), `2` (use Wikimedia for ip-geo fallback), `false` or `-1` or `null` or any other value (will disable ip-geo fallback)*
 
 > - `html5Options`   *Object (optional, default: `null`)*
 > HTML5 geolocation options. e.g. `{ enableHighAccuracy: true, timeout: 6000, maximumAge: 0 }`  
@@ -142,7 +142,7 @@ Provides the recent geo-location information.
         postalCode: "11211",
         region: "New York",
         street: "Bedford Avenue",
-        street_number: "285",
+        streetNumber: "285",
         town: "Brooklyn"
         },
     coords: {
