@@ -19,11 +19,11 @@
  - No library/framework dependencies (such as jQuery, MooTools, etc...)
  - Browser Support: IE 9+, Chrome, Safari, Firefox, Opera...
 
-**Download:** [Full Version](https://raw.github.com/onury/geolocator/master/src/geolocator.js) 13KB *(3.5KB gzipped)*, [Minified Version](https://raw.github.com/onury/geolocator/master/src/geolocator.min.js) 4KB *(1.8KB gzipped)*  
+**Download:** [Full Version][uncompressed] 13KB *(3.5KB gzipped)*, [Minified Version][compressed] 4KB *(1.8KB gzipped)*  
 
 See a live [**demo here**][demo].  
 
-![Geolocator Example Screenshot](https://raw.github.com/onury/geolocator/master/screenshots/geolocator-example.jpg)
+[![Geolocator Example Screenshot][example-img]][demo]
 
 ###Usage:
 
@@ -40,11 +40,11 @@ Inside the `<head>` of your HTML:
         console.log(error);
     }
 
-    window.onload = function() {
+    window.onload = function () {
         //geolocator.locateByIP(onGeoSuccess, onGeoError, 2, 'map-canvas');
         var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
         geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map-canvas');
-    }
+    };
 </script>
 ```
 
@@ -197,4 +197,7 @@ Provides the recent geo-location information.
 
  
 [license]: https://github.com/onury/geolocator/blob/master/LICENSE
+[uncompressed]: https://raw.github.com/onury/geolocator/master/src/geolocator.js
+[compressed]: https://raw.github.com/onury/geolocator/master/src/geolocator.min.js
 [demo]: http://rawgit.com/onury/geolocator/master/example/index.html
+[example-img]: https://raw.github.com/onury/geolocator/master/screenshots/geolocator-example.jpg
