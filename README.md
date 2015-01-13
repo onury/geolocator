@@ -1,7 +1,7 @@
 ## Geolocator Javascript Library
 
 > Version: 1.2.6  
-> Author: Onur Yildirim © 2015  
+> Author: Onur Yıldırım © 2015  
 > Source code licensed under the MIT License.  
 > Please see the [Disclaimer and License][license].
 
@@ -172,7 +172,7 @@ Provides the recent geo-location information.
 **version 1.2.6**
 - Revision: The recent `Error` or `PositionError` (HTML5) is passed to error callbacks instead of `String` error message. See updated documentation. Fixes issue [#7](https://github.com/onury/geolocator/issues/7). *(This shouldn't be a breaking-change but do test your app if you decide to upgrade.)*
 - Feature: Added new method: `isPositionError()`.
-- Updated example. (Added checkbox for HTML5-to-IP fallback.)
+- Updated example. (Enable/disable HTML5-to-IP fallback.)
 
 **version 1.2.4**
 - Revision: Source scripts are now automatically removed from DOM after result is received.
