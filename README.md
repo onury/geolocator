@@ -10,6 +10,7 @@
  - HTML5 geolocation (by user permission)
  - Location by IP (Supported source services: FreeGeoIP, GeoPlugin, WikiMedia)
  - Reverse Geocoding (address lookup)
+ - Geocoding by provided address
  - Full address information (street, town, neighborhood, region,
    country, country code, postal code, etc...)
  - Fallback mechanism (from HTML5-geolocation to IP-geo lookup)
@@ -42,6 +43,7 @@ Inside the `<head>` of your HTML:
 
     window.onload = function () {
         //geolocator.locateByIP(onGeoSuccess, onGeoError, 2, 'map-canvas');
+        //geolocator.locateByAddress('7495 Birchmount Road', onGeoSuccess, onGeoError, 'map-canvas');
         var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
         geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map-canvas');
     };
@@ -91,6 +93,12 @@ geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map-canvas');
 Use this method to get the location from the user's IP.
 ```js
 geolocator.locateByIP( successCallback, [errorCallback], [ipSourceIndex], [mapCanvasId] )
+```
+
+###`geolocator.locateByAddress(address)`
+Use this method to get the location from the user's input address.
+```js
+geolocator.locateByAddress( address, successCallback, [mapCanvasId] )
 ```
 
 **Parameters:**
