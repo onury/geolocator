@@ -34,6 +34,8 @@
             var cmbSource = document.getElementById('cmb-source'),
                 btnLocateByIP = document.getElementById('btn-locate-ip'),
                 btnLocateHTML5 = document.getElementById('btn-locate'),
+                btnLocateAddress = document.getElementById('btn-locate-address'),
+                inputAddress = document.getElementById('input-address'),
                 chkFallback = document.getElementById('chk-fallback');
             // Click Event Handlers
             btnLocateByIP.onclick = function() {
@@ -44,6 +46,9 @@
                     ipFallbackIndex = chkFallback.checked ? cmbSource.selectedIndex : -1;
                 geolocator.locate(onGeoSuccess, onGeoError, ipFallbackIndex, html5Options, 'map-canvas');
                 console.log('IP Fallback is ' + (ipFallbackIndex === -1 ? 'disabled' : 'enabled'));
+            }
+            btnLocateAddress.onclick = function() {
+                geolocator.locateByAddress(inputAddress.value, onGeoSuccess, onGeoError, 'map-canvas');
             }
 		}
 	</script>
@@ -59,9 +64,13 @@
                 <option value="0">Free GeoIP</option>
                 <option selected value="1">Geo Plugin</option>
                 <option value="2">Wikimedia</option>
-            </select>&nbsp;<button id="btn-locate-ip">Locate by IP</button> | <button id="btn-locate">Locate (HTML5)</button>
-            <input id="chk-fallback" type="checkbox" checked /> Fallback to IP
+            </select>&nbsp;<button id="btn-locate-ip">Locate by IP</button>
             <br /><span class="info">(Geo IP Source is also used as a fallback when user rejects HTML5 Geo-location or timeout expires.)</span><br />
+            <hr>
+            <button id="btn-locate">Locate (HTML5)</button>
+            <input id="chk-fallback" type="checkbox" checked /> Fallback to IP
+            <hr>
+            <input id='input-address' type='text' /> &nbsp;<button id="btn-locate-address">Locate by Address</button>
         </div>
         <div id="map-canvas"></div>
         <div id="geo-details"></div>

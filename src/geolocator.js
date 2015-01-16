@@ -166,22 +166,24 @@ var geolocator = (function () {
         }
     }
 
+    function onGeoLookup(data) {
+        fetchDetailsFromLookup(data);
+        var location = geolocator.location;
+        var zoom = location.ipGeoSource === null ? 14 : 7, //zoom out if we got the lcoation from IP.
+            mapOptions = {
+                zoom: zoom,
+                center: new google.maps.LatLng(location.coords.latitude, location.coords.longitude),
+                mapTypeId: 'roadmap'
+            };
+        drawMap(mCanvasId, mapOptions, data[0].formatted_address);
+        if (onSuccess) { onSuccess.call(null, location); }
+    }
+
+
     /** Finalizes the location object via reverse-geocoding and draws the map (if required).
      */
     function finalize(coords) {
-        var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
-        function onGeoLookup(data) {
-            fetchDetailsFromLookup(data);
-            var zoom = geolocator.location.ipGeoSource === null ? 14 : 7, //zoom out if we got the lcoation from IP.
-                mapOptions = {
-                    zoom: zoom,
-                    center: latlng,
-                    mapTypeId: 'roadmap'
-                };
-            drawMap(mCanvasId, mapOptions, data[0].formatted_address);
-            if (onSuccess) { onSuccess.call(null, geolocator.location); }
-        }
-        reverseGeoLookup(latlng, onGeoLookup);
+        reverseGeoLookup(new google.maps.LatLng(coords.latitude, coords.longitude), onGeoLookup);
     }
 
     /** Gets the geo-position via HTML5 geolocation (if supported).
@@ -201,9 +203,9 @@ var geolocator = (function () {
         function geoSuccess(position) {
             geolocator.location = {
                 ipGeoSource: null,
-                coords: position.coords,
-                timestamp: (new Date()).getTime() //overwrite timestamp (Safari-Mac and iOS devices use different epoch; so better use this).
+                coords: position.coords
             };
+            setLocationTimestap();
             finalize(geolocator.location.coords);
         }
 
@@ -266,12 +268,8 @@ var geolocator = (function () {
             break;
         }
         if (geolocator.location) {
-            geolocator.location.coords.accuracy = null;
-            geolocator.location.coords.altitude = null;
-            geolocator.location.coords.altitudeAccuracy = null;
-            geolocator.location.coords.heading = null;
-            geolocator.location.coords.speed = null;
-            geolocator.location.timestamp = new Date().getTime();
+            nullifyLocationCoordsInfo();
+            setLocationTimestap();
             geolocator.location.ipGeoSource = ipGeoSources[ipSourceIndex];
             geolocator.location.ipGeoSource.data = data;
         }
@@ -319,6 +317,39 @@ var geolocator = (function () {
         }
     }
 
+    function nullifyLocationCoordsInfo() {
+        geolocator.location.coords.accuracy = null;
+        geolocator.location.coords.altitude = null;
+        geolocator.location.coords.altitudeAccuracy = null;
+        geolocator.location.coords.heading = null;
+        geolocator.location.coords.speed = null;
+    }
+
+    function setLocationTimestap() {
+        geolocator.location.timestamp = (new Date()).getTime();
+    }
+
+    function geocodeByAddress(address) {
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({address: address},
+            function(results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    var latlng = results[0].geometry.location;
+                    geolocator.location = {
+                        ipGeoSource: null,
+                        coords: {latitude: latlng.lat(), longitude: latlng.lng()}
+                    };
+                    nullifyLocationCoordsInfo();
+                    setLocationTimestap();
+                    onGeoLookup(results);
+                } else {
+                    if (onError) { onError(new Error('Could not get location. Status:' + status)); }
+                }
+            }
+        );
+    }
+
     return {
 
         // ---------------------------------------
@@ -332,6 +363,14 @@ var geolocator = (function () {
         // ---------------------------------------
         // PUBLIC METHODS
         // ---------------------------------------
+
+        locateByAddress: function(address, successCallback, errorCallback, mapCanvasId) {
+            onSuccess = successCallback;
+            onError = errorCallback;
+            mCanvasId = mapCanvasId;
+            function gLoadCallback() { geocodeByAddress(address); }
+            loadGoogleMaps(gLoadCallback);
+        },
 
         /** Gets the geo-location by requesting user's permission.
          */
