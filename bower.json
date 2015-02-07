@@ -1,0 +1,34 @@
+{
+  "name": "geolocator",
+  "version": "1.2.8",
+  "homepage": "https://github.com/onury/geolocator",
+  "authors": [
+    "Onur Yıldırım"
+  ],
+  "description": "A javascript library for retrieving geolocation information via HTML5 and IP look-ups...",
+  "main": "./src/geolocator.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "geolocation",
+    "location",
+    "latitude",
+    "longitude",
+    "HTML5",
+    "google",
+    "map",
+    "geocode",
+    "ip",
+    "address",
+    "lookup"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
