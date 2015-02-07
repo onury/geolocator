@@ -19,7 +19,14 @@
  - No library/framework dependencies (such as jQuery, MooTools, etc...)
  - Browser Support: IE 9+, Chrome, Safari, Firefox, Opera...
 
-**Download:** [Full Version][uncompressed] 13KB *(3.5KB gzipped)*, [Minified Version][compressed] 4KB *(1.8KB gzipped)*  
+**Direct Download:**  
+[Full Version][uncompressed] 13KB *(3.5KB gzipped)*, [Minified Version][compressed] 4KB *(1.8KB gzipped)*  
+
+**Install via NPM**:
+```shell
+npm install geolocator
+```
+
 
 See a live [**demo here**][demo].  
 
