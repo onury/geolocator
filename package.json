@@ -5,6 +5,11 @@
   "directories": {
     "example": "example"
   },
+  "files": [
+    "src",
+    "example",
+    "LICENSE"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
