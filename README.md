@@ -185,7 +185,7 @@ Provides the recent geo-location information.
 - Revision: Removed the `sensor` parameter from Goole Maps loader, since it's not required anymore.
 - Revision: Bumped *Google Maps* version to `3.18`.
 - Revision: Created [NPM package][npm-package].
-- Revision: Created [Bower package][npm-package].
+- Revision: Created Bower package.
 
 **version 1.2.6**
 - Revision: The recent `Error` or `PositionError` (HTML5) is passed to error callbacks instead of `String` error message. See updated documentation. Fixes issue [#7](https://github.com/onury/geolocator/issues/7). *(This shouldn't be a breaking-change but do test your app if you decide to upgrade.)*
