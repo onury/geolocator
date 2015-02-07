@@ -1,6 +1,6 @@
 ## Geolocator Javascript Library
 
-> Version: 1.2.6  
+> Version: 1.2.8  
 > Author: Onur Yıldırım © 2015  
 > Source code licensed under the MIT License.  
 > Please see the [Disclaimer and License][license].
@@ -176,6 +176,11 @@ Provides the recent geo-location information.
 
 ### Change Log:
 
+**version 1.2.8**
+- Revision: Removed the `sensor` parameter from Goole Maps loader, since it's not required anymore.
+- Revision: Bumped *Google Maps* version to `3.18`.
+- Revision: Created [NPM package][npm-package].
+
 **version 1.2.6**
 - Revision: The recent `Error` or `PositionError` (HTML5) is passed to error callbacks instead of `String` error message. See updated documentation. Fixes issue [#7](https://github.com/onury/geolocator/issues/7). *(This shouldn't be a breaking-change but do test your app if you decide to upgrade.)*
 - Feature: Added new method: `isPositionError()`.
@@ -191,7 +196,7 @@ Provides the recent geo-location information.
 
 **version 1.2.0**
  - Code optimizations.
- - Now loads the latest release version of *Google Maps* (3.15).
+ - Now loads the latest release version of *Google Maps* (`3.15`).
 
 **version 1.1.0**
  - JSLint compliant code.
@@ -208,3 +213,4 @@ Provides the recent geo-location information.
 [compressed]: https://raw.github.com/onury/geolocator/master/src/geolocator.min.js
 [demo]: http://rawgit.com/onury/geolocator/master/example/index.html
 [example-img]: https://raw.github.com/onury/geolocator/master/screenshots/geolocator-example.jpg
+[npm-package]: https://www.npmjs.com/package/geolocator

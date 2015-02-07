@@ -2,7 +2,7 @@
 /*global google:false */
 
 
-/** @license  Geolocator Javascript Lib v.1.2.6
+/** @license  Geolocator Javascript Lib v.1.2.8
  *  (c) 2014-2015 Onur Yildirim (onur@cutepilot.com)
  *  https://github.com/onury/geolocator
  *  MIT License
@@ -26,6 +26,8 @@ var geolocator = (function () {
         mCanvasId,
         // Google Maps URL.
         googleLoaderURL = 'https://www.google.com/jsapi',
+        // Google Maps version to be loaded
+        mapsVersion = '3.18',
         // Array of source services that provide location-by-IP information.
         ipGeoSources = [
             { url: 'http://freegeoip.net/json/', cbParam: 'callback' }, // 0
@@ -83,7 +85,7 @@ var geolocator = (function () {
     function loadGoogleMaps(callback) {
         function loadMaps() {
             if (geolocator.__glcb) { delete geolocator.__glcb; }
-            google.load('maps', '3.15', {other_params: 'sensor=false', callback: callback});
+            google.load('maps', mapsVersion, {other_params: '', callback: callback});
         }
         if (window.google !== undefined && google.maps !== undefined) {
             if (callback) { callback(); }
