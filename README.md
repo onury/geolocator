@@ -5,7 +5,7 @@
 > Source code licensed under the MIT License.  
 > Please see the [Disclaimer and License][license].
 
-###Features:
+### Features:
 
  - HTML5 geolocation (by user permission)
  - Location by IP (Supported source services: FreeGeoIP, GeoPlugin, WikiMedia)
@@ -32,7 +32,7 @@ See a live [**demo here**][demo].
 
 [![Geolocator Example Screenshot][example-img]][demo]
 
-###Usage:
+### Usage:
 
 Inside the `<head>` of your HTML:
 ```html
@@ -62,9 +62,9 @@ Also place the line below, inside your `<body>` if you want to dynamically draw 
 
 geolocator.js provides 3 useful methods:
 
-##Methods
+## Methods
 
-###`geolocator.locate()`
+### `geolocator.locate()`
 Use this method to get the location via HTML5 geolocation.
 ```js
 geolocator.locate( successCallback, [errorCallback], [fallbackToIP], [html5Options], [mapCanvasId] )
@@ -94,7 +94,7 @@ var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
 geolocator.locate(onGeoSuccess, onGeoError, true, html5Options, 'map-canvas');
 ```
 
-###`geolocator.locateByIP()`
+### `geolocator.locateByIP()`
 Use this method to get the location from the user's IP.
 ```js
 geolocator.locateByIP( successCallback, [errorCallback], [ipSourceIndex], [mapCanvasId] )
@@ -122,7 +122,7 @@ geolocator.locateByIP( successCallback, [errorCallback], [ipSourceIndex], [mapCa
 geolocator.locateByIP(onGeoSuccess, onGeoError, 1, 'map-canvas');
 ```
 
-###`geolocator.isPositionError()`
+### `geolocator.isPositionError()`
 Checks whether the type of the given object is HTML5 `PositionError` and returns a `Boolean` value.
 ```js
 geolocator.isPositionError( error )
@@ -135,7 +135,7 @@ geolocator.isPositionError( error )
 
 ##Properties
 
-###`geolocator.location`   *Object*
+### `geolocator.location`   *Object*
 Provides the recent geo-location information.
 
 **Example Output:**
@@ -174,7 +174,7 @@ Provides the recent geo-location information.
 }
 ```
 
-###Change Log:
+### Change Log:
 
 **version 1.2.6**
 - Revision: The recent `Error` or `PositionError` (HTML5) is passed to error callbacks instead of `String` error message. See updated documentation. Fixes issue [#7](https://github.com/onury/geolocator/issues/7). *(This shouldn't be a breaking-change but do test your app if you decide to upgrade.)*
