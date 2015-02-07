@@ -22,6 +22,11 @@
 **Direct Download:**  
 [Full Version][uncompressed] 13KB *(3.5KB gzipped)*, [Minified Version][compressed] 4KB *(1.8KB gzipped)*  
 
+**Install via Bower**:
+```shell
+bower install geolocator
+```
+
 **Install via NPM**:
 ```shell
 npm install geolocator
@@ -180,6 +185,7 @@ Provides the recent geo-location information.
 - Revision: Removed the `sensor` parameter from Goole Maps loader, since it's not required anymore.
 - Revision: Bumped *Google Maps* version to `3.18`.
 - Revision: Created [NPM package][npm-package].
+- Revision: Created [Bower package][npm-package].
 
 **version 1.2.6**
 - Revision: The recent `Error` or `PositionError` (HTML5) is passed to error callbacks instead of `String` error message. See updated documentation. Fixes issue [#7](https://github.com/onury/geolocator/issues/7). *(This shouldn't be a breaking-change but do test your app if you decide to upgrade.)*
@@ -213,4 +219,5 @@ Provides the recent geo-location information.
 [compressed]: https://raw.github.com/onury/geolocator/master/src/geolocator.min.js
 [demo]: http://rawgit.com/onury/geolocator/master/example/index.html
 [example-img]: https://raw.github.com/onury/geolocator/master/screenshots/geolocator-example.jpg
+[npm-package]: https://www.npmjs.com/package/geolocator
 [npm-package]: https://www.npmjs.com/package/geolocator
