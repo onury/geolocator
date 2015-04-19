@@ -30,9 +30,9 @@ var geolocator = (function () {
         mapsVersion = '3.18',
         // Array of source services that provide location-by-IP information.
         ipGeoSources = [
-            { url: 'http://freegeoip.net/json/', cbParam: 'callback' }, // 0
-            { url: 'http://www.geoplugin.net/json.gp', cbParam: 'jsoncallback' }, // 1
-            { url: 'http://geoiplookup.wikimedia.org/', cbParam: '' } // 2
+            { url: '//freegeoip.net/json/', cbParam: 'callback' }, // 0
+            { url: '//www.geoplugin.net/json.gp', cbParam: 'jsoncallback' }, // 1
+            { url: '//geoiplookup.wikimedia.org/', cbParam: '' } // 2
             // maxmind Not implemented. Requires attribution.
             // See http://dev.maxmind.com/geoip/javascript
             //,{ url: 'http://j.maxmind.com/app/geoip.js', cbParam: '' }
