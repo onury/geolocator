@@ -1,6 +1,6 @@
 ## Geolocator Javascript Library
 
-> Version: 1.2.8  
+> Version: 1.2.9  
 > Author: Onur Yıldırım © 2015  
 > Source code licensed under the MIT License.  
 > Please see the [Disclaimer and License][license].
@@ -180,6 +180,9 @@ Provides the recent geo-location information.
 ```
 
 ### Change Log:
+
+**version 1.2.9**
+- Improvement: Added HTTPS support for IP geo-sources that support secure connections. _(Note: GeoPlugin does not support HTTPS. You should use FreeGeoIP or Wikimedia sources instead.)_. (Fixes [Issue #11](https://github.com/onury/geolocator/issues/11). PR: @iurisilvio,)
 
 **version 1.2.8**
 - Revision: Removed the `sensor` parameter from Goole Maps loader, since it's not required anymore.

@@ -2,7 +2,7 @@
 /*global google:false */
 
 
-/** @license  Geolocator Javascript Lib v.1.2.8
+/** @license  Geolocator Javascript Lib v.1.2.9
  *  (c) 2014-2015 Onur Yildirim (onur@cutepilot.com)
  *  https://github.com/onury/geolocator
  *  MIT License
