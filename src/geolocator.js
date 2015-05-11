@@ -188,7 +188,7 @@ var geolocator = (function () {
 
     /** Gets the geo-position via HTML5 geolocation (if supported).
      */
-    function getPosition(fallbackToIP, html5Options) {
+    function getPosition(fallbackToIP, html5Options, mapCanvasId) {
         geolocator.location = null;
 
         function fallback(error) {
@@ -206,7 +206,9 @@ var geolocator = (function () {
                 coords: position.coords,
                 timestamp: (new Date()).getTime() //overwrite timestamp (Safari-Mac and iOS devices use different epoch; so better use this).
             };
-            finalize(geolocator.location.coords);
+            if (mapCanvasId) {
+                finalize(geolocator.location.coords);
+            }
         }
 
         function geoError(error) {
@@ -341,7 +343,7 @@ var geolocator = (function () {
             onSuccess = successCallback;
             onError = errorCallback;
             mCanvasId = mapCanvasId;
-            function gLoadCallback() { getPosition(fallbackToIP, html5Options); }
+            function gLoadCallback() { getPosition(fallbackToIP, html5Options, mapCanvasId); }
             loadGoogleMaps(gLoadCallback);
         },
 
