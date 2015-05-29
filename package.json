@@ -1,6 +1,6 @@
 {
   "name": "geolocator",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "description": "A javascript library for retrieving geolocation information via HTML5 and IP look-ups...",
   "directories": {
     "example": "example"

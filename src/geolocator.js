@@ -2,7 +2,7 @@
 /*global google:false */
 
 
-/** @license  Geolocator Javascript Lib v.1.2.9
+/** @license  Geolocator Javascript Lib v.1.2.10
  *  (c) 2014-2015 Onur Yildirim (onur@cutepilot.com)
  *  https://github.com/onury/geolocator
  *  MIT License
@@ -160,6 +160,7 @@ var geolocator = (function () {
                 town: o.sublocality || '',
                 city: o.locality || '',
                 region: o.administrative_area_level_1 || '',
+                regionCode: o.administrative_area_level_1_s || '',
                 country: o.country || '',
                 countryCode: o.country_s || '',
                 postalCode: o.postal_code || '',

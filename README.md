@@ -1,8 +1,8 @@
 ## Geolocator Javascript Library
 
-> Version: 1.2.9  
-> Author: Onur Yıldırım © 2015  
-> Source code licensed under the MIT License.  
+> Version: 1.2.10
+> Author: Onur Yıldırım © 2015
+> Source code licensed under the MIT License.
 > Please see the [Disclaimer and License][license].
 
 ### Features:
@@ -19,8 +19,8 @@
  - No library/framework dependencies (such as jQuery, MooTools, etc...)
  - Browser Support: IE 9+, Chrome, Safari, Firefox, Opera...
 
-**Direct Download:**  
-[Full Version][uncompressed] 13KB *(3.5KB gzipped)*, [Minified Version][compressed] 4KB *(1.8KB gzipped)*  
+**Direct Download:**
+[Full Version][uncompressed] 13KB *(3.5KB gzipped)*, [Minified Version][compressed] 4KB *(1.8KB gzipped)*
 
 **Install via Bower**:
 ```shell
@@ -33,7 +33,7 @@ npm install geolocator
 ```
 
 
-See a live [**demo here**][demo].  
+See a live [**demo here**][demo].
 
 [![Geolocator Example Screenshot][example-img]][demo]
 
@@ -87,7 +87,7 @@ geolocator.locate( successCallback, [errorCallback], [fallbackToIP], [html5Optio
 > Specifies whether geolocator should fallback to IP geo-lookup when HTML5 geolocation is not supported, timeout expired, position is unavailable or permission rejected by the user. A positive integer value will indicate the index of the source ip-geo service (if the value is in range). Boolean `true` will set the default ip-geo service index which is `1` (GeoPlugin). Valid values: *`0` (use FreeGeoIP for ip-geo fallback), `1` or `true` (use GeoPlugin for ip-geo fallback), `2` (use Wikimedia for ip-geo fallback), `false` or `-1` or `null` or any other value (will disable ip-geo fallback)*
 
 > - `html5Options`   *Object (optional, default: `null`)*
-> HTML5 geolocation options. e.g. `{ enableHighAccuracy: true, timeout: 6000, maximumAge: 0 }`  
+> HTML5 geolocation options. e.g. `{ enableHighAccuracy: true, timeout: 6000, maximumAge: 0 }`
 > Note: Set the `timeout` value to at least `5000` milliseconds; otherwise this may produce a timeout error (which will fallback to IP geo-lookups if enabled.)
 
 > - `mapCanvasId`   *String (optional, default: `null`)*
@@ -181,6 +181,9 @@ Provides the recent geo-location information.
 
 ### Change Log:
 
+**version 1.2.10**
+- Revision: Added the `regionCode` parameter to `location.address` response.
+
 **version 1.2.9**
 - Improvement: Added HTTPS secure connection support for IP geo-sources. _(Note: GeoPlugin does not support HTTPS. You should use FreeGeoIP or Wikimedia IP sources instead.)_. (Fixes [Issue #11](https://github.com/onury/geolocator/issues/11). PR: @iurisilvio,)
 
@@ -216,7 +219,7 @@ Provides the recent geo-location information.
  - Indexes changed for IP-Geo sources. New Indexes: FreeGeoIP (0), GeoPlugin (1), Wikimedia (2)
 
 
- 
+
 [license]: https://github.com/onury/geolocator/blob/master/LICENSE
 [uncompressed]: https://raw.github.com/onury/geolocator/master/src/geolocator.js
 [compressed]: https://raw.github.com/onury/geolocator/master/src/geolocator.min.js
