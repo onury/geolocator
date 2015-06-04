@@ -171,7 +171,6 @@ var geolocator = (function () {
     /** Finalizes the location object via reverse-geocoding and draws the map (if required).
      */
     function finalize(coords) {
-        var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
         function onGeoLookup(data) {
             fetchDetailsFromLookup(data);
             var zoom = geolocator.location.ipGeoSource === null ? 14 : 7, //zoom out if we got the lcoation from IP.
@@ -183,12 +182,15 @@ var geolocator = (function () {
             drawMap(mCanvasId, mapOptions, data[0].formatted_address);
             if (onSuccess) { onSuccess.call(null, geolocator.location); }
         }
-        reverseGeoLookup(latlng, onGeoLookup);
+        if(google){
+            var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
+            reverseGeoLookup(latlng, onGeoLookup);
+        }
     }
 
     /** Gets the geo-position via HTML5 geolocation (if supported).
      */
-    function getPosition(fallbackToIP, html5Options) {
+    function getPosition(fallbackToIP, html5Options, mapCanvasId) {
         geolocator.location = null;
 
         function fallback(error) {
@@ -206,7 +208,9 @@ var geolocator = (function () {
                 coords: position.coords,
                 timestamp: (new Date()).getTime() //overwrite timestamp (Safari-Mac and iOS devices use different epoch; so better use this).
             };
-            finalize(geolocator.location.coords);
+            if (mapCanvasId) {
+                finalize(geolocator.location.coords);
+            }
         }
 
         function geoError(error) {
@@ -341,7 +345,7 @@ var geolocator = (function () {
             onSuccess = successCallback;
             onError = errorCallback;
             mCanvasId = mapCanvasId;
-            function gLoadCallback() { getPosition(fallbackToIP, html5Options); }
+            function gLoadCallback() { getPosition(fallbackToIP, html5Options, mapCanvasId); }
             loadGoogleMaps(gLoadCallback);
         },
 
