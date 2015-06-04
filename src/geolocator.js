@@ -171,7 +171,6 @@ var geolocator = (function () {
     /** Finalizes the location object via reverse-geocoding and draws the map (if required).
      */
     function finalize(coords) {
-        var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
         function onGeoLookup(data) {
             fetchDetailsFromLookup(data);
             var zoom = geolocator.location.ipGeoSource === null ? 14 : 7, //zoom out if we got the lcoation from IP.
@@ -183,7 +182,10 @@ var geolocator = (function () {
             drawMap(mCanvasId, mapOptions, data[0].formatted_address);
             if (onSuccess) { onSuccess.call(null, geolocator.location); }
         }
-        reverseGeoLookup(latlng, onGeoLookup);
+        if(google){
+            var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
+            reverseGeoLookup(latlng, onGeoLookup);
+        }
     }
 
     /** Gets the geo-position via HTML5 geolocation (if supported).
