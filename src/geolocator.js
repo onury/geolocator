@@ -76,6 +76,12 @@ var geolocator = (function () {
             execCb(onError, new Error(errMsg));
         };
 
+        if (url.indexOf('//') === 0) {
+            var protocol = document.location.protocol;
+            protocol = protocol === 'file:' ? 'https:' : protocol;
+            url = protocol.concat(url);
+        }
+
         script.src = url;
         document.getElementsByTagName('head')[0].appendChild(script);
     }
