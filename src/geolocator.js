@@ -7,7 +7,7 @@
  *  https://github.com/onury/geolocator
  *  MIT License
  */
-var geolocator = (function () {
+module.exports = (function () {
 
     'use strict';
 
