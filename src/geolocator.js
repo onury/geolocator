@@ -365,3 +365,6 @@ var geolocator = (function () {
         }
     };
 }());
+if(typeof module === "object" && module.exports) {
+    module.exports = geolocator;
+}
