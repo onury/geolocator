@@ -7,7 +7,7 @@
  *  https://github.com/onury/geolocator
  *  MIT License
  */
-module.exports = (function () {
+var geolocator = (function () {
 
     'use strict';
 
@@ -16,19 +16,19 @@ module.exports = (function () {
     // ---------------------------------------
 
     var
-        // Storage for the callback function to be executed when the location
-        // is successfully fetched.
+    // Storage for the callback function to be executed when the location
+    // is successfully fetched.
         onSuccess,
-        // Storage for the callback function to be executed when the location
-        // could not be fetched due to an error.
+    // Storage for the callback function to be executed when the location
+    // could not be fetched due to an error.
         onError,
-        // HTML element ID for the Google Maps.
+    // HTML element ID for the Google Maps.
         mCanvasId,
-        // Google Maps URL.
+    // Google Maps URL.
         googleLoaderURL = 'https://www.google.com/jsapi',
-        // Google Maps version to be loaded
+    // Google Maps version to be loaded
         mapsVersion = '3.18',
-        // Array of source services that provide location-by-IP information.
+    // Array of source services that provide location-by-IP information.
         ipGeoSources = [
             { url: '//freegeoip.net/json/', cbParam: 'callback' }, // 0
             { url: '//www.geoplugin.net/json.gp', cbParam: 'jsoncallback' }, // 1
@@ -38,7 +38,7 @@ module.exports = (function () {
             //,{ url: 'http://j.maxmind.com/app/geoip.js', cbParam: '' }
         ],
         defaultSourceIndex = 1, // (geoplugin)
-        // The index of the current IP source service.
+    // The index of the current IP source service.
         sourceIndex;
 
     // ---------------------------------------
@@ -224,48 +224,48 @@ module.exports = (function () {
      */
     function buildLocation(ipSourceIndex, data) {
         switch (ipSourceIndex) {
-        case 0: // freegeoip
-            geolocator.location = {
-                coords: {
-                    latitude: data.latitude,
-                    longitude: data.longitude
-                },
-                address: {
-                    city: data.city,
-                    country: data.country_name,
-                    countryCode: data.country_code,
-                    region: data.region_name
-                }
-            };
-            break;
-        case 1: // geoplugin
-            geolocator.location = {
-                coords: {
-                    latitude: data.geoplugin_latitude,
-                    longitude: data.geoplugin_longitude
-                },
-                address: {
-                    city: data.geoplugin_city,
-                    country: data.geoplugin_countryName,
-                    countryCode: data.geoplugin_countryCode,
-                    region: data.geoplugin_regionName
-                }
-            };
-            break;
-        case 2: // Wikimedia
-            geolocator.location = {
-                coords: {
-                    latitude: data.lat,
-                    longitude: data.lon
-                },
-                address: {
-                    city: data.city,
-                    country: '',
-                    countryCode: data.country,
-                    region: ''
-                }
-            };
-            break;
+            case 0: // freegeoip
+                geolocator.location = {
+                    coords: {
+                        latitude: data.latitude,
+                        longitude: data.longitude
+                    },
+                    address: {
+                        city: data.city,
+                        country: data.country_name,
+                        countryCode: data.country_code,
+                        region: data.region_name
+                    }
+                };
+                break;
+            case 1: // geoplugin
+                geolocator.location = {
+                    coords: {
+                        latitude: data.geoplugin_latitude,
+                        longitude: data.geoplugin_longitude
+                    },
+                    address: {
+                        city: data.geoplugin_city,
+                        country: data.geoplugin_countryName,
+                        countryCode: data.geoplugin_countryCode,
+                        region: data.geoplugin_regionName
+                    }
+                };
+                break;
+            case 2: // Wikimedia
+                geolocator.location = {
+                    coords: {
+                        latitude: data.lat,
+                        longitude: data.lon
+                    },
+                    address: {
+                        city: data.city,
+                        country: '',
+                        countryCode: data.country,
+                        region: ''
+                    }
+                };
+                break;
         }
         if (geolocator.location) {
             geolocator.location.coords.accuracy = null;
@@ -349,7 +349,7 @@ module.exports = (function () {
          */
         locateByIP: function (successCallback, errorCallback, ipSourceIndex, mapCanvasId) {
             sourceIndex = (typeof ipSourceIndex !== 'number' ||
-                (ipSourceIndex < 0 || ipSourceIndex >= ipGeoSources.length)) ? defaultSourceIndex : ipSourceIndex;
+            (ipSourceIndex < 0 || ipSourceIndex >= ipGeoSources.length)) ? defaultSourceIndex : ipSourceIndex;
             onSuccess = successCallback;
             onError = errorCallback;
             mCanvasId = mapCanvasId;
@@ -365,3 +365,6 @@ module.exports = (function () {
         }
     };
 }());
+if(typeof module === "object" && module.exports) {
+    module.exports = geolocator;
+}
