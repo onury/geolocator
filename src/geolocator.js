@@ -7,7 +7,7 @@
  *  https://github.com/onury/geolocator
  *  MIT License
  */
-var geolocator = (function () {
+var geolocator = (function() {
 
     'use strict';
 
@@ -16,8 +16,8 @@ var geolocator = (function () {
     // ---------------------------------------
 
     var
-        // Storage for the callback function to be executed when the location
-        // is successfully fetched.
+    // Storage for the callback function to be executed when the location
+    // is successfully fetched.
         onSuccess,
         // Storage for the callback function to be executed when the location
         // could not be fetched due to an error.
@@ -61,17 +61,17 @@ var geolocator = (function () {
         }
 
         if (script.readyState) {
-            script.onreadystatechange = function (e) {
+            script.onreadystatechange = function(e) {
                 if (script.readyState === 'loaded' || script.readyState === 'complete') {
                     script.onreadystatechange = null;
                     execCb(callback);
                 }
             };
         } else {
-            script.onload = function (e) { execCb(callback); };
+            script.onload = function(e) { execCb(callback); };
         }
 
-        script.onerror = function (e) {
+        script.onerror = function(e) {
             var errMsg = 'Could not load source at ' + String(url).replace(/\?.*$/, '');
             execCb(onError, new Error(errMsg));
         };
@@ -85,7 +85,7 @@ var geolocator = (function () {
     function loadGoogleMaps(callback) {
         function loadMaps() {
             if (geolocator.__glcb) { delete geolocator.__glcb; }
-            google.load('maps', mapsVersion, {other_params: '', callback: callback});
+            google.load('maps', mapsVersion, { other_params: '', callback: callback });
         }
         if (window.google !== undefined && google.maps !== undefined) {
             if (callback) { callback(); }
@@ -113,7 +113,7 @@ var geolocator = (function () {
             infowindow = new google.maps.InfoWindow();
             infowindow.setContent(infoContent);
             //infowindow.open(map, marker);
-            google.maps.event.addListener(marker, 'click', function () {
+            google.maps.event.addListener(marker, 'click', function() {
                 infowindow.open(map, marker);
             });
             geolocator.location.map = {
@@ -132,12 +132,13 @@ var geolocator = (function () {
      */
     function reverseGeoLookup(latlng, callback) {
         var geocoder = new google.maps.Geocoder();
+
         function onReverseGeo(results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
                 if (callback) { callback(results); }
             }
         }
-        geocoder.geocode({'latLng': latlng}, onReverseGeo);
+        geocoder.geocode({ 'latLng': latlng }, onReverseGeo);
     }
 
     /** Fetches additional details (from the reverse-geo result) for the address property of the location object.
@@ -172,6 +173,7 @@ var geolocator = (function () {
      */
     function finalize(coords) {
         var latlng = new google.maps.LatLng(coords.latitude, coords.longitude);
+
         function onGeoLookup(data) {
             fetchDetailsFromLookup(data);
             var zoom = geolocator.location.ipGeoSource === null ? 14 : 7, //zoom out if we got the lcoation from IP.
@@ -224,48 +226,48 @@ var geolocator = (function () {
      */
     function buildLocation(ipSourceIndex, data) {
         switch (ipSourceIndex) {
-        case 0: // freegeoip
-            geolocator.location = {
-                coords: {
-                    latitude: data.latitude,
-                    longitude: data.longitude
-                },
-                address: {
-                    city: data.city,
-                    country: data.country_name,
-                    countryCode: data.country_code,
-                    region: data.region_name
-                }
-            };
-            break;
-        case 1: // geoplugin
-            geolocator.location = {
-                coords: {
-                    latitude: data.geoplugin_latitude,
-                    longitude: data.geoplugin_longitude
-                },
-                address: {
-                    city: data.geoplugin_city,
-                    country: data.geoplugin_countryName,
-                    countryCode: data.geoplugin_countryCode,
-                    region: data.geoplugin_regionName
-                }
-            };
-            break;
-        case 2: // Wikimedia
-            geolocator.location = {
-                coords: {
-                    latitude: data.lat,
-                    longitude: data.lon
-                },
-                address: {
-                    city: data.city,
-                    country: '',
-                    countryCode: data.country,
-                    region: ''
-                }
-            };
-            break;
+            case 0: // freegeoip
+                geolocator.location = {
+                    coords: {
+                        latitude: data.latitude,
+                        longitude: data.longitude
+                    },
+                    address: {
+                        city: data.city,
+                        country: data.country_name,
+                        countryCode: data.country_code,
+                        region: data.region_name
+                    }
+                };
+                break;
+            case 1: // geoplugin
+                geolocator.location = {
+                    coords: {
+                        latitude: data.geoplugin_latitude,
+                        longitude: data.geoplugin_longitude
+                    },
+                    address: {
+                        city: data.geoplugin_city,
+                        country: data.geoplugin_countryName,
+                        countryCode: data.geoplugin_countryCode,
+                        region: data.geoplugin_regionName
+                    }
+                };
+                break;
+            case 2: // Wikimedia
+                geolocator.location = {
+                    coords: {
+                        latitude: data.lat,
+                        longitude: data.lon
+                    },
+                    address: {
+                        city: data.city,
+                        country: '',
+                        countryCode: data.country,
+                        region: ''
+                    }
+                };
+                break;
         }
         if (geolocator.location) {
             geolocator.location.coords.accuracy = null;
@@ -321,6 +323,22 @@ var geolocator = (function () {
         }
     }
 
+    // These functions are self-explanatory
+    function setCookie(name, value) {
+        var cookie = [name, '=', JSON.stringify(value), '; domain=.', window.location.host.toString(), '; path=/;'].join('');
+        document.cookie = cookie;
+    }
+
+    function getCookie(name) {
+        var result = document.cookie.match(new RegExp(name + '=([^;]+)'));
+        result && (result = JSON.parse(result[1]));
+        return result;
+    }
+
+    function deleteCookie(name) {
+        document.cookie = [name, '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; domain=.', window.location.host.toString()].join('');
+    }
+
     return {
 
         // ---------------------------------------
@@ -337,17 +355,21 @@ var geolocator = (function () {
 
         /** Gets the geo-location by requesting user's permission.
          */
-        locate: function (successCallback, errorCallback, fallbackToIP, html5Options, mapCanvasId) {
+        locate: function(successCallback, errorCallback, fallbackToIP, html5Options, mapCanvasId) {
+            // Add cookie detection here
             onSuccess = successCallback;
             onError = errorCallback;
             mCanvasId = mapCanvasId;
+
             function gLoadCallback() { getPosition(fallbackToIP, html5Options); }
             loadGoogleMaps(gLoadCallback);
         },
 
         /** Gets the geo-location from the user's IP.
          */
-        locateByIP: function (successCallback, errorCallback, ipSourceIndex, mapCanvasId) {
+        locateByIP: function(successCallback, errorCallback, ipSourceIndex, mapCanvasId) {
+            // Add cookie detection here
+
             sourceIndex = (typeof ipSourceIndex !== 'number' ||
                 (ipSourceIndex < 0 || ipSourceIndex >= ipGeoSources.length)) ? defaultSourceIndex : ipSourceIndex;
             onSuccess = successCallback;
@@ -360,7 +382,7 @@ var geolocator = (function () {
         /** Checks whether the type of the given object is HTML5
          *  `PositionError` and returns a `Boolean` value.
          */
-        isPositionError: function (error) {
+        isPositionError: function(error) {
             return Object.prototype.toString.call(error) === '[object PositionError]';
         }
     };
