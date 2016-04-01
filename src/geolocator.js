@@ -184,9 +184,12 @@ var geolocator = (function() {
                     mapTypeId: 'roadmap'
                 };
             drawMap(mCanvasId, mapOptions, data[0].formatted_address);
-            if (onSuccess) { 
+            if (onSuccess) {
                 // Add logic here to store location value in cookie
-                onSuccess.call(null, geolocator.location); 
+                console.log('Should set cookie');
+                console.log(geolocator.location);
+                setCookie('geolocatorInfo', JSON.stringify(geolocator.location));
+                onSuccess.call(null, geolocator.location);
             }
         }
         reverseGeoLookup(latlng, onGeoLookup);
@@ -328,26 +331,37 @@ var geolocator = (function() {
     }
 
     // These functions are self-explanatory
-    function setCookie(name, value) {
-        var cookie = [name, '=', JSON.stringify(value), '; domain=.', window.location.host.toString(), '; path=/;'].join('');
-        document.cookie = cookie;
+
+    function setCookie(name, value, days) {
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            var expires = "; expires=" + date.toGMTString();
+        } else var expires = "";
+        document.cookie = name + "=" + value + expires + "; path=/";
     }
 
     function getCookie(name) {
-        var result = document.cookie.match(new RegExp(name + '=([^;]+)'));
-        result && (result = JSON.parse(result[1]));
-        return result;
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
     }
 
-    function deleteCookie(name) {
-        document.cookie = [name, '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; domain=.', window.location.host.toString()].join('');
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
     }
 
     function hasGeo() {
         var location = getCookie('geolocatorInfo');
         if (location) {
             // We've stored the loc already, let's use the cookie value
-            return JSON.parse(location);
+            onSuccess.call(null, JSON.parse(location));
+            return true;
         } else {
             // No cookie stored with loc, let's look it up
             return false;
@@ -375,8 +389,8 @@ var geolocator = (function() {
         /** Gets the geo-location by requesting user's permission.
          */
         locate: function(successCallback, errorCallback, fallbackToIP, html5Options, mapCanvasId, storeCookie) {
+            onSuccess = successCallback;
             if (!hasGeo()) {
-                onSuccess = successCallback;
                 onError = errorCallback;
                 mCanvasId = mapCanvasId;
 
@@ -388,10 +402,10 @@ var geolocator = (function() {
         /** Gets the geo-location from the user's IP.
          */
         locateByIP: function(successCallback, errorCallback, ipSourceIndex, mapCanvasId, storeCookie) {
+            onSuccess = successCallback;
             if (!hasGeo()) {
                 sourceIndex = (typeof ipSourceIndex !== 'number' ||
                     (ipSourceIndex < 0 || ipSourceIndex >= ipGeoSources.length)) ? defaultSourceIndex : ipSourceIndex;
-                onSuccess = successCallback;
                 onError = errorCallback;
                 mCanvasId = mapCanvasId;
                 geolocator.__ipscb = onGeoSourceCallback;
