@@ -40,7 +40,7 @@ var geolocator = (function() {
         defaultSourceIndex = 1, // (geoplugin)
         // The index of the current IP source service.
         sourceIndex,
-        storeCookie = true; // Default value
+        shouldStoreCookie = true; // Default value
 
     // ---------------------------------------
     // PRIVATE METHODS
@@ -186,9 +186,7 @@ var geolocator = (function() {
             drawMap(mCanvasId, mapOptions, data[0].formatted_address);
             if (onSuccess) {
                 // Add logic here to store location value in cookie
-                console.log('Should set cookie');
-                console.log(geolocator.location);
-                setCookie('geolocatorInfo', JSON.stringify(geolocator.location));
+                shouldStoreCookie ? setCookie('geolocatorInfo', JSON.stringify(geolocator.location)) : '';
                 onSuccess.call(null, geolocator.location);
             }
         }
@@ -368,10 +366,6 @@ var geolocator = (function() {
         }
     }
 
-    function storeLocation(location) {
-
-    }
-
     return {
 
         // ---------------------------------------
@@ -389,8 +383,9 @@ var geolocator = (function() {
         /** Gets the geo-location by requesting user's permission.
          */
         locate: function(successCallback, errorCallback, fallbackToIP, html5Options, mapCanvasId, storeCookie) {
+            (storeCookie == null) ? '' : shouldStoreCookie = storeCookie;
             onSuccess = successCallback;
-            if (!hasGeo()) {
+            if (!hasGeo() || !shouldStoreCookie) {
                 onError = errorCallback;
                 mCanvasId = mapCanvasId;
 
@@ -402,8 +397,9 @@ var geolocator = (function() {
         /** Gets the geo-location from the user's IP.
          */
         locateByIP: function(successCallback, errorCallback, ipSourceIndex, mapCanvasId, storeCookie) {
+            (storeCookie == null) ? '' : shouldStoreCookie = storeCookie;
             onSuccess = successCallback;
-            if (!hasGeo()) {
+            if (!hasGeo() || !shouldStoreCookie) {
                 sourceIndex = (typeof ipSourceIndex !== 'number' ||
                     (ipSourceIndex < 0 || ipSourceIndex >= ipGeoSources.length)) ? defaultSourceIndex : ipSourceIndex;
                 onError = errorCallback;
