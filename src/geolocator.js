@@ -339,6 +339,17 @@ var geolocator = (function() {
         document.cookie = [name, '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; domain=.', window.location.host.toString()].join('');
     }
 
+    function hasGeo() {
+        var location = getCookie('geolocatorInfo');
+        if (location) {
+            // We've stored the loc already, let's use the cookie value
+            return location;
+        } else {
+            // No cookie stored with loc, let's look it up
+            return false;
+        }
+    }
+
     return {
 
         // ---------------------------------------
@@ -356,27 +367,28 @@ var geolocator = (function() {
         /** Gets the geo-location by requesting user's permission.
          */
         locate: function(successCallback, errorCallback, fallbackToIP, html5Options, mapCanvasId) {
-            // Add cookie detection here
-            onSuccess = successCallback;
-            onError = errorCallback;
-            mCanvasId = mapCanvasId;
+            if (!hasGeo()) {
+                onSuccess = successCallback;
+                onError = errorCallback;
+                mCanvasId = mapCanvasId;
 
-            function gLoadCallback() { getPosition(fallbackToIP, html5Options); }
-            loadGoogleMaps(gLoadCallback);
+                function gLoadCallback() { getPosition(fallbackToIP, html5Options); }
+                loadGoogleMaps(gLoadCallback);
+            }
         },
 
         /** Gets the geo-location from the user's IP.
          */
         locateByIP: function(successCallback, errorCallback, ipSourceIndex, mapCanvasId) {
-            // Add cookie detection here
-
-            sourceIndex = (typeof ipSourceIndex !== 'number' ||
-                (ipSourceIndex < 0 || ipSourceIndex >= ipGeoSources.length)) ? defaultSourceIndex : ipSourceIndex;
-            onSuccess = successCallback;
-            onError = errorCallback;
-            mCanvasId = mapCanvasId;
-            geolocator.__ipscb = onGeoSourceCallback;
-            loadIpGeoSource(ipGeoSources[sourceIndex]);
+            if (!hasGeo()) {
+                sourceIndex = (typeof ipSourceIndex !== 'number' ||
+                    (ipSourceIndex < 0 || ipSourceIndex >= ipGeoSources.length)) ? defaultSourceIndex : ipSourceIndex;
+                onSuccess = successCallback;
+                onError = errorCallback;
+                mCanvasId = mapCanvasId;
+                geolocator.__ipscb = onGeoSourceCallback;
+                loadIpGeoSource(ipGeoSources[sourceIndex]);
+            }
         },
 
         /** Checks whether the type of the given object is HTML5
