@@ -184,7 +184,10 @@ var geolocator = (function() {
                     mapTypeId: 'roadmap'
                 };
             drawMap(mCanvasId, mapOptions, data[0].formatted_address);
-            if (onSuccess) { onSuccess.call(null, geolocator.location); }
+            if (onSuccess) { 
+                // Add logic here to store location value in cookie
+                onSuccess.call(null, geolocator.location); 
+            }
         }
         reverseGeoLookup(latlng, onGeoLookup);
     }
@@ -349,6 +352,10 @@ var geolocator = (function() {
             // No cookie stored with loc, let's look it up
             return false;
         }
+    }
+
+    function storeLocation(location) {
+
     }
 
     return {
