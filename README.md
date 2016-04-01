@@ -93,6 +93,9 @@ geolocator.locate( successCallback, [errorCallback], [fallbackToIP], [html5Optio
 > - `mapCanvasId`   *String (optional, default: `null`)*
 > HTML element ID for the Google Maps canvas. If set to null, no map is drawn.
 
+> - `storeCookie`   *Boolean (optional, default: `true`)*
+> This enhances the performance of the script by storing the retrieved location information in a cookie, when the script is run again no external scripts will be loaded if a cookie already exists. The benefits of this are reduced DNS lookups, around 1000x faster retrieval of location information and depending on caching settings less KB page load.
+
 **Example:**
 ```js
 var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
@@ -121,6 +124,9 @@ geolocator.locateByIP( successCallback, [errorCallback], [ipSourceIndex], [mapCa
 
 > - `mapCanvasId`   *String (optional, default: `null`)*
 > HTML element ID for the Google Maps canvas. If set to null, no map is drawn.
+
+> - `storeCookie`   *Boolean (optional, default: `true`)*
+> This enhances the performance of the script by storing the retrieved location information in a cookie, when the script is run again no external scripts will be loaded if a cookie already exists. The benefits of this are reduced DNS lookups, around 1000x faster retrieval of location information and depending on caching settings less KB page load.
 
 **Example:**
 ```js
