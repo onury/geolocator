@@ -39,7 +39,8 @@ var geolocator = (function() {
         ],
         defaultSourceIndex = 1, // (geoplugin)
         // The index of the current IP source service.
-        sourceIndex;
+        sourceIndex,
+        storeCookie = true; // Default value
 
     // ---------------------------------------
     // PRIVATE METHODS
@@ -343,7 +344,7 @@ var geolocator = (function() {
         var location = getCookie('geolocatorInfo');
         if (location) {
             // We've stored the loc already, let's use the cookie value
-            return location;
+            return JSON.parse(location);
         } else {
             // No cookie stored with loc, let's look it up
             return false;
@@ -366,7 +367,7 @@ var geolocator = (function() {
 
         /** Gets the geo-location by requesting user's permission.
          */
-        locate: function(successCallback, errorCallback, fallbackToIP, html5Options, mapCanvasId) {
+        locate: function(successCallback, errorCallback, fallbackToIP, html5Options, mapCanvasId, storeCookie) {
             if (!hasGeo()) {
                 onSuccess = successCallback;
                 onError = errorCallback;
@@ -379,7 +380,7 @@ var geolocator = (function() {
 
         /** Gets the geo-location from the user's IP.
          */
-        locateByIP: function(successCallback, errorCallback, ipSourceIndex, mapCanvasId) {
+        locateByIP: function(successCallback, errorCallback, ipSourceIndex, mapCanvasId, storeCookie) {
             if (!hasGeo()) {
                 sourceIndex = (typeof ipSourceIndex !== 'number' ||
                     (ipSourceIndex < 0 || ipSourceIndex >= ipGeoSources.length)) ? defaultSourceIndex : ipSourceIndex;
