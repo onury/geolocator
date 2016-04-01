@@ -10,7 +10,7 @@ window.onload = function() {
 
     function geolocate() {
         t0 = performance.now();
-        geolocator.locateByIP(onGeoSuccess, null, 2, null);
+        geolocator.locateByIP(onGeoSuccess, null, 2, null, false);
     }
 
     geolocate();
