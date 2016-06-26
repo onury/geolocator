@@ -1,0 +1,42 @@
+{
+  "name": "geolocator",
+  "description": "A utility for getting geo-location information, geocoding, address look-ups, distance & durations, timezone information and more...",
+  "main": "dist/geolocator.js",
+  "authors": [
+    "Onur Yıldırım"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "geo",
+    "geolocation",
+    "location",
+    "position",
+    "latitude",
+    "longitude",
+    "HTML5",
+    "google",
+    "map",
+    "geocode",
+    "reverse-geocode",
+    "ip",
+    "address",
+    "lookup",
+    "distance",
+    "directions",
+    "duration",
+    "matrix",
+    "route",
+    "timezone",
+    "lat",
+    "lng",
+    "lon"
+  ],
+  "homepage": "https://github.com/onury/geolocator",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

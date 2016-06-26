@@ -1,7 +1,7 @@
 {
   "name": "geolocator",
   "version": "2.0.0",
-  "description": "A javascript library for retrieving geolocation information via HTML5 and IP look-ups...",
+  "description": "A utility for getting geo-location information, geocoding, address look-ups, distance & durations, timezone information and more...",
   "author": {
     "name": "Onur Yıldırım",
     "email": "onur@cutepilot.com"
