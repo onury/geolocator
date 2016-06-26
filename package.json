@@ -7,7 +7,7 @@
     "email": "onur@cutepilot.com"
   },
   "license": "MIT",
-  "main": "dist/geolocator.min.js",
+  "main": "dist/geolocator.js",
   "files": [
     "dist",
     "example",
