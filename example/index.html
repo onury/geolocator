@@ -2,76 +2,436 @@
 <html>
 
 <head>
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Geolocator Example</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-	<script type="text/javascript" src="../src/geolocator.js"></script>
-	<script type="text/javascript">
-        // Success Callback
-		function onGeoSuccess(location) {
-		    console.log(location);
-		    var strLocation = '<b>Latitude:</b> ' + location.coords.latitude + '<br />' +
-		                    '<b>Longitude:</b> ' + location.coords.longitude + '<br />' +
-		                    '<b>City:</b> ' + location.address.city + '<br />' +
-		                    '<b>Country:</b> ' + location.address.country + '<br />' +
-		                    '<b>Country Code:</b> ' + location.address.countryCode + '<br />' +
-		                    '<b>Region:</b> ' + location.address.region + '<br />' +
-                            '<br /><span class="info">See console logs for the full properties of the "location" object.</span>'
-		    document.getElementById('geo-details').innerHTML = strLocation;
-		}
-        // Error Callback
-		function onGeoError(error) {
-		    console.log(error);
-            // To check if this is a HTML5 `PositionError`:
-            // console.log(geolocator.isPositionError(error));
-		}
-        // Load Event Handler
-		window.onload = function () {
-            // Locate by IP on load
-            geolocator.locateByIP(onGeoSuccess, onGeoError, 2, 'map-canvas');
-            // Configure controls
-            var cmbSource = document.getElementById('cmb-source'),
-                btnLocateByIP = document.getElementById('btn-locate-ip'),
-                btnLocateHTML5 = document.getElementById('btn-locate'),
-                chkFallback = document.getElementById('chk-fallback');
-            // Click Event Handlers
-            btnLocateByIP.onclick = function() {
-                geolocator.locateByIP(onGeoSuccess, onGeoError, cmbSource.selectedIndex, 'map-canvas');
-            }
-            btnLocateHTML5.onclick = function() {
-                var html5Options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 },
-                    ipFallbackIndex = chkFallback.checked ? cmbSource.selectedIndex : -1;
-                geolocator.locate(onGeoSuccess, onGeoError, ipFallbackIndex, html5Options, 'map-canvas');
-                console.log('IP Fallback is ' + (ipFallbackIndex === -1 ? 'disabled' : 'enabled'));
-            }
-		}
-	</script>
+    <title>Geolocator JS</title>
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
+    <link rel="stylesheet" href="css/example.css">
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
+
+    <script type="text/javascript" src="../dist/geolocator.min.js"></script>
+    <script type="text/javascript" src="js/example.js"></script>
 </head>
 
 <body>
+    <div class="container">
+        <div id="page-content" class="row">
 
-    <p class="title">Geolocator Example</p>
-    <div id="container">
-        <div id="controls">
-            Geo IP Source: <select id="cmb-source">
-                <option value="0">Free GeoIP</option>
-                <option value="1">Geo Plugin</option>
-                <option selected value="2">Wikimedia</option>
-            </select>&nbsp;<button id="btn-locate-ip">Locate by IP</button> | <button id="btn-locate">Locate (HTML5)</button>
-            <input id="chk-fallback" type="checkbox" checked /> Fallback to IP
-            <br /><span class="info">(Geo IP Source is also used as a fallback when user rejects HTML5 Geo-location or timeout expires.)</span><br />
+            <h2>Geolocator v2 Examples</h2>
+            <hr />
+
+            Below is just a demonstration of some Geolocator features.
+            This does not fully cover all Geolocator methods and options.
+            For all capabilities and more, please read the
+            <b><a href="https://onury.github.io/geolocator?api=geolocator">API documentation</a></b>.
+
+            <h3>Geolocator Configuration</h3>
+            <code>geolocator.config(options)</code>
+            &nbsp;&nbsp;<a data-toggle="tooltip" title="Click for documentation and code example" href="https://onury.github.io/geolocator?api=geolocator#geolocator.config"><span class="glyphicon glyphicon-info-sign text-primary" aria-hidden="true"></span></a>
+            <br />
+            <br />
+            <div class="well form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <span class="input-group-addon mw-120">Language</span>
+                            <select id="sel-lang" class="form-control">
+                                <option value="en" selected>English</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                                <option value="es">Spanish</option>
+                                <option value="it">Italian</option>
+                                <option value="ja">Japanese</option>
+                                <option value="pt">Portuguese</option>
+                                <option value="ru">Russian</option>
+                                <option value="tr">Turkish</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon mw-120">HTTPS</span>
+                            <input id="chk-config-https" type="checkbox" checked />
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="input-group">
+                            <span class="input-group-addon mw-170">Google API Key</span>
+                            <input id="txt-config-gk" type="password" class="form-control" placeholder="YOUR-API-KEY" value="" />
+                            <!-- ENTER YOUR OWN GOOGLE API KEY. DO NOT USE THE DEMO KEY IN YOUR APPLICATION!!! -->
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon mw-170">Google Maps Version</span>
+                            <input id="txt-config-gversion" type="text" class="form-control" placeholder="Google Maps Version" value="3" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="btn-menu" class="btn-group nowrap" data-toggle="buttons">
+                <label class="btn btn-primary btn-sm active" data-api="locate" data-caption="Locate (HTML5)">
+                    <input type="radio" name="menu" id="option1" autocomplete="off" checked> Locate
+                </label>
+                <label class="btn btn-primary btn-sm" data-api="locateByIP" data-caption="Locate by IP">
+                    <input type="radio" name="menu" id="option2" autocomplete="off"> by IP
+                </label>
+                <label class="btn btn-primary btn-sm" data-api="locateByMobile" data-caption="Locate by Mobile">
+                    <input type="radio" name="menu" id="option3" autocomplete="off"> by Mobile
+                </label>
+                <label class="btn btn-primary btn-sm" data-api="geocode" data-caption="Geocode">
+                    <input type="radio" name="menu" id="option3" autocomplete="off"> Geocode
+                </label>
+                <label class="btn btn-primary btn-sm" data-api="reverseGeocode" data-caption="Address Lookup">
+                    <input type="radio" name="menu" id="option3" autocomplete="off"> Address
+                </label>
+                <label class="btn btn-primary btn-sm" data-api="getTimeZone" data-caption="Get TimeZone">
+                    <input type="radio" name="menu" id="option3" autocomplete="off"> Time Zone
+                </label>
+                <label class="btn btn-primary btn-sm" data-api="getDistanceMatrix" data-caption="Get Distance Matrix">
+                    <input type="radio" name="menu" id="option3" autocomplete="off"> D. Matrix
+                </label>
+                <label class="btn btn-primary btn-sm" data-api="calcDistance" data-caption="Calculate Distance">
+                    <input type="radio" name="menu" id="option3" autocomplete="off"> Distance
+                </label>
+                <label class="btn btn-primary btn-sm" data-api="getIP" data-caption="Get Public IP">
+                    <input type="radio" name="menu" id="option3" autocomplete="off"> Public IP
+                </label>
+            </div>
+
+            <div class="menu-content">
+
+              <div class="menu-panel hidden active" id="panel-locate">
+                  <h3>Geo-Location (HTML5)</h3>
+                  <code>geolocator.locate(options, callback)</code>
+                  &nbsp;&nbsp;<a data-toggle="tooltip" title="Click for documentation and code example" href="https://onury.github.io/geolocator?api=geolocator#geolocator.locate"><span class="glyphicon glyphicon-info-sign text-primary" aria-hidden="true"></span></a>
+                  &nbsp;&nbsp;<span class="glyphicon glyphicon-asterisk pointer text-warning" data-toggle="tooltip" title="Enabling marked options requires a Google API Key" aria-hidden="true"></span>
+                  <br /><br />
+                  <div class="well form-horizontal">
+                      <div class="form-group">
+                          <div class="col-sm-7">
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-170">Enable High Accuracy</span>
+                                  <input id="chk-html5-accuracy" type="checkbox" checked />
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-170">Desired Accuracy</span>
+                                  <input id="txt-html5-desired" type="number" class="form-control w-150" placeholder="Desired Accuracy" value="30" />
+                                  <span class="unit">meters</span>
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-170">Timeout</span>
+                                  <input id="txt-html5-timeout" type="number" class="form-control w-150" placeholder="Timeout" value="6000" />
+                                  <span class="unit">milliseconds</span>
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-170">Maximum Age</span>
+                                  <input id="txt-html5-maxage" type="number" class="form-control w-150" placeholder="Maximum Age" value="0" />
+                                  <span class="unit">milliseconds</span>
+                              </div>
+                          </div>
+                          <div class="col-sm-5">
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-150">
+                                      Fallback to IP
+                                  </span>
+                                  <input id="chk-html5-ip" type="checkbox" />
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-150">
+                                      Address Lookup <span class="glyphicon glyphicon-asterisk pointer text-warning" data-toggle="tooltip" title="Requires a Google API Key if enabled" aria-hidden="true"></span>
+                                  </span>
+                                  <input id="chk-html5-lookup" type="checkbox" />
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-150">
+                                      Time Zone <span class="glyphicon glyphicon-asterisk pointer text-warning" data-toggle="tooltip" title="Requires a Google API Key if enabled" aria-hidden="true"></span>
+                                  </span>
+                                  <input id="chk-html5-timezone" type="checkbox" />
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-150">
+                                      Create Map <span class="glyphicon glyphicon-asterisk pointer text-warning" data-toggle="tooltip" title="Requires a Google API Key if enabled" aria-hidden="true"></span>
+                                  </span>
+                                  <input id="chk-html5-map" type="checkbox" />
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="menu-panel hidden" id="panel-locateByIP">
+                  <h3>Geo-Location by IP</h3>
+                  <code>geolocator.locateByIP(options, callback)</code>
+                  &nbsp;&nbsp;<a data-toggle="tooltip" title="Click for documentation and code example" href="https://onury.github.io/geolocator?api=geolocator#geolocator.locateByIP"><span class="glyphicon glyphicon-info-sign text-primary" aria-hidden="true"></span></a>
+                  &nbsp;&nbsp;<span class="glyphicon glyphicon-asterisk pointer text-warning" data-toggle="tooltip" title="Enabling marked options requires a Google API Key" aria-hidden="true"></span>
+                  <br /><br />
+                  <div class="well form-horizontal">
+                      <div class="form-group">
+                          <div class="col-sm-6">
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-160">
+                                      Address Lookup <span class="glyphicon glyphicon-asterisk pointer text-warning" data-toggle="tooltip" title="Requires a Google API Key if enabled" aria-hidden="true"></span>
+                                  </span>
+                                  <input id="chk-ip-lookup" type="checkbox" />
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-160">
+                                      Time Zone <span class="glyphicon glyphicon-asterisk pointer text-warning" data-toggle="tooltip" title="Requires a Google API Key if enabled" aria-hidden="true"></span>
+                                  </span>
+                                  <input id="chk-ip-timezone" type="checkbox" />
+                              </div>
+                          </div>
+                          <div class="col-sm-6">
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-160">
+                                      Create Map <span class="glyphicon glyphicon-asterisk pointer text-warning" data-toggle="tooltip" title="Requires a Google API Key if enabled" aria-hidden="true"></span>
+                                  </span>
+                                  <input id="chk-ip-map" type="checkbox" />
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="menu-panel hidden" id="panel-locateByMobile">
+                  <h3>Geo-Location by Mobile Client</h3>
+                  <code>geolocator.locateByMobile(options, callback)</code>
+                  &nbsp;&nbsp;<a data-toggle="tooltip" title="Click for documentation and code example" href="https://onury.github.io/geolocator?api=geolocator#geolocator.locateByMobile"><span class="glyphicon glyphicon-info-sign text-primary" aria-hidden="true"></span></a>
+                  &nbsp;&nbsp;<span class="glyphicon glyphicon-asterisk pointer text-danger" data-toggle="tooltip" title="Method requires a Google API Key" aria-hidden="true"></span>
+                  <br /><br />
+                  <div class="well form-horizontal">
+                      <div class="form-group">
+                          <div class="col-sm-6">
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-180">Mobile Country Code</span>
+                                  <input id="txt-mobile-ccode" type="number" class="form-control" placeholder="Home Mobile Country Code" value="310" />
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-180">Mobile Network Code</span>
+                                  <input id="txt-mobile-ncode" type="number" class="form-control" placeholder="Home Mobile Network Code" value="410" />
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-180">Mobile Carrier</span>
+                                  <input id="txt-mobile-carrier" type="text" class="form-control" placeholder="Carrier" value="Vodafone" />
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-180">Mode</span>
+                                  <select id="cmb-mobile-radio" class="form-control">
+                                      <option value="lte">LTE</option>
+                                      <option value="gsm" selected>GSM</option>
+                                      <option value="cdma">CDMA</option>
+                                      <option value="wcdma">WCDMA</option>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="col-sm-6">
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-140">Fallback to IP</span>
+                                  <input id="chk-mobile-ip" type="checkbox" checked /><label for="chk-mobile-ip">
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-140">Address Lookup</span>
+                                  <input id="chk-mobile-lookup" type="checkbox" />
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-140">Time Zone</span>
+                                  <input id="chk-mobile-timezone" type="checkbox" />
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-140">Create Map</span>
+                                  <input id="chk-mobile-map" type="checkbox" />
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="menu-panel hidden" id="panel-geocode">
+                  <h3>Geocoding — Coordinates from Address</h3>
+                  <code>geolocator.geocode(options, callback)</code>
+                  &nbsp;&nbsp;<a data-toggle="tooltip" title="Click for documentation and code example" href="https://onury.github.io/geolocator?api=geolocator#geolocator.geocode"><span class="glyphicon glyphicon-info-sign text-primary" aria-hidden="true"></span></a>
+                  &nbsp;&nbsp;<span class="glyphicon glyphicon-asterisk pointer text-danger" data-toggle="tooltip" title="Method requires a Google API Key" aria-hidden="true"></span>
+                  <br /><br />
+                  <div class="well form-horizontal">
+                      <div class="form-group">
+                          <div class="col-sm-12">
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-160">Address</span>
+                                  <input id="txt-geocode-address" type="text" class="form-control" placeholder="Address" value="1600 Amphitheatre Parkway, CA" />
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-160">Create Map</span>
+                                  <input id="chk-geocode-map" type="checkbox" />
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="menu-panel hidden" id="panel-reverseGeocode">
+                  <h3>Reverse Geocoding — Address Lookup from Coordinates</h3>
+                  <code>geolocator.reverseGeocode(options, callback)</code>
+                  &nbsp;&nbsp;<a data-toggle="tooltip" title="Click for documentation and code example" href="https://onury.github.io/geolocator?api=geolocator#geolocator.reverseGeocode"><span class="glyphicon glyphicon-info-sign text-primary" aria-hidden="true"></span></a>
+                  &nbsp;&nbsp;<span class="glyphicon glyphicon-asterisk pointer text-danger" data-toggle="tooltip" title="Method requires a Google API Key" aria-hidden="true"></span>
+                  <br /><br />
+                  <div class="well form-horizontal">
+                      <div class="form-group">
+                          <div class="col-sm-12">
+                              <div class="form-inline">
+                                  <div class="input-group">
+                                      <span class="input-group-addon mw-120">Latitude</span>
+                                      <input id="txt-lookup-lat" type="number" class="form-control" placeholder="Latitude" value="40.714224" />
+                                  </div>
+                                  &nbsp;
+                                  <div class="input-group">
+                                      <span class="input-group-addon mw-120">Longitude</span>
+                                      <input id="txt-lookup-lon" type="number" class="form-control" placeholder="Longitude" value="-73.961452" />
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="menu-panel hidden" id="panel-getTimeZone">
+                  <h3>Time Zone from Coordinates</h3>
+                  <code>geolocator.getTimeZone(options, callback)</code>
+                  &nbsp;&nbsp;<a data-toggle="tooltip" title="Click for documentation and code example" href="https://onury.github.io/geolocator?api=geolocator#geolocator.getTimeZone"><span class="glyphicon glyphicon-info-sign text-primary" aria-hidden="true"></span></a>
+                  &nbsp;&nbsp;<span class="glyphicon glyphicon-asterisk pointer text-danger" data-toggle="tooltip" title="Method requires a Google API Key" aria-hidden="true"></span>
+                  <br /><br />
+                  <div class="well form-horizontal">
+                      <div class="form-group">
+                          <div class="col-sm-12">
+                              <div class="input-group">
+                                  <span class="input-group-addon">Coordinates</span>
+                                  <select id="cmb-timezone-cities" class="form-control">
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="menu-panel hidden" id="panel-getDistanceMatrix">
+                  <h3>Distance Matrix and Duration</h3>
+                  <code>geolocator.getDistanceMatrix(options, callback)</code>
+                  &nbsp;&nbsp;<a data-toggle="tooltip" title="Click for documentation and code example" href="https://onury.github.io/geolocator?api=geolocator#geolocator.getDistanceMatrix"><span class="glyphicon glyphicon-info-sign text-primary" aria-hidden="true"></span></a>
+                  &nbsp;&nbsp;<span class="glyphicon glyphicon-asterisk pointer text-danger" data-toggle="tooltip" title="Method requires a Google API Key" aria-hidden="true"></span>
+                  <br /><br />
+                  <div class="well form-horizontal">
+                      <div class="form-group">
+                          <div class="col-sm-6">
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-120">Origin</span>
+                                  <select id="cmb-distmatrix-cities-a" class="form-control">
+                                  </select>
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-120">Destination</span>
+                                  <select id="cmb-distmatrix-cities-b" class="form-control">
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="col-sm-6">
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-80">Mode</span>
+                                  <select id="cmb-distmatrix-mode" class="form-control">
+                                      <option value="DRIVING" selected>Driving</option>
+                                      <option value="WALKING">Walking</option>
+                                      <option value="BICYCLING">Bicycling</option>
+                                      <option value="TRANSIT">Transit</option>
+                                  </select>
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-80">Unit</span>
+                                  <select id="cmb-distmatrix-unit" class="form-control">
+                                      <option selected>Metric</option>
+                                      <option>Imperal</option>
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="menu-panel hidden" id="panel-calcDistance">
+                  <h3>Distance Calculation</h3>
+                  <code>geolocator.calcDistance(options)</code>
+                  &nbsp;&nbsp;<a data-toggle="tooltip" title="Click for documentation and code example" href="https://onury.github.io/geolocator?api=geolocator#geolocator.calcDistance"><span class="glyphicon glyphicon-info-sign text-primary" aria-hidden="true"></span></a>
+                  <br /><br />
+                  <div class="well form-horizontal">
+                      <div class="form-group">
+                          <div class="col-sm-6">
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-100">From</span>
+                                  <select id="cmb-distance-cities-a" class="form-control">
+                                  </select>
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-100">To</span>
+                                  <select id="cmb-distance-cities-b" class="form-control">
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="col-sm-6">
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-100">Formula</span>
+                                  <select id="cmb-distance-formula" class="form-control">
+                                      <option value="haversine" selected>Haversine</option>
+                                      <option value="pythagorean">Pythagorean</option>
+                                  </select>
+                              </div>
+                              <div class="input-group">
+                                  <span class="input-group-addon mw-100">Unit</span>
+                                  <select id="cmb-distance-unit" class="form-control">
+                                      <option selected>Metric</option>
+                                      <option>Imperal</option>
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="menu-panel hidden" id="panel-getIP">
+                  <h3>Public IP Address</h3>
+                  <code>geolocator.getIP(callback)</code>
+                  &nbsp;&nbsp;<a data-toggle="tooltip" title="Click for documentation and code example" href="https://onury.github.io/geolocator?api=geolocator#geolocator.getIP"><span class="glyphicon glyphicon-info-sign text-primary" aria-hidden="true"></span></a>
+                  <br /><br />
+                  <div class="well form-horizontal">
+                      <div class="form-group">
+                          &nbsp;&nbsp;&nbsp;<i>This method has no options.</i>
+                      </div>
+                  </div>
+              </div>
+
+            </div>
+
+            <button id="btn-exec" type="button" class="btn btn-success btn-block">Locate (HTML5)</button>
+            <br />
+            <div id="map-canvas" class="hidden"></div>
+            <div class="text-center">Check your console for response result...</div>
+
         </div>
-        <div id="map-canvas"></div>
-        <div id="geo-details"></div>
-        <br />
-        Try <a href="https://rawgit.com/onury/geolocator/master/example/index.html">HTTPS</a>. (Note: GeoPlugin does not support HTTPS.)
-        <br />
-        View <a href="https://github.com/onury/geolocator">project page</a> (and documentation) at GitHub.<br />
-        Geolocator 1.2.9 - Copyright © Onur Yıldırım, 2015. MIT License.
-        <br /><br />
     </div>
+
+    <br />
+    <br />
+
+    <div id="footer">
+        <div id="footer-inner">
+            <table>
+                <tr>
+                    <td>Geolocator v2 - Copyright © 2016, <a href="https://github.com/onury">Onur Yıldırım</a>.&nbsp;&nbsp; MIT License.</td>
+                    <td><a class="github-button" href="https://github.com/onury/geolocator" data-icon="octicon-star" data-style="mega" data-count-href="/onury/geolocator/stargazers" data-count-api="/repos/onury/geolocator#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star onury/geolocator on GitHub">Star</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
 
 </body>
 

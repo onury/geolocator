@@ -5,23 +5,35 @@
   "authors": [
     "Onur Yıldırım"
   ],
-  "description": "A javascript library for retrieving geolocation information via HTML5 and IP look-ups...",
-  "main": "./src/geolocator.js",
+  "description": "A utility for getting geo-location information, geocoding, address look-ups, distance & durations, timezone information and more...",
+  "main": "dist/geolocator.min.js",
   "moduleType": [
     "globals"
   ],
   "keywords": [
+    "geo",
     "geolocation",
     "location",
+    "position",
     "latitude",
     "longitude",
     "HTML5",
     "google",
     "map",
     "geocode",
+    "reverse-geocode",
     "ip",
     "address",
-    "lookup"
+    "lookup",
+    "distance",
+    "directions",
+    "duration",
+    "matrix",
+    "route",
+    "timezone",
+    "lat",
+    "lng",
+    "lon"
   ],
   "license": "MIT",
   "ignore": [

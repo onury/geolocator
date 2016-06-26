@@ -2,38 +2,71 @@
   "name": "geolocator",
   "version": "1.2.9",
   "description": "A javascript library for retrieving geolocation information via HTML5 and IP look-ups...",
-  "directories": {
-    "example": "example"
+  "author": {
+    "name": "Onur Yıldırım",
+    "email": "onur@cutepilot.com"
   },
+  "license": "MIT",
+  "main": "dist/geolocator.min.js",
   "files": [
-    "src",
+    "dist",
     "example",
     "LICENSE"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "homepage": "https://github.com/onury/geolocator",
   "repository": {
     "type": "git",
     "url": "https://github.com/onury/geolocator.git"
   },
+  "bugs": {
+    "url": "https://github.com/onury/geolocator/issues"
+  },
   "keywords": [
+    "geo",
     "geolocation",
     "location",
+    "position",
     "latitude",
     "longitude",
     "HTML5",
     "google",
     "map",
     "geocode",
+    "reverse-geocode",
     "ip",
     "address",
-    "lookup"
+    "lookup",
+    "distance",
+    "directions",
+    "duration",
+    "matrix",
+    "route",
+    "timezone",
+    "lat",
+    "lng",
+    "lon"
   ],
-  "author": "Onur Yıldırım",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/onury/geolocator/issues"
-  },
-  "homepage": "https://github.com/onury/geolocator"
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.9.1",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "eslint": "^2.12.0",
+    "eslint-config-xo": "^0.15.0",
+    "grunt": "^1.0.1",
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-jasmine": "^1.0.3",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-docma": "^0.6.1",
+    "grunt-webpack": "^1.0.11",
+    "html-loader": "^0.4.3",
+    "matchdep": "^1.0.1",
+    "svg-inline-loader": "^0.4.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  }
 }
