@@ -3,6 +3,7 @@
 ![bower](https://img.shields.io/bower/v/geolocator.svg)
 ![npm](https://img.shields.io/npm/v/geolocator.svg)
 ![release](https://img.shields.io/github/release/onury/geolocator.svg)
+[![Code Climate](https://codeclimate.com/github/onury/geolocator/badges/gpa.svg)](https://codeclimate.com/github/onury/geolocator)
 ![license](http://img.shields.io/npm/l/perfy.svg)  
 
 > © 2016, Onur Yıldırım (@onury)
