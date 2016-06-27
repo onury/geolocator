@@ -35,6 +35,8 @@ Geolocator.js is a utility for getting geo-location information, geocoding, addr
  - Small file size (9KB minified, gzipped)
  - Browser Support: IE 9+, Chrome, Safari, Firefox, Opera...
 
+See a [**Live Demo**](https://onury.github.io/geolocator/?content=examples).
+
 ### Breaking Changes
 
 If you're migrating from v1.x to v2, you should consider the following changes:
@@ -70,7 +72,7 @@ Example below, tries to get user's geo-location via HTML5 Geolocation and if use
 
 Inside the `<head>` of your HTML:
 ```html
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/geolocator/2.0.0/geolocator.min.js"></script>
+<script type="text/javascript" src="geolocator.min.js"></script>
 <script type="text/javascript">
 
     geolocator.config({
