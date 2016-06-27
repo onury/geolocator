@@ -14,7 +14,7 @@ engines:
   eslint:
     enabled: true
   fixme:
-    enabled: true
+    enabled: false
 languages:
   JavaScript: true
 ratings:
