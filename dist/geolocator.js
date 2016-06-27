@@ -78,7 +78,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint no-nested-ternary:0 */
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _utils = __webpack_require__(2);
 	
@@ -92,15 +92,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _geo2 = _interopRequireDefault(_geo);
 	
-	var _geo3 = __webpack_require__(5);
+	var _geo3 = __webpack_require__(6);
 	
 	var _geo4 = _interopRequireDefault(_geo3);
 	
-	var _geo5 = __webpack_require__(6);
+	var _geo5 = __webpack_require__(7);
 	
 	var _geo6 = _interopRequireDefault(_geo5);
 	
-	var _enums = __webpack_require__(7);
+	var _enums = __webpack_require__(5);
 	
 	var _enums2 = _interopRequireDefault(_enums);
 	
@@ -121,63 +121,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @type {Number}
 	 */
 	var EARTH_RADIUS_MI = 3959;
-	
-	/**
-	 * Enumerates API endpoints used within Geolocator core.
-	 *
-	 * @enum {String}
-	 * @readonly
-	 * @private
-	 */
-	var URL = {
-	    /**
-	     *  Public IP retrieval (free) service.
-	     *  @type {String}
-	     *  @private
-	     */
-	    IP: '//api.ipify.org',
-	    /**
-	     *  Country SVG flags.
-	     *  e.g. <url>/tr.svg for Turkey flag.
-	     *  @type {String}
-	     *  @private
-	     */
-	    FLAG: '//cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/flags/4x3/',
-	    /**
-	     * Google Maps API bootstrap endpoint that loads all of the main
-	     * Javascript objects and symbols for use in the Maps API.
-	     * Some Maps API features are also available in self-contained
-	     * libraries which are not loaded unless you specifically request them.
-	     * See {@link https://developers.google.com/maps/documentation/javascript/libraries|details}.
-	     * @type {String}
-	     * @private
-	     */
-	    GOOGLE_MAPS_API: '//maps.googleapis.com/maps/api/js',
-	    /**
-	     * Google Geolocation API endpoint.
-	     * @type {String}
-	     * @private
-	     */
-	    GOOGLE_GEOLOCATION: '//www.googleapis.com/geolocation/v1/geolocate',
-	    /**
-	     * Google Geocode API endpoint.
-	     * @type {String}
-	     * @private
-	     */
-	    GOOGLE_GEOCODE: '//maps.googleapis.com/maps/api/geocode/json',
-	    /**
-	     * Google TimeZone API endpoint.
-	     * @type {String}
-	     * @private
-	     */
-	    GOOGLE_TIMEZONE: '//maps.googleapis.com/maps/api/timezone/json',
-	    /**
-	     * Google Distance Matrix API endpoint.
-	     * @type {String}
-	     * @private
-	     */
-	    GOOGLE_DISTANCE_MATRIX: '//maps.googleapis.com/maps/api/distancematrix/json'
-	};
 	
 	/**
 	 * Storage for Geolocator default configuration.
@@ -681,7 +624,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            var conf = geolocator._.config,
 	                key = conf.google.key || '',
-	                url = _utils2.default.setProtocol(URL.GOOGLE_GEOLOCATION, conf.https),
+	                url = _utils2.default.setProtocol(_enums2.default.URL.GOOGLE_GEOLOCATION, conf.https),
 	                xhrOpts = {
 	                url: url + '?key=' + key,
 	                headers: {
@@ -692,20 +635,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // console.log(xhrOpts.data);
 	
 	            _fetch2.default.post(xhrOpts, function (err, xhr) {
-	                var response = Boolean(xhr) && _utils2.default.safeJsonParse(xhr.responseText);
-	
-	                if (err) {
-	                    var gErr = _geo4.default.fromGoogleResponse(response);
-	                    if (gErr.code === _geo4.default.Code.UNKNOWN_ERROR) {
-	                        throw new _geo4.default(_geo4.default.Code.INTERNAL_ERROR, err.message);
-	                    }
-	                    return cb(gErr, null);
-	                }
-	
-	                if (!response) {
-	                    err = new _geo4.default(_geo4.default.Code.INVALID_RESPONSE);
-	                    return cb(err, null);
-	                }
+	                var response = getXHRResponse(err, xhr);
+	                if (_geo4.default.isGeoError(response)) return cb(response, null);
 	
 	                response = options.raw ? response : {
 	                    coords: {
@@ -885,7 +816,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         *            Source URL without the callback query parameter. The callback
 	         *            name (if supported) should be set via `options.callbackParam`.
 	         *            Also, make sure the service supports the protocol you use in
-	         *            the URL. If it supports both HTTP and HTTPS, you can omit the
+	         *            the enums.URL. If it supports both HTTP and HTTPS, you can omit the
 	         *            protocol. In this case, it will be determined via Geolocator
 	         *            configuration.
 	         *            See {@link #geolocator.config|`geolocator.config()`}.
@@ -1158,28 +1089,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'geocode',
 	        value: function geocode(options, callback) {
-	            if (_utils2.default.isString(options)) {
-	                options = { address: options };
-	            } else if (!_utils2.default.isPlainObject(options)) {
-	                throw new _geo4.default(_geo4.default.Code.INVALID_PARAMETERS);
-	            }
-	
 	            checkGoogleKey();
-	
-	            var conf = geolocator._.config;
-	            options = _utils2.default.extend({
-	                key: conf.google.key || '',
-	                language: conf.language || 'en',
-	                raw: false
-	            }, options);
-	
-	            var query = _geo2.default.buildGeocodeParams(options, false),
-	                url = _utils2.default.setProtocol(URL.GOOGLE_GEOCODE, conf.https),
-	                xhrOpts = {
-	                url: url + '?' + query
-	            },
-	                cb = callbackMap(options, callback);
-	            _geo2.default.geocode(xhrOpts, options.raw, cb);
+	            _geo2.default.geocode(false, geolocator._.config, options, callbackMap(options, callback));
 	        }
 	
 	        /**
@@ -1266,34 +1177,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'reverseGeocode',
 	        value: function reverseGeocode(options, callback) {
-	            if (_utils2.default.isString(options)) {
-	                options = { placeId: options };
-	            } else if (!_utils2.default.isPlainObject(options)) {
-	                throw new _geo4.default(_geo4.default.Code.INVALID_PARAMETERS);
-	            }
-	
-	            var coordsSet = _utils2.default.isNumber(options.latitude) && _utils2.default.isNumber(options.longitude);
-	
-	            if (!_utils2.default.isString(options.placeId) && !coordsSet) {
-	                throw new _geo4.default(_geo4.default.Code.INVALID_PARAMETERS);
-	            }
-	
 	            checkGoogleKey();
-	
-	            var conf = geolocator._.config;
-	            options = _utils2.default.extend({
-	                key: conf.google.key || '',
-	                language: conf.language || 'en',
-	                raw: false
-	            }, options);
-	
-	            var query = _geo2.default.buildGeocodeParams(options, true),
-	                url = _utils2.default.setProtocol(URL.GOOGLE_GEOCODE, conf.https),
-	                xhrOpts = {
-	                url: url + '?' + query
-	            },
-	                cb = callbackMap(options, callback);
-	            _geo2.default.geocode(xhrOpts, options.raw, cb);
+	            _geo2.default.geocode(true, geolocator._.config, options, callbackMap(options, callback));
 	        }
 	
 	        /**
@@ -1371,31 +1256,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	                raw: false
 	            }, options);
 	
-	            var url = _utils2.default.setProtocol(URL.GOOGLE_TIMEZONE, conf.https),
+	            var url = _utils2.default.setProtocol(_enums2.default.URL.GOOGLE_TIMEZONE, conf.https),
 	                xhrOpts = {
 	                url: url + '?location=' + options.latitude + ',' + options.longitude + '&timestamp=' + options.timestamp + '&language=' + options.language + '&key=' + options.key
 	            };
 	
 	            _fetch2.default.xhr(xhrOpts, function (err, xhr) {
-	                var response = Boolean(xhr) && _utils2.default.safeJsonParse(xhr.responseText);
-	
-	                if (err) {
-	                    var gErr = _geo4.default.fromGoogleResponse(response);
-	                    if (gErr.code === _geo4.default.Code.UNKNOWN_ERROR) {
-	                        throw new _geo4.default(_geo4.default.Code.INTERNAL_ERROR, err.message);
-	                    }
-	                    return callback(gErr, null);
-	                }
-	
-	                if (!response) {
-	                    err = new _geo4.default(_geo4.default.Code.INVALID_RESPONSE);
-	                    return callback(err, null);
-	                }
-	
-	                if (response.status !== 'OK') {
-	                    err = _geo4.default.fromGoogleResponse(response);
-	                    return callback(err, null);
-	                }
+	                var response = getXHRResponse(err, xhr);
+	                if (_geo4.default.isGeoError(response)) return callback(response, null);
 	
 	                response = options.raw ? response : {
 	                    id: response.timeZoneId,
@@ -1527,7 +1395,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                service.getDistanceMatrix(options, function (response, status) {
 	                    var err = null;
 	                    if (status !== google.maps.DistanceMatrixStatus.OK) {
-	                        err = _geo4.default.fromGoogleResponse(status);
+	                        err = _geo4.default.fromResponse(status) || _geo4.default.fromResponse(response);
 	                        response = null;
 	                    } else {
 	                        response = options.raw ? response : _geo2.default.formatDistanceResults(response);
@@ -1630,7 +1498,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var conf = geolocator._.config;
 	
 	            var jsonpOpts = {
-	                url: _utils2.default.setProtocol(URL.IP, conf.https),
+	                url: _utils2.default.setProtocol(_enums2.default.URL.IP, conf.https),
 	                async: true,
 	                clean: true,
 	                params: {
@@ -1695,7 +1563,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            if (!geolocator.isGoogleLoaded()) {
 	                var jsonpOpts = {
-	                    url: URL.GOOGLE_MAPS_API,
+	                    url: _enums2.default.URL.GOOGLE_MAPS_API,
 	                    async: true,
 	                    callbackParam: 'callback',
 	                    params: {
@@ -1939,6 +1807,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	// ---------------------------
 	
 	/**
+	 *  Check if XHR response is an error response and returns a `GeoError`.
+	 *  If not, returns the parsed response.
+	 *  @private
+	 *
+	 *  @param {Error} err
+	 *         XHR error.
+	 *  @param {Object} xhr
+	 *         XHR object to be checked.
+	 *
+	 *  @returns {GeoError|Object}
+	 */
+	
+	
+	function getXHRResponse(err, xhr) {
+	    if (err) return _geo4.default.create(err);
+	    if (!xhr) return new _geo4.default(_geo4.default.Code.REQUEST_FAILED);
+	    var response = _utils2.default.safeJsonParse(xhr.responseText);
+	    // Check if XHR response is an error response.
+	    // return response if not.
+	    return _geo4.default.fromResponse(response) || response;
+	}
+	
+	/**
 	 *  Checks the given options and determines if Google key is required.
 	 *  Throws if key is required but not set or valid.
 	 *  @private
@@ -1946,8 +1837,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *  @param {Object} [options]
 	 *         Options to be checked. If `undefined`, directly checks Googke key.
 	 */
-	
-	
 	function checkGoogleKey(options) {
 	    if (!options || options.addressLookup || options.timezone || options.map) {
 	        if (!geolocator._.config.google.key) {
@@ -2082,7 +1971,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        cc = address.country;
 	    }
 	    if (!cc) return;
-	    location.flag = URL.FLAG + cc.toLowerCase() + '.svg';
+	    location.flag = _enums2.default.URL.FLAG + cc.toLowerCase() + '.svg';
 	}
 	
 	/**
@@ -3402,9 +3291,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'post',
 	        value: function post(options, callback) {
-	            options = _utils2.default.isString(options) ? { url: options } : options || {};
-	            options.method = 'POST';
-	            return fetch.xhr(options, callback);
+	            return _xhr('POST', options, callback);
 	        }
 	
 	        /**
@@ -3423,9 +3310,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'put',
 	        value: function put(options, callback) {
-	            options = _utils2.default.isString(options) ? { url: options } : options || {};
-	            options.method = 'PUT';
-	            return fetch.xhr(options, callback);
+	            return _xhr('PUT', options, callback);
 	        }
 	
 	        /**
@@ -3444,14 +3329,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'delete',
 	        value: function _delete(options, callback) {
-	            options = _utils2.default.isString(options) ? { url: options } : options || {};
-	            options.method = 'DELETE';
-	            return fetch.xhr(options, callback);
+	            return _xhr('DELETE', options, callback);
 	        }
 	    }]);
 	
 	    return fetch;
 	}();
+	
+	/**
+	 *  @private
+	 */
+	
+	
+	function _xhr(method, options, callback) {
+	    options = _utils2.default.isString(options) ? { url: options } : options || {};
+	    options.method = method;
+	    return fetch.xhr(options, callback);
+	}
 	
 	/**
 	 * Enumerates `XMLHttpRequest` ready states.
@@ -3460,8 +3354,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * @enum {Number}
 	 */
-	
-	
 	fetch.XHR_READY_STATE = {
 	    /**
 	     * `xhr.open()` has not been called yet.
@@ -3514,7 +3406,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _fetch2 = _interopRequireDefault(_fetch);
 	
-	var _geo = __webpack_require__(5);
+	var _enums = __webpack_require__(5);
+	
+	var _enums2 = _interopRequireDefault(_enums);
+	
+	var _geo = __webpack_require__(6);
 	
 	var _geo2 = _interopRequireDefault(_geo);
 	
@@ -3657,21 +3553,47 @@ return /******/ (function(modules) { // webpackBootstrap
 	            timestamp: _utils2.default.time()
 	        };
 	    },
-	    geocode: function geocode(xhrOpts, raw, callback) {
-	        // console.log(xhrOpts.url);
-	        _fetch2.default.xhr(xhrOpts, function (err, xhr) {
-	            var response = _utils2.default.safeJsonParse(xhr.responseText);
-	            if (response === null) {
-	                if (err === null) {
-	                    err = new _geo2.default(_geo2.default.Code.INVALID_RESPONSE);
-	                }
-	            } else if (response.status !== 'OK') {
-	                err = _geo2.default.fromGoogleResponse(response);
-	                response = null;
-	            } else {
-	                response = raw ? response : geoHelper.formatGeocodeResults(response.results);
+	    geocode: function geocode(reverse, conf, options, callback) {
+	        var opts = {};
+	        if (_utils2.default.isString(options)) {
+	            opts = {};
+	            var prop = reverse ? 'placeId' : 'address';
+	            opts[prop] = options;
+	        } else if (_utils2.default.isPlainObject(options)) {
+	            opts = options;
+	        } else {
+	            throw new _geo2.default(_geo2.default.Code.INVALID_PARAMETERS);
+	        }
+	
+	        if (reverse) {
+	            var coordsSet = _utils2.default.isNumber(options.latitude) && _utils2.default.isNumber(options.longitude);
+	            if (!_utils2.default.isString(options.placeId) && !coordsSet) {
+	                throw new _geo2.default(_geo2.default.Code.INVALID_PARAMETERS);
 	            }
-	            callback(err, response);
+	        }
+	
+	        opts = _utils2.default.extend({
+	            key: conf.google.key || '',
+	            language: conf.language || 'en',
+	            raw: false
+	        }, opts);
+	
+	        var query = geoHelper.buildGeocodeParams(opts, reverse),
+	            url = _utils2.default.setProtocol(_enums2.default.URL.GOOGLE_GEOCODE, conf.https),
+	            xhrOpts = {
+	            url: url + '?' + query
+	        };
+	
+	        _fetch2.default.xhr(xhrOpts, function (err, xhr) {
+	            if (err) return callback(_geo2.default.create(err), null);
+	
+	            var response = _utils2.default.safeJsonParse(xhr.responseText),
+	                gErr = _geo2.default.fromResponse(response);
+	
+	            if (gErr) return callback(gErr, null);
+	
+	            response = options.raw ? response : geoHelper.formatGeocodeResults(response.results);
+	            callback(null, response);
 	        });
 	    },
 	
@@ -3760,563 +3682,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint no-nested-ternary:0 */
-	
-	var _utils = __webpack_require__(2);
-	
-	var _utils2 = _interopRequireDefault(_utils);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	/**
-	 * Geolocator Error class that provides a common type of error object for the
-	 * various APIs implemented in Geolocator. All callbacks of Geolocator will
-	 * include an instance of this object as the first argument; if the
-	 * corresponding operation fails. Also all thrown errors will be an instance of
-	 * this object.
-	 *
-	 * This object can be publicly accessed via `geolocator.Error`.
-	 *
-	 * @extends Error
-	 */
-	
-	var GeoError = function () {
-	    // extends Error (doesn't work with transpilers)
-	
-	    /**
-	     * Costructs a new instance of `GeoError`.
-	     *
-	     * @param {String} [code="UNKNOWN_ERROR"]
-	     *        Any valid Geolocator Error code.
-	     *        See {@link #GeoError.Code|`GeoError.Code` enumeration} for
-	     *        possible values.
-	     * @param {String} [message]
-	     *        Error message. If omitted, this will be set to `code`.
-	     *
-	     * @returns {GeoError}
-	     *
-	     * @example
-	     * var GeoError = geolocator.Error,
-	     *     error = new GeoError(GeoError.Code.GEOLOCATION_NOT_SUPPORTED);
-	     * console.log(error.code); // "GEOLOCATION_NOT_SUPPORTED"
-	     * console.log(error instanceof GeoError); // true
-	     */
-	
-	    function GeoError() {
-	        var code = arguments.length <= 0 || arguments[0] === undefined ? GeoError.Code.UNKNOWN_ERROR : arguments[0];
-	        var message = arguments[1];
-	
-	        _classCallCheck(this, GeoError);
-	
-	        message = message || String(code);
-	
-	        /**
-	         *  Gets the name of the Error object.
-	         *  This always returns `"GeoError"`.
-	         *  @name GeoError#name
-	         *  @type {String}
-	         */
-	        Object.defineProperty(this, 'name', {
-	            enumerable: false,
-	            writable: false,
-	            value: 'GeoError' // this.constructor.name
-	        });
-	
-	        /**
-	         *  Gets the error code set for this instance.
-	         *  This will return one of
-	         *  {@link #GeoError.Code|`GeoError.Code` enumeration}.
-	         *  @name GeoError#code
-	         *  @type {String}
-	         */
-	        Object.defineProperty(this, 'code', {
-	            enumerable: false,
-	            writable: true,
-	            value: code
-	        });
-	
-	        /**
-	         *  Gets the error message set for this instance.
-	         *  If no message is set, this will return the error code value.
-	         *  @name GeoError#message
-	         *  @type {String}
-	         */
-	        Object.defineProperty(this, 'message', {
-	            enumerable: false,
-	            writable: true,
-	            value: message
-	        });
-	
-	        if (Error.hasOwnProperty('captureStackTrace')) {
-	            // V8
-	            Error.captureStackTrace(this, this.constructor);
-	        } else {
-	            /**
-	             *  Gets the error stack for this instance.
-	             *  @name GeoError#stack
-	             *  @type {String}
-	             */
-	            Object.defineProperty(this, 'stack', {
-	                enumerable: false,
-	                writable: false,
-	                value: new Error(message).stack
-	            });
-	        }
-	    }
-	
-	    /**
-	     * Creates a new instance of `GeoError` from the given value.
-	     *
-	     * @param {*} [err]
-	     *        Value to be transformed. This is used to determine the proper
-	     *        error code for the created instance. If an `Error` or `Object` is
-	     *        passed, its `message` property is checked if it matches any of the
-	     *        valid error codes. If omitted or no match is found, error code
-	     *        `GeoError.Code.UNKNOWN_ERROR` will be used as default.
-	     *
-	     * @returns {GeoError}
-	     *
-	     * @example
-	     * var GeoError = geolocator.Error,
-	     * 	   error = GeoError.create();
-	     * console.log(error.code); // "UNKNOWN_ERROR"
-	     * error = GeoError.create(GeoError.Code.GEOLOCATION_NOT_SUPPORTED);
-	     * console.log(error.code); // "GEOLOCATION_NOT_SUPPORTED"
-	     */
-	
-	
-	    _createClass(GeoError, null, [{
-	        key: 'create',
-	        value: function create(err) {
-	            if (err instanceof GeoError) {
-	                return err;
-	            }
-	
-	            if (_utils2.default.isPositionError(err) && err.code) {
-	                switch (err.code) {
-	                    case 1:
-	                        return new GeoError(GeoError.Code.PERMISSION_DENIED, err.message);
-	                    case 2:
-	                        return new GeoError(GeoError.Code.POSITION_UNAVAILABLE, err.message);
-	                    case 3:
-	                        return new GeoError(GeoError.Code.TIMEOUT, err.message);
-	                    default:
-	                        return new GeoError(GeoError.Code.UNKNOWN_ERROR, err.message || '');
-	                }
-	            }
-	
-	            var code = void 0,
-	                msg = void 0;
-	            if (typeof err === 'string') {
-	                code = msg = err;
-	            } else if ((typeof err === 'undefined' ? 'undefined' : _typeof(err)) === 'object') {
-	                code = err.code || err.message;
-	                msg = err.message || err.code;
-	            }
-	            if (code && GeoError.isValidErrorCode(code)) {
-	                return new GeoError(code, msg);
-	            }
-	
-	            return new GeoError(GeoError.Code.UNKNOWN_ERROR, msg);
-	        }
-	
-	        /**
-	         * Creates a new instance of `GeoError` from the given Google API
-	         * response object. Since Geolocator implements various Google APIs,
-	         * we might receive responses if different structures. For example,
-	         * some APIs return a response object with a `status:String` property
-	         * (such as the TimeZone API) and some return responses with an
-	         * `error:Object` property. This method will determine the correct reason or
-	         * message and return a consistent error object.
-	         *
-	         * @param {Object|String} response
-	         *        Google API response (Object) or status (String) to be transformed.
-	         *
-	         * @returns {GeoError}
-	         *
-	         * @example
-	         * var error = geolocator.Error.fromGoogleResponse(googleResponse);
-	         * console.log(error.code); // "GOOGLE_KEY_INVALID"
-	         */
-	
-	    }, {
-	        key: 'fromGoogleResponse',
-	        value: function fromGoogleResponse(response) {
-	            // example Google Geolocation API response:
-	            // https://developers.google.com/maps/documentation/geolocation/intro#errors
-	            // {
-	            //      "error": {
-	            //          "errors": [
-	            //              {
-	            //                  "domain": "global",
-	            //                  "reason": "parseError",
-	            //                  "message": "Parse Error",
-	            //              }
-	            //          ],
-	            //      "code": 400,
-	            //      "message": "Parse Error"
-	            //      }
-	            // }
-	            // example Google TimeZone API response:
-	            // {
-	            //     "status": "REQUEST_DENIED"
-	            // }
-	
-	            var errCode = GeoError.Code.UNKNOWN_ERROR;
-	            if (!response) return new GeoError(errCode);
-	
-	            var status = _utils2.default.isObject(response) ? response.status : _utils2.default.isString(response) ? response : null,
-	                message = '';
-	
-	            if (status) {
-	                message = response.error_message || response.errorMessage;
-	                if (GeoError.Code.hasOwnProperty(status)) {
-	                    errCode = status;
-	                } else if (status === 'ZERO_RESULTS') {
-	                    errCode = GeoError.Code.NOT_FOUND;
-	                } else {
-	                    // errCode = GeoError.Code.UNKNOWN_ERROR;
-	                    message = message ? errCode + ' (' + message + ')' : errCode;
-	                }
-	            } else if (response.error) {
-	                var reason = response.reason || response.error.reason;
-	                message = response.error.message;
-	                if (!reason) {
-	                    var errors = response.error.errors;
-	                    reason = _utils2.default.isArray(errors) && errors.length > 0 ? errors[0].reason // get the first reason only
-	                    : null;
-	                }
-	
-	                if (reason) {
-	                    switch (reason) {
-	                        case 'invalid':
-	                            errCode = GeoError.Code.INVALID_REQUEST;
-	                            break;
-	                        case 'dailyLimitExceeded':
-	                            errCode = GeoError.Code.DAILY_LIMIT_EXCEEDED;
-	                            break;
-	                        case 'keyInvalid':
-	                            errCode = GeoError.Code.GOOGLE_KEY_INVALID;
-	                            break;
-	                        case 'userRateLimitExceeded':
-	                            errCode = GeoError.Code.USER_RATE_LIMIT_EXCEEDED;
-	                            break;
-	                        case 'notFound':
-	                            errCode = GeoError.Code.NOT_FOUND;
-	                            break;
-	                        case 'parseError':
-	                            errCode = GeoError.Code.PARSE_ERROR;
-	                            break;
-	                        default:
-	                            errCode = GeoError.Code.UNKNOWN_ERROR;
-	                            break;
-	                    }
-	                }
-	            }
-	
-	            return new GeoError(errCode, message);
-	        }
-	
-	        /**
-	         *  Checks whether the given value is an instance of `GeoError`.
-	         *
-	         *  @param {*} err - Object to be checked.
-	         *
-	         *  @returns {Boolean}
-	         */
-	
-	    }, {
-	        key: 'isGeoError',
-	        value: function isGeoError(err) {
-	            return err instanceof GeoError;
-	        }
-	
-	        /**
-	         *  Checks whether the given value is a valid Geolocator Error code.
-	         *
-	         *  @param {String} errorCode - Error code to be checked.
-	         *
-	         *  @returns {Boolean}
-	         */
-	
-	    }, {
-	        key: 'isValidErrorCode',
-	        value: function isValidErrorCode(errorCode) {
-	            var prop = void 0;
-	            for (prop in GeoError.Code) {
-	                if (GeoError.Code.hasOwnProperty(prop) && errorCode === GeoError.Code[prop]) {
-	                    return true;
-	                }
-	            }
-	            return false;
-	        }
-	    }]);
-	
-	    return GeoError;
-	}();
-	
-	/**
-	 *  Gets the string representation of the error instance.
-	 *
-	 *  @returns {String}
-	 */
-	
-	
-	GeoError.prototype.toString = function () {
-	    var msg = this.code !== this.message ? ' (' + this.message + ')' : '';
-	    return this.name + ': ' + this.code + msg;
-	};
-	
-	// `class x extends Error` doesn't work when using an ES6 transpiler, such as
-	// Babel, since subclasses must extend a class. With Babel 6, we need
-	// transform-builtin-extend plugin for this to work. So we're extending from
-	// Error the old way. Now, `err instanceof Error` also returns `true`.
-	if (typeof Object.setPrototypeOf === 'function') {
-	    Object.setPrototypeOf(GeoError.prototype, Error.prototype);
-	} else {
-	    GeoError.prototype = Object.create(Error.prototype);
-	}
-	
-	// ---------------------------
-	// ERROR CODES
-	// ---------------------------
-	
-	/**
-	 *  Enumerates Geolocator error codes.
-	 *  This enumeration combines Google API status (error) codes, HTML5 Geolocation
-	 *  position error codes and other Geolocator-specific error codes.
-	 *  @enum {String}
-	 */
-	GeoError.Code = {
-	    /**
-	     *  Indicates that HTML5 Geolocation API is not supported by the browser.
-	     *  @type {String}
-	     */
-	    GEOLOCATION_NOT_SUPPORTED: 'GEOLOCATION_NOT_SUPPORTED',
-	    /**
-	     *  Indicates that Geolocation-IP source is not set or invalid.
-	     *  @type {String}
-	     */
-	    INVALID_GEO_IP_SOURCE: 'INVALID_GEO_IP_SOURCE',
-	    /**
-	     *  The acquisition of the geolocation information failed because the
-	     *  page didn't have the permission to do it.
-	     *  @type {String}
-	     */
-	    PERMISSION_DENIED: 'PERMISSION_DENIED',
-	    /**
-	     *  The acquisition of the geolocation failed because at least one
-	     *  internal source of position returned an internal error.
-	     *  @type {String}
-	     */
-	    POSITION_UNAVAILABLE: 'POSITION_UNAVAILABLE',
-	    /**
-	     *  The time allowed to acquire the geolocation, defined by
-	     *  PositionOptions.timeout information was reached before
-	     *  the information was obtained.
-	     *  @type {String}
-	     */
-	    TIMEOUT: 'TIMEOUT',
-	    /**
-	     * Indicates that the request had one or more invalid parameters.
-	     * @type {String}
-	     */
-	    INVALID_PARAMETERS: 'INVALID_PARAMETERS',
-	    /**
-	     * Indicates that the service returned invalid response.
-	     * @type {String}
-	     */
-	    INVALID_RESPONSE: 'INVALID_RESPONSE',
-	    /**
-	     * Generally indicates that the query (address, components or latlng)
-	     * is missing.
-	     * @type {String}
-	     */
-	    INVALID_REQUEST: 'INVALID_REQUEST',
-	    /**
-	     * Indicates that the request was denied by the service.
-	     * This will generally occur because of a missing API key or because the request
-	     * is sent over HTTP instead of HTTPS.
-	     * @type {String}
-	     */
-	    REQUEST_DENIED: 'REQUEST_DENIED',
-	    /**
-	     * Indicates that Google API could not be loaded.
-	     * @type {String}
-	     */
-	    GOOGLE_API_FAILED: 'GOOGLE_API_FAILED',
-	    /**
-	     * Indicates that you are over your Google API quota.
-	     * @type {String}
-	     */
-	    OVER_QUERY_LIMIT: 'OVER_QUERY_LIMIT',
-	    /**
-	     * Indicates that you've exceeded the requests per second per user limit that
-	     * you configured in the Google Developers Console. This limit should be
-	     * configured to prevent a single or small group of users from exhausting your
-	     * daily quota, while still allowing reasonable access to all users.
-	     * @type {String}
-	     */
-	    USER_RATE_LIMIT_EXCEEDED: 'USER_RATE_LIMIT_EXCEEDED',
-	    /**
-	     * Indicates that you've exceeded your daily limit for Google API(s).
-	     * @type {String}
-	     */
-	    DAILY_LIMIT_EXCEEDED: 'DAILY_LIMIT_EXCEEDED',
-	    /**
-	     * Indicates that your Google API key is not valid. Please ensure that you've
-	     * included the entire key, and that you've either purchased the API or have
-	     * enabled billing and activated the API to obtain the free quota.
-	     * @type {String}
-	     */
-	    GOOGLE_KEY_INVALID: 'GOOGLE_KEY_INVALID',
-	    /**
-	     * Indicates that maximum number of elements limit is exceeded. For
-	     * example, for the Distance Matrix API; occurs when the product of
-	     * origins and destinations exceeds the per-query limit.
-	     * @type {String}
-	     */
-	    MAX_ELEMENTS_EXCEEDED: 'MAX_ELEMENTS_EXCEEDED',
-	    /**
-	     * Indicates that the request contained more than 25 origins,
-	     * or more than 25 destinations.
-	     * @type {String}
-	     */
-	    MAX_DIMENSIONS_EXCEEDED: 'MAX_DIMENSIONS_EXCEEDED',
-	    /**
-	     * Indicates that the request contained more than allowed waypoints.
-	     * @type {String}
-	     */
-	    MAX_WAYPOINTS_EXCEEDED: 'MAX_WAYPOINTS_EXCEEDED',
-	    /**
-	     * Indicates that the request body is not valid JSON.
-	     * @type {String}
-	     */
-	    PARSE_ERROR: 'PARSE_ERROR',
-	    /**
-	     * Indicates that the requested resource could not be found.
-	     * Note that this also covers `ZERO_RESULTS`.
-	     * @type {String}
-	     */
-	    NOT_FOUND: 'NOT_FOUND',
-	    /**
-	     * Indicates that an internal error (such as XHR cross-domain, etc) has occured.
-	     * @type {String}
-	     */
-	    INTERNAL_ERROR: 'INTERNAL_ERROR',
-	    /**
-	     * Indicates that an unknown error has occured.
-	     * @type {String}
-	     */
-	    UNKNOWN_ERROR: 'UNKNOWN_ERROR'
-	};
-	
-	// ---------------------------
-	// EXPORT
-	// ---------------------------
-	
-	exports.default = GeoError;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint no-nested-ternary:0 */
-	
-	var _utils = __webpack_require__(2);
-	
-	var _utils2 = _interopRequireDefault(_utils);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var GeoWatcher = function () {
-	    function GeoWatcher(onChange, onError) {
-	        var _this = this;
-	
-	        var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-	
-	        _classCallCheck(this, GeoWatcher);
-	
-	        this.isCleared = false;
-	        this.cycle = 0;
-	        this._timer = null;
-	        this.id = navigator.geolocation.watchPosition(function (pos) {
-	            _this.cycle++;
-	            if (_utils2.default.isFunction(onChange)) onChange(pos);
-	        }, function (err) {
-	            _this.cycle++;
-	            if (_utils2.default.isFunction(onError)) onError(err);
-	            if (options.clearOnError) {
-	                _this.clear();
-	            }
-	        }, options);
-	    }
-	
-	    _createClass(GeoWatcher, [{
-	        key: '_clear',
-	        value: function _clear() {
-	            navigator.geolocation.clearWatch(this.id);
-	            this.isCleared = true;
-	            this._timer = null;
-	        }
-	    }, {
-	        key: 'clear',
-	        value: function clear(delay, callback) {
-	            var _this2 = this;
-	
-	            var d = _utils2.default.isNumber(delay) ? delay : 0,
-	                cb = _utils2.default.isFunction(callback) ? callback : _utils2.default.isFunction(delay) ? delay : null;
-	            // clear any previous timeout
-	            if (this._timer) {
-	                clearTimeout(this._timer);
-	                this._timer = null;
-	            }
-	            // check if watcher is not cleared
-	            if (!this.isCleared) {
-	                if (d === 0) {
-	                    this._clear();
-	                    if (cb) cb();
-	                    return;
-	                }
-	                this._timer = setTimeout(function () {
-	                    _this2._clear();
-	                    if (cb) cb();
-	                }, d);
-	            }
-	        }
-	    }]);
-	
-	    return GeoWatcher;
-	}();
-	
-	// ---------------------------
-	// EXPORT
-	// ---------------------------
-	
-	exports.default = GeoWatcher;
-
-/***/ },
-/* 7 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4333,6 +3698,62 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @readonly
 	 */
 	var enums = Object.freeze({
+	  /**
+	   * Enumerates API endpoints used within Geolocator core.
+	   *
+	   * @enum {String}
+	   * @readonly
+	   * @private
+	   */
+	  URL: {
+	    /**
+	     *  Public IP retrieval (free) service.
+	     *  @type {String}
+	     *  @private
+	     */
+	    IP: '//api.ipify.org',
+	    /**
+	     *  Country SVG flags.
+	     *  e.g. <url>/tr.svg for Turkey flag.
+	     *  @type {String}
+	     *  @private
+	     */
+	    FLAG: '//cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/flags/4x3/',
+	    /**
+	     * Google Maps API bootstrap endpoint that loads all of the main
+	     * Javascript objects and symbols for use in the Maps API.
+	     * Some Maps API features are also available in self-contained
+	     * libraries which are not loaded unless you specifically request them.
+	     * See {@link https://developers.google.com/maps/documentation/javascript/libraries|details}.
+	     * @type {String}
+	     * @private
+	     */
+	    GOOGLE_MAPS_API: '//maps.googleapis.com/maps/api/js',
+	    /**
+	     * Google Geolocation API endpoint.
+	     * @type {String}
+	     * @private
+	     */
+	    GOOGLE_GEOLOCATION: '//www.googleapis.com/geolocation/v1/geolocate',
+	    /**
+	     * Google Geocode API endpoint.
+	     * @type {String}
+	     * @private
+	     */
+	    GOOGLE_GEOCODE: '//maps.googleapis.com/maps/api/geocode/json',
+	    /**
+	     * Google TimeZone API endpoint.
+	     * @type {String}
+	     * @private
+	     */
+	    GOOGLE_TIMEZONE: '//maps.googleapis.com/maps/api/timezone/json',
+	    /**
+	     * Google Distance Matrix API endpoint.
+	     * @type {String}
+	     * @private
+	     */
+	    GOOGLE_DISTANCE_MATRIX: '//maps.googleapis.com/maps/api/distancematrix/json'
+	  },
 	  /**
 	   * Enumerates Google map types.
 	   * @memberof! geolocator
@@ -4529,6 +3950,602 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	
 	exports.default = enums;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _utils = __webpack_require__(2);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/**
+	 * Geolocator Error class that provides a common type of error object for the
+	 * various APIs implemented in Geolocator. All callbacks of Geolocator will
+	 * include an instance of this object as the first argument; if the
+	 * corresponding operation fails. Also all thrown errors will be an instance of
+	 * this object.
+	 *
+	 * This object can be publicly accessed via `geolocator.Error`.
+	 *
+	 * @extends Error
+	 */
+	
+	var GeoError = function () {
+	    // extends Error (doesn't work with transpilers)
+	
+	    /**
+	     * Costructs a new instance of `GeoError`.
+	     *
+	     * @param {String} [code="UNKNOWN_ERROR"]
+	     *        Any valid Geolocator Error code.
+	     *        See {@link #GeoError.Code|`GeoError.Code` enumeration} for
+	     *        possible values.
+	     * @param {String} [message]
+	     *        Error message. If omitted, this will be set to `code`.
+	     *
+	     * @returns {GeoError}
+	     *
+	     * @example
+	     * var GeoError = geolocator.Error,
+	     *     error = new GeoError(GeoError.Code.GEOLOCATION_NOT_SUPPORTED);
+	     * console.log(error.code); // "GEOLOCATION_NOT_SUPPORTED"
+	     * console.log(error instanceof GeoError); // true
+	     */
+	
+	    function GeoError() {
+	        var code = arguments.length <= 0 || arguments[0] === undefined ? GeoError.Code.UNKNOWN_ERROR : arguments[0];
+	        var message = arguments[1];
+	
+	        _classCallCheck(this, GeoError);
+	
+	        message = message || String(code);
+	
+	        /**
+	         *  Gets the name of the Error object.
+	         *  This always returns `"GeoError"`.
+	         *  @name GeoError#name
+	         *  @type {String}
+	         */
+	        Object.defineProperty(this, 'name', {
+	            enumerable: false,
+	            writable: false,
+	            value: 'GeoError' // this.constructor.name
+	        });
+	
+	        /**
+	         *  Gets the error code set for this instance.
+	         *  This will return one of
+	         *  {@link #GeoError.Code|`GeoError.Code` enumeration}.
+	         *  @name GeoError#code
+	         *  @type {String}
+	         */
+	        Object.defineProperty(this, 'code', {
+	            enumerable: false,
+	            writable: true,
+	            value: code
+	        });
+	
+	        /**
+	         *  Gets the error message set for this instance.
+	         *  If no message is set, this will return the error code value.
+	         *  @name GeoError#message
+	         *  @type {String}
+	         */
+	        Object.defineProperty(this, 'message', {
+	            enumerable: false,
+	            writable: true,
+	            value: message
+	        });
+	
+	        if (Error.hasOwnProperty('captureStackTrace')) {
+	            // V8
+	            Error.captureStackTrace(this, this.constructor);
+	        } else {
+	            /**
+	             *  Gets the error stack for this instance.
+	             *  @name GeoError#stack
+	             *  @type {String}
+	             */
+	            Object.defineProperty(this, 'stack', {
+	                enumerable: false,
+	                writable: false,
+	                value: new Error(message).stack
+	            });
+	        }
+	    }
+	
+	    /**
+	     * Creates a new instance of `GeoError` from the given value.
+	     *
+	     * @param {*} [err]
+	     *        Value to be transformed. This is used to determine the proper
+	     *        error code for the created instance. If an `Error` or `Object` is
+	     *        passed, its `message` property is checked if it matches any of the
+	     *        valid error codes. If omitted or no match is found, error code
+	     *        `GeoError.Code.UNKNOWN_ERROR` will be used as default.
+	     *
+	     * @returns {GeoError}
+	     *
+	     * @example
+	     * var GeoError = geolocator.Error,
+	     * 	   error = GeoError.create();
+	     * console.log(error.code); // "UNKNOWN_ERROR"
+	     * error = GeoError.create(GeoError.Code.GEOLOCATION_NOT_SUPPORTED);
+	     * console.log(error.code); // "GEOLOCATION_NOT_SUPPORTED"
+	     */
+	
+	
+	    _createClass(GeoError, null, [{
+	        key: 'create',
+	        value: function create(err) {
+	            if (err instanceof GeoError) {
+	                return err;
+	            }
+	
+	            if (_utils2.default.isPositionError(err) && err.code) {
+	                switch (err.code) {
+	                    case 1:
+	                        return new GeoError(GeoError.Code.PERMISSION_DENIED, err.message);
+	                    case 2:
+	                        return new GeoError(GeoError.Code.POSITION_UNAVAILABLE, err.message);
+	                    case 3:
+	                        return new GeoError(GeoError.Code.TIMEOUT, err.message);
+	                    default:
+	                        return new GeoError(GeoError.Code.UNKNOWN_ERROR, err.message || '');
+	                }
+	            }
+	
+	            var code = void 0,
+	                msg = void 0;
+	            if (typeof err === 'string') {
+	                code = msg = err;
+	            } else if ((typeof err === 'undefined' ? 'undefined' : _typeof(err)) === 'object') {
+	                code = err.code || err.message;
+	                msg = err.message || err.code;
+	            }
+	            if (code && GeoError.isValidErrorCode(code)) {
+	                return new GeoError(code, msg);
+	            }
+	
+	            return new GeoError(GeoError.Code.UNKNOWN_ERROR, msg);
+	        }
+	
+	        /**
+	         * Creates a new instance of `GeoError` from the given response object.
+	         * Since Geolocator implements various Google APIs, we might receive
+	         * responses if different structures. For example, some APIs return a
+	         * response object with a `status:String` property (such as the TimeZone
+	         * API) and some return responses with an `error:Object` property. This
+	         * method will determine the correct reason or message and return a
+	         * consistent error object.
+	         *
+	         * @param {Object|String} response
+	         *        Response (Object) or status (String) to be transformed.
+	         * @param {String} [message=null]
+	         *        Error message.
+	         *
+	         * @returns {GeoError}
+	         *          `GeoError` instance if response contains an error. Otherwise,
+	         *          returns `null`.
+	         *
+	         * @example
+	         * var error = geolocator.Error.fromResponse(googleResponse);
+	         * console.log(error.code); // "GOOGLE_KEY_INVALID"
+	         */
+	
+	    }, {
+	        key: 'fromResponse',
+	        value: function fromResponse(response) {
+	            var message = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
+	
+	            // example Google Geolocation API response:
+	            // https://developers.google.com/maps/documentation/geolocation/intro#errors
+	            // {
+	            //      "error": {
+	            //          "errors": [
+	            //              {
+	            //                  "domain": "global",
+	            //                  "reason": "parseError",
+	            //                  "message": "Parse Error",
+	            //              }
+	            //          ],
+	            //      "code": 400,
+	            //      "message": "Parse Error"
+	            //      }
+	            // }
+	            // example Google TimeZone API response:
+	            // {
+	            //     "status": "REQUEST_DENIED"
+	            // }
+	
+	            if (!response) return new GeoError(GeoError.Code.INVALID_RESPONSE);
+	
+	            var errCode = void 0;
+	
+	            if (_utils2.default.isString(response)) {
+	                errCode = errorCodeFromStatus(response);
+	                if (errCode) return new GeoError(errCode, message || response);
+	            }
+	
+	            if (!_utils2.default.isObject(response)) return null;
+	
+	            var errMsg = response.error_message || response.errorMessage || response.error && response.error.message || '' || '';
+	
+	            if (response.status) {
+	                errCode = errorCodeFromStatus(response.status);
+	                if (errCode) return new GeoError(errCode, errMsg || message || response.status);
+	            }
+	
+	            if (response.error) {
+	                var reason = response.reason || response.error.reason;
+	                if (!reason) {
+	                    var errors = response.error.errors;
+	                    if (_utils2.default.isArray(errors) && errors.length > 0) {
+	                        reason = errors[0].reason; // get the first reason only
+	                        errMsg = errMsg || errors[0].message; // update errMsg
+	                    }
+	                }
+	                errCode = errorCodeFromReason(reason) || GeoError.Code.UNKNOWN_ERROR;
+	                return new GeoError(errCode, errMsg || reason || message);
+	            }
+	
+	            if (errMsg) {
+	                errCode = errorCodeFromStatus(errMsg) || GeoError.Code.UNKNOWN_ERROR;
+	                return new GeoError(errCode, errMsg || message);
+	            }
+	
+	            return null;
+	        }
+	
+	        /**
+	         *  Checks whether the given value is an instance of `GeoError`.
+	         *
+	         *  @param {*} err - Object to be checked.
+	         *
+	         *  @returns {Boolean}
+	         */
+	
+	    }, {
+	        key: 'isGeoError',
+	        value: function isGeoError(err) {
+	            return err instanceof GeoError;
+	        }
+	
+	        /**
+	         *  Checks whether the given value is a valid Geolocator Error code.
+	         *
+	         *  @param {String} errorCode - Error code to be checked.
+	         *
+	         *  @returns {Boolean}
+	         */
+	
+	    }, {
+	        key: 'isValidErrorCode',
+	        value: function isValidErrorCode(errorCode) {
+	            var prop = void 0;
+	            for (prop in GeoError.Code) {
+	                if (GeoError.Code.hasOwnProperty(prop) && errorCode === GeoError.Code[prop]) {
+	                    return true;
+	                }
+	            }
+	            return false;
+	        }
+	    }]);
+	
+	    return GeoError;
+	}();
+	
+	/**
+	 *  Gets the string representation of the error instance.
+	 *
+	 *  @returns {String}
+	 */
+	
+	
+	GeoError.prototype.toString = function () {
+	    var msg = this.code !== this.message ? ' (' + this.message + ')' : '';
+	    return this.name + ': ' + this.code + msg;
+	};
+	
+	// `class x extends Error` doesn't work when using an ES6 transpiler, such as
+	// Babel, since subclasses must extend a class. With Babel 6, we need
+	// transform-builtin-extend plugin for this to work. So we're extending from
+	// Error the old way. Now, `err instanceof Error` also returns `true`.
+	if (typeof Object.setPrototypeOf === 'function') {
+	    Object.setPrototypeOf(GeoError.prototype, Error.prototype);
+	} else {
+	    GeoError.prototype = Object.create(Error.prototype);
+	}
+	
+	// ---------------------------
+	// ERROR CODES
+	// ---------------------------
+	
+	/**
+	 *  Enumerates Geolocator error codes.
+	 *  This enumeration combines Google API status (error) codes, HTML5 Geolocation
+	 *  position error codes and other Geolocator-specific error codes.
+	 *  @enum {String}
+	 */
+	GeoError.Code = {
+	    /**
+	     *  Indicates that HTML5 Geolocation API is not supported by the browser.
+	     *  @type {String}
+	     */
+	    GEOLOCATION_NOT_SUPPORTED: 'GEOLOCATION_NOT_SUPPORTED',
+	    /**
+	     *  Indicates that Geolocation-IP source is not set or invalid.
+	     *  @type {String}
+	     */
+	    INVALID_GEO_IP_SOURCE: 'INVALID_GEO_IP_SOURCE',
+	    /**
+	     *  The acquisition of the geolocation information failed because the
+	     *  page didn't have the permission to do it.
+	     *  @type {String}
+	     */
+	    PERMISSION_DENIED: 'PERMISSION_DENIED',
+	    /**
+	     *  The acquisition of the geolocation failed because at least one
+	     *  internal source of position returned an internal error.
+	     *  @type {String}
+	     */
+	    POSITION_UNAVAILABLE: 'POSITION_UNAVAILABLE',
+	    /**
+	     *  The time allowed to acquire the geolocation, defined by
+	     *  PositionOptions.timeout information was reached before
+	     *  the information was obtained.
+	     *  @type {String}
+	     */
+	    TIMEOUT: 'TIMEOUT',
+	    /**
+	     * Indicates that the request had one or more invalid parameters.
+	     * @type {String}
+	     */
+	    INVALID_PARAMETERS: 'INVALID_PARAMETERS',
+	    /**
+	     * Indicates that the service returned invalid response.
+	     * @type {String}
+	     */
+	    INVALID_RESPONSE: 'INVALID_RESPONSE',
+	    /**
+	     * Generally indicates that the query (address, components or latlng)
+	     * is missing.
+	     * @type {String}
+	     */
+	    INVALID_REQUEST: 'INVALID_REQUEST',
+	    /**
+	     * Indicates that the request was denied by the service.
+	     * This will generally occur because of a missing API key or because the request
+	     * is sent over HTTP instead of HTTPS.
+	     * @type {String}
+	     */
+	    REQUEST_DENIED: 'REQUEST_DENIED',
+	    /**
+	     * Indicates that the request has failed.
+	     * This will generally occur because of an XHR error.
+	     * @type {String}
+	     */
+	    REQUEST_FAILED: 'REQUEST_FAILED',
+	    /**
+	     * Indicates that Google API could not be loaded.
+	     * @type {String}
+	     */
+	    GOOGLE_API_FAILED: 'GOOGLE_API_FAILED',
+	    /**
+	     * Indicates that you are over your Google API quota.
+	     * @type {String}
+	     */
+	    OVER_QUERY_LIMIT: 'OVER_QUERY_LIMIT',
+	    /**
+	     * Indicates that you've exceeded the requests per second per user limit that
+	     * you configured in the Google Developers Console. This limit should be
+	     * configured to prevent a single or small group of users from exhausting your
+	     * daily quota, while still allowing reasonable access to all users.
+	     * @type {String}
+	     */
+	    USER_RATE_LIMIT_EXCEEDED: 'USER_RATE_LIMIT_EXCEEDED',
+	    /**
+	     * Indicates that you've exceeded your daily limit for Google API(s).
+	     * @type {String}
+	     */
+	    DAILY_LIMIT_EXCEEDED: 'DAILY_LIMIT_EXCEEDED',
+	    /**
+	     * Indicates that your Google API key is not valid. Please ensure that you've
+	     * included the entire key, and that you've either purchased the API or have
+	     * enabled billing and activated the API to obtain the free quota.
+	     * @type {String}
+	     */
+	    GOOGLE_KEY_INVALID: 'GOOGLE_KEY_INVALID',
+	    /**
+	     * Indicates that maximum number of elements limit is exceeded. For
+	     * example, for the Distance Matrix API; occurs when the product of
+	     * origins and destinations exceeds the per-query limit.
+	     * @type {String}
+	     */
+	    MAX_ELEMENTS_EXCEEDED: 'MAX_ELEMENTS_EXCEEDED',
+	    /**
+	     * Indicates that the request contained more than 25 origins,
+	     * or more than 25 destinations.
+	     * @type {String}
+	     */
+	    MAX_DIMENSIONS_EXCEEDED: 'MAX_DIMENSIONS_EXCEEDED',
+	    /**
+	     * Indicates that the request contained more than allowed waypoints.
+	     * @type {String}
+	     */
+	    MAX_WAYPOINTS_EXCEEDED: 'MAX_WAYPOINTS_EXCEEDED',
+	    /**
+	     * Indicates that the request body is not valid JSON.
+	     * @type {String}
+	     */
+	    PARSE_ERROR: 'PARSE_ERROR',
+	    /**
+	     * Indicates that the requested resource could not be found.
+	     * Note that this also covers `ZERO_RESULTS`.
+	     * @type {String}
+	     */
+	    NOT_FOUND: 'NOT_FOUND',
+	    /**
+	     * Indicates that an internal error (such as XHR cross-domain, etc) has occured.
+	     * @type {String}
+	     */
+	    INTERNAL_ERROR: 'INTERNAL_ERROR',
+	    /**
+	     * Indicates that an unknown error has occured.
+	     * @type {String}
+	     */
+	    UNKNOWN_ERROR: 'UNKNOWN_ERROR'
+	};
+	
+	// ---------------------------
+	// HELPER METHODS
+	// ---------------------------
+	
+	/**
+	 *  @private
+	 */
+	function errorCodeFromStatus(status) {
+	    if (!status) return GeoError.Code.INVALID_RESPONSE;
+	    if (status === 'OK') return null;
+	    if (status === 'ZERO_RESULTS') return GeoError.Code.NOT_FOUND;
+	    if (GeoError.Code.hasOwnProperty(status)) return status;
+	    return null;
+	}
+	
+	/**
+	 *  Gets `GeoError.Code` from the given response error reason.
+	 *  @private
+	 *
+	 *  @param {String} reason
+	 *         Google response error reason.
+	 *
+	 *  @returns {String}
+	 */
+	function errorCodeFromReason(reason) {
+	    switch (reason) {
+	        case 'invalid':
+	            return GeoError.Code.INVALID_REQUEST;
+	        case 'dailyLimitExceeded':
+	            return GeoError.Code.DAILY_LIMIT_EXCEEDED;
+	        case 'keyInvalid':
+	            return GeoError.Code.GOOGLE_KEY_INVALID;
+	        case 'userRateLimitExceeded':
+	            return GeoError.Code.USER_RATE_LIMIT_EXCEEDED;
+	        case 'notFound':
+	            return GeoError.Code.NOT_FOUND;
+	        case 'parseError':
+	            return GeoError.Code.PARSE_ERROR;
+	        default:
+	            return null;
+	    }
+	}
+	
+	// ---------------------------
+	// EXPORT
+	// ---------------------------
+	
+	exports.default = GeoError;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint no-nested-ternary:0 */
+	
+	var _utils = __webpack_require__(2);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var GeoWatcher = function () {
+	    function GeoWatcher(onChange, onError) {
+	        var _this = this;
+	
+	        var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	
+	        _classCallCheck(this, GeoWatcher);
+	
+	        this.isCleared = false;
+	        this.cycle = 0;
+	        this._timer = null;
+	        this.id = navigator.geolocation.watchPosition(function (pos) {
+	            _this.cycle++;
+	            if (_utils2.default.isFunction(onChange)) onChange(pos);
+	        }, function (err) {
+	            _this.cycle++;
+	            if (_utils2.default.isFunction(onError)) onError(err);
+	            if (options.clearOnError) {
+	                _this.clear();
+	            }
+	        }, options);
+	    }
+	
+	    _createClass(GeoWatcher, [{
+	        key: '_clear',
+	        value: function _clear() {
+	            navigator.geolocation.clearWatch(this.id);
+	            this.isCleared = true;
+	            this._timer = null;
+	        }
+	    }, {
+	        key: 'clear',
+	        value: function clear(delay, callback) {
+	            var _this2 = this;
+	
+	            var d = _utils2.default.isNumber(delay) ? delay : 0,
+	                cb = _utils2.default.isFunction(callback) ? callback : _utils2.default.isFunction(delay) ? delay : null;
+	            // clear any previous timeout
+	            if (this._timer) {
+	                clearTimeout(this._timer);
+	                this._timer = null;
+	            }
+	            // check if watcher is not cleared
+	            if (!this.isCleared) {
+	                if (d === 0) {
+	                    this._clear();
+	                    if (cb) cb();
+	                    return;
+	                }
+	                this._timer = setTimeout(function () {
+	                    _this2._clear();
+	                    if (cb) cb();
+	                }, d);
+	            }
+	        }
+	    }]);
+	
+	    return GeoWatcher;
+	}();
+	
+	// ---------------------------
+	// EXPORT
+	// ---------------------------
+	
+	exports.default = GeoWatcher;
 
 /***/ }
 /******/ ])
