@@ -1,7 +1,7 @@
 {
   "name": "geolocator",
   "version": "2.0.0",
-  "description": "A utility for getting geo-location information, geocoding, address look-ups, distance & durations, timezone information and more...",
+  "description": "A utility for getting geo-location information via HTML5 and IP look-ups, geocoding, address look-ups, distance and durations, timezone information and more...",
   "author": {
     "name": "Onur Yıldırım",
     "email": "onur@cutepilot.com"
@@ -51,12 +51,12 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "babel-core": "^6.9.1",
+    "babel-core": "^6.10.4",
     "babel-eslint": "^6.1.0",
     "babel-loader": "^6.2.4",
     "babel-preset-es2015": "^6.9.0",
-    "eslint": "^2.12.0",
-    "eslint-config-xo": "^0.15.0",
+    "eslint": "^2.13.1",
+    "eslint-config-xo": "^0.15.2",
     "grunt": "^1.0.1",
     "grunt-contrib-connect": "^1.0.2",
     "grunt-contrib-copy": "^1.0.0",
@@ -66,7 +66,7 @@
     "grunt-webpack": "^1.0.11",
     "html-loader": "^0.4.3",
     "matchdep": "^1.0.1",
-    "svg-inline-loader": "^0.4.1",
+    "svg-inline-loader": "^0.6.0",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   }
