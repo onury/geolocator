@@ -394,11 +394,7 @@ class fetch {
      * @returns {void}
      */
     static post(options, callback) {
-        options = utils.isString(options)
-            ? { url: options }
-            : options || {};
-        options.method = 'POST';
-        return fetch.xhr(options, callback);
+        return _xhr('POST', options, callback);
     }
 
     /**
@@ -414,11 +410,7 @@ class fetch {
      * @returns {void}
      */
     static put(options, callback) {
-        options = utils.isString(options)
-            ? { url: options }
-            : options || {};
-        options.method = 'PUT';
-        return fetch.xhr(options, callback);
+        return _xhr('PUT', options, callback);
     }
 
     /**
@@ -434,12 +426,19 @@ class fetch {
      * @returns {void}
      */
     static delete(options, callback) {
-        options = utils.isString(options)
-            ? { url: options }
-            : options || {};
-        options.method = 'DELETE';
-        return fetch.xhr(options, callback);
+        return _xhr('DELETE', options, callback);
     }
+}
+
+/**
+ *  @private
+ */
+function _xhr(method, options, callback) {
+    options = utils.isString(options)
+        ? { url: options }
+        : options || {};
+    options.method = method;
+    return fetch.xhr(options, callback);
 }
 
 /**
