@@ -1089,8 +1089,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'geocode',
 	        value: function geocode(options, callback) {
-	            checkGoogleKey();
-	            _geo2.default.geocode(false, geolocator._.config, options, callbackMap(options, callback));
+	            _geocode(false, options, callback);
 	        }
 	
 	        /**
@@ -1177,8 +1176,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'reverseGeocode',
 	        value: function reverseGeocode(options, callback) {
-	            checkGoogleKey();
-	            _geo2.default.geocode(true, geolocator._.config, options, callbackMap(options, callback));
+	            _geocode(true, options, callback);
 	        }
 	
 	        /**
@@ -1376,10 +1374,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	                var o = options.origins || options.origin || options.from,
 	                    d = options.destinations || options.destination || options.to;
-	                if (!_utils2.default.isPlainObject(options) || !_utils2.default.isString(o) && !_utils2.default.isArray(o) && !_utils2.default.isPlainObject(o) || !_utils2.default.isString(d) && !_utils2.default.isArray(d) && !_utils2.default.isPlainObject(d)) {
+	                if (!_utils2.default.isPlainObject(options) || invalidOriginOrDest(o) || invalidOriginOrDest(d)) {
 	                    throw new _geo4.default(_geo4.default.Code.INVALID_PARAMETERS);
 	                }
-	
 	                options.origins = _geo2.default.toPointList(o);
 	                options.destinations = _geo2.default.toPointList(d);
 	
@@ -1807,6 +1804,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	// ---------------------------
 	
 	/**
+	 *  Used with distance matrix calls.
+	 *  @private
+	 */
+	
+	
+	function invalidOriginOrDest(value) {
+	    return !_utils2.default.isString(value) && !_utils2.default.isArray(value) && !_utils2.default.isPlainObject(value);
+	}
+	
+	/**
 	 *  Check if XHR response is an error response and returns a `GeoError`.
 	 *  If not, returns the parsed response.
 	 *  @private
@@ -1818,8 +1825,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 *  @returns {GeoError|Object}
 	 */
-	
-	
 	function getXHRResponse(err, xhr) {
 	    if (err) return _geo4.default.create(err);
 	    if (!xhr) return new _geo4.default(_geo4.default.Code.REQUEST_FAILED);
@@ -1997,6 +2002,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return callback(null, location);
 	        });
 	    };
+	}
+	
+	/**
+	 *  Sends a geocode or reverse-geocode request with the given options.
+	 *  @private
+	 *
+	 *  @param {Boolean} reverse
+	 *         Whether to send reverse-geocode request.
+	 *  @param {Object} options
+	 *         Geocode options.
+	 *  @param {Function} callback
+	 *         Callback to be nested and executed with map callback.
+	 */
+	function _geocode(reverse, options, callback) {
+	    checkGoogleKey();
+	    _geo2.default.geocode(reverse, geolocator._.config, options, callbackMap(options, callback));
 	}
 	
 	/**
