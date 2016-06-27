@@ -1,11 +1,6 @@
 
 ## Change Log:
 
-### v2.0.1 (2016-06-27)
-
-- Revised and renamed `GeoError.fromGoogleResponse()` to `GeoError.fromResponse()`.
-- Minor code revisions and clean-up.
-
 ### v2.0.0 (2016-06-25)
 
 Please read the [**API documentation**][api-docs].
