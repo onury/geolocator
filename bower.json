@@ -1,6 +1,6 @@
 {
   "name": "geolocator",
-  "description": "A utility for getting geo-location information, geocoding, address look-ups, distance & durations, timezone information and more...",
+  "description": "A utility for getting geo-location information via HTML5 and IP look-ups, geocoding, address look-ups, distance and durations, timezone information and more...",
   "main": "dist/geolocator.js",
   "authors": [
     "Onur Yıldırım"
