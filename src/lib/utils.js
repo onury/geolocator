@@ -479,7 +479,6 @@ const utils = {
         let mapped = {};
         utils.forIn(schema, (value, key) => {
             if (utils.isPlainObject(value)) {
-                // TODO: dot notation in schema values???
                 mapped[key] = utils.mapToSchema(obj, value);
             } else {
                 mapped[key] = obj[value];
