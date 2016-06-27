@@ -35,6 +35,11 @@
         "operator-linebreak": 0,
         "padded-blocks": 0,
         "no-negated-condition": 0,
-        "quote-props": 0
+        "quote-props": 0,
+        "no-prototype-builtins": 0,
+        "max-lines": 0,
+        "complexity": 0,
+        "no-nested-ternary": 0,
+        "no-mixed-operators": 0
     }
 }

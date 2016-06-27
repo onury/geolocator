@@ -1,5 +1,3 @@
-/* eslint no-nested-ternary:0 */
-
 import utils from '../lib/utils';
 import fetch from '../lib/fetch';
 import geoHelper from './geo.helper';
@@ -20,63 +18,6 @@ const EARTH_RADIUS_KM = 6371;
  * @type {Number}
  */
 const EARTH_RADIUS_MI = 3959;
-
-/**
- * Enumerates API endpoints used within Geolocator core.
- *
- * @enum {String}
- * @readonly
- * @private
- */
-const URL = {
-    /**
-     *  Public IP retrieval (free) service.
-     *  @type {String}
-     *  @private
-     */
-    IP: '//api.ipify.org',
-    /**
-     *  Country SVG flags.
-     *  e.g. <url>/tr.svg for Turkey flag.
-     *  @type {String}
-     *  @private
-     */
-    FLAG: '//cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/flags/4x3/',
-    /**
-     * Google Maps API bootstrap endpoint that loads all of the main
-     * Javascript objects and symbols for use in the Maps API.
-     * Some Maps API features are also available in self-contained
-     * libraries which are not loaded unless you specifically request them.
-     * See {@link https://developers.google.com/maps/documentation/javascript/libraries|details}.
-     * @type {String}
-     * @private
-     */
-    GOOGLE_MAPS_API: '//maps.googleapis.com/maps/api/js',
-    /**
-     * Google Geolocation API endpoint.
-     * @type {String}
-     * @private
-     */
-    GOOGLE_GEOLOCATION: '//www.googleapis.com/geolocation/v1/geolocate',
-    /**
-     * Google Geocode API endpoint.
-     * @type {String}
-     * @private
-     */
-    GOOGLE_GEOCODE: '//maps.googleapis.com/maps/api/geocode/json',
-    /**
-     * Google TimeZone API endpoint.
-     * @type {String}
-     * @private
-     */
-    GOOGLE_TIMEZONE: '//maps.googleapis.com/maps/api/timezone/json',
-    /**
-     * Google Distance Matrix API endpoint.
-     * @type {String}
-     * @private
-     */
-    GOOGLE_DISTANCE_MATRIX: '//maps.googleapis.com/maps/api/distancematrix/json'
-};
 
 /**
  * Storage for Geolocator default configuration.
@@ -637,7 +578,7 @@ class geolocator {
 
         let conf = geolocator._.config,
             key = conf.google.key || '',
-            url = utils.setProtocol(URL.GOOGLE_GEOLOCATION, conf.https),
+            url = utils.setProtocol(enums.URL.GOOGLE_GEOLOCATION, conf.https),
             xhrOpts = {
                 url: `${url}?key=${key}`,
                 headers: {
@@ -648,20 +589,8 @@ class geolocator {
         // console.log(xhrOpts.data);
 
         fetch.post(xhrOpts, (err, xhr) => {
-            let response = Boolean(xhr) && utils.safeJsonParse(xhr.responseText);
-
-            if (err) {
-                let gErr = GeoError.fromGoogleResponse(response);
-                if (gErr.code === GeoError.Code.UNKNOWN_ERROR) {
-                    throw new GeoError(GeoError.Code.INTERNAL_ERROR, err.message);
-                }
-                return cb(gErr, null);
-            }
-
-            if (!response) {
-                err = new GeoError(GeoError.Code.INVALID_RESPONSE);
-                return cb(err, null);
-            }
+            let response = getXHRResponse(err, xhr);
+            if (GeoError.isGeoError(response)) return cb(response, null);
 
             response = options.raw ? response : {
                 coords: {
@@ -844,7 +773,7 @@ class geolocator {
      *            Source URL without the callback query parameter. The callback
      *            name (if supported) should be set via `options.callbackParam`.
      *            Also, make sure the service supports the protocol you use in
-     *            the URL. If it supports both HTTP and HTTPS, you can omit the
+     *            the enums.URL. If it supports both HTTP and HTTPS, you can omit the
      *            protocol. In this case, it will be determined via Geolocator
      *            configuration.
      *            See {@link #geolocator.config|`geolocator.config()`}.
@@ -1107,28 +1036,13 @@ class geolocator {
      * }
      */
     static geocode(options, callback) {
-        if (utils.isString(options)) {
-            options = { address: options };
-        } else if (!utils.isPlainObject(options)) {
-            throw new GeoError(GeoError.Code.INVALID_PARAMETERS);
-        }
-
         checkGoogleKey();
-
-        let conf = geolocator._.config;
-        options = utils.extend({
-            key: conf.google.key || '',
-            language: conf.language || 'en',
-            raw: false
-        }, options);
-
-        let query = geoHelper.buildGeocodeParams(options, false),
-            url = utils.setProtocol(URL.GOOGLE_GEOCODE, conf.https),
-            xhrOpts = {
-                url: `${url}?${query}`
-            },
-            cb = callbackMap(options, callback);
-        geoHelper.geocode(xhrOpts, options.raw, cb);
+        geoHelper.geocode(
+            false,
+            geolocator._.config,
+            options,
+            callbackMap(options, callback)
+        );
     }
 
     /**
@@ -1212,35 +1126,13 @@ class geolocator {
      * }
      */
     static reverseGeocode(options, callback) {
-        if (utils.isString(options)) {
-            options = { placeId: options };
-        } else if (!utils.isPlainObject(options)) {
-            throw new GeoError(GeoError.Code.INVALID_PARAMETERS);
-        }
-
-        let coordsSet = utils.isNumber(options.latitude)
-            && utils.isNumber(options.longitude);
-
-        if (!utils.isString(options.placeId) && !coordsSet) {
-            throw new GeoError(GeoError.Code.INVALID_PARAMETERS);
-        }
-
         checkGoogleKey();
-
-        let conf = geolocator._.config;
-        options = utils.extend({
-            key: conf.google.key || '',
-            language: conf.language || 'en',
-            raw: false
-        }, options);
-
-        let query = geoHelper.buildGeocodeParams(options, true),
-            url = utils.setProtocol(URL.GOOGLE_GEOCODE, conf.https),
-            xhrOpts = {
-                url: `${url}?${query}`
-            },
-            cb = callbackMap(options, callback);
-        geoHelper.geocode(xhrOpts, options.raw, cb);
+        geoHelper.geocode(
+            true,
+            geolocator._.config,
+            options,
+            callbackMap(options, callback)
+        );
     }
 
     /**
@@ -1314,31 +1206,14 @@ class geolocator {
             raw: false
         }, options);
 
-        let url = utils.setProtocol(URL.GOOGLE_TIMEZONE, conf.https),
+        let url = utils.setProtocol(enums.URL.GOOGLE_TIMEZONE, conf.https),
             xhrOpts = {
                 url: `${url}?location=${options.latitude},${options.longitude}&timestamp=${options.timestamp}&language=${options.language}&key=${options.key}`
             };
 
         fetch.xhr(xhrOpts, (err, xhr) => {
-            let response = Boolean(xhr) && utils.safeJsonParse(xhr.responseText);
-
-            if (err) {
-                let gErr = GeoError.fromGoogleResponse(response);
-                if (gErr.code === GeoError.Code.UNKNOWN_ERROR) {
-                    throw new GeoError(GeoError.Code.INTERNAL_ERROR, err.message);
-                }
-                return callback(gErr, null);
-            }
-
-            if (!response) {
-                err = new GeoError(GeoError.Code.INVALID_RESPONSE);
-                return callback(err, null);
-            }
-
-            if (response.status !== 'OK') {
-                err = GeoError.fromGoogleResponse(response);
-                return callback(err, null);
-            }
+            let response = getXHRResponse(err, xhr);
+            if (GeoError.isGeoError(response)) return callback(response, null);
 
             response = options.raw ? response : {
                 id: response.timeZoneId,
@@ -1469,7 +1344,8 @@ class geolocator {
             service.getDistanceMatrix(options, (response, status) => {
                 let err = null;
                 if (status !== google.maps.DistanceMatrixStatus.OK) {
-                    err = GeoError.fromGoogleResponse(status);
+                    err = GeoError.fromResponse(status)
+                        || GeoError.fromResponse(response);
                     response = null;
                 } else {
                     response = options.raw ? response : geoHelper.formatDistanceResults(response);
@@ -1570,7 +1446,7 @@ class geolocator {
         let conf = geolocator._.config;
 
         let jsonpOpts = {
-            url: utils.setProtocol(URL.IP, conf.https),
+            url: utils.setProtocol(enums.URL.IP, conf.https),
             async: true,
             clean: true,
             params: {
@@ -1632,7 +1508,7 @@ class geolocator {
         }
         if (!geolocator.isGoogleLoaded()) {
             let jsonpOpts = {
-                url: URL.GOOGLE_MAPS_API,
+                url: enums.URL.GOOGLE_MAPS_API,
                 async: true,
                 callbackParam: 'callback',
                 params: {
@@ -1753,6 +1629,27 @@ class geolocator {
 // ---------------------------
 // HELPER METHODS
 // ---------------------------
+
+/**
+ *  Check if XHR response is an error response and returns a `GeoError`.
+ *  If not, returns the parsed response.
+ *  @private
+ *
+ *  @param {Error} err
+ *         XHR error.
+ *  @param {Object} xhr
+ *         XHR object to be checked.
+ *
+ *  @returns {GeoError|Object}
+ */
+function getXHRResponse(err, xhr) {
+    if (err) return GeoError.create(err);
+    if (!xhr) return new GeoError(GeoError.Code.REQUEST_FAILED);
+    let response = utils.safeJsonParse(xhr.responseText);
+    // Check if XHR response is an error response.
+    // return response if not.
+    return GeoError.fromResponse(response) || response;
+}
 
 /**
  *  Checks the given options and determines if Google key is required.
@@ -1898,7 +1795,7 @@ function setFlagURL(location) {
         cc = address.country;
     }
     if (!cc) return;
-    location.flag = URL.FLAG + cc.toLowerCase() + '.svg';
+    location.flag = enums.URL.FLAG + cc.toLowerCase() + '.svg';
 }
 
 /**

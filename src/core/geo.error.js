@@ -1,5 +1,3 @@
-/* eslint no-nested-ternary:0 */
-
 import utils from '../lib/utils';
 
 /**
@@ -141,24 +139,28 @@ class GeoError { // extends Error (doesn't work with transpilers)
     }
 
     /**
-     * Creates a new instance of `GeoError` from the given Google API
-     * response object. Since Geolocator implements various Google APIs,
-     * we might receive responses if different structures. For example,
-     * some APIs return a response object with a `status:String` property
-     * (such as the TimeZone API) and some return responses with an
-     * `error:Object` property. This method will determine the correct reason or
-     * message and return a consistent error object.
+     * Creates a new instance of `GeoError` from the given response object.
+     * Since Geolocator implements various Google APIs, we might receive
+     * responses if different structures. For example, some APIs return a
+     * response object with a `status:String` property (such as the TimeZone
+     * API) and some return responses with an `error:Object` property. This
+     * method will determine the correct reason or message and return a
+     * consistent error object.
      *
      * @param {Object|String} response
-     *        Google API response (Object) or status (String) to be transformed.
+     *        Response (Object) or status (String) to be transformed.
+     * @param {String} [message=null]
+     *        Error message.
      *
      * @returns {GeoError}
+     *          `GeoError` instance if response contains an error. Otherwise,
+     *          returns `null`.
      *
      * @example
-     * var error = geolocator.Error.fromGoogleResponse(googleResponse);
+     * var error = geolocator.Error.fromResponse(googleResponse);
      * console.log(error.code); // "GOOGLE_KEY_INVALID"
      */
-    static fromGoogleResponse(response) {
+    static fromResponse(response, message = '') {
         // example Google Geolocation API response:
         // https://developers.google.com/maps/documentation/geolocation/intro#errors
         // {
@@ -179,62 +181,46 @@ class GeoError { // extends Error (doesn't work with transpilers)
         //     "status": "REQUEST_DENIED"
         // }
 
-        let errCode = GeoError.Code.UNKNOWN_ERROR;
-        if (!response) return new GeoError(errCode);
+        if (!response) return new GeoError(GeoError.Code.INVALID_RESPONSE);
 
-        let status = utils.isObject(response)
-                ? response.status
-                : (utils.isString(response) ? response : null),
-            message = '';
+        let errCode;
 
-        if (status) {
-            message = response.error_message || response.errorMessage;
-            if (GeoError.Code.hasOwnProperty(status)) {
-                errCode = status;
-            } else if (status === 'ZERO_RESULTS') {
-                errCode = GeoError.Code.NOT_FOUND;
-            } else {
-                // errCode = GeoError.Code.UNKNOWN_ERROR;
-                message = message ? `${errCode} (${message})` : errCode;
-            }
-        } else if (response.error) {
-            let reason = response.reason || response.error.reason;
-            message = response.error.message;
-            if (!reason) {
-                let errors = response.error.errors;
-                reason = utils.isArray(errors) && errors.length > 0
-                    ? errors[0].reason // get the first reason only
-                    : null;
-            }
-
-            if (reason) {
-                switch (reason) {
-                    case 'invalid':
-                        errCode = GeoError.Code.INVALID_REQUEST;
-                        break;
-                    case 'dailyLimitExceeded':
-                        errCode = GeoError.Code.DAILY_LIMIT_EXCEEDED;
-                        break;
-                    case 'keyInvalid':
-                        errCode = GeoError.Code.GOOGLE_KEY_INVALID;
-                        break;
-                    case 'userRateLimitExceeded':
-                        errCode = GeoError.Code.USER_RATE_LIMIT_EXCEEDED;
-                        break;
-                    case 'notFound':
-                        errCode = GeoError.Code.NOT_FOUND;
-                        break;
-                    case 'parseError':
-                        errCode = GeoError.Code.PARSE_ERROR;
-                        break;
-                    default:
-                        errCode = GeoError.Code.UNKNOWN_ERROR;
-                        break;
-                }
-            }
+        if (utils.isString(response)) {
+            errCode = errorCodeFromStatus(response);
+            if (errCode) return new GeoError(errCode, message || response);
         }
 
-        return new GeoError(errCode, message);
+        if (!utils.isObject(response)) return null;
+
+        let errMsg = response.error_message
+            || response.errorMessage
+            || ((response.error && response.error.message) || '')
+            || '';
+
+        if (response.status) {
+            errCode = errorCodeFromStatus(response.status);
+            if (errCode) return new GeoError(errCode, errMsg || message || response.status);
+        }
+
+        if (response.error) {
+            let reason = response.reason || response.error.reason;
+            if (!reason) {
+                let errors = response.error.errors;
+                if (utils.isArray(errors) && errors.length > 0) {
+                    reason = errors[0].reason; // get the first reason only
+                    errMsg = errMsg || errors[0].message; // update errMsg
+                }
+            }
+            errCode = errorCodeFromReason(reason) || GeoError.Code.UNKNOWN_ERROR;
+            return new GeoError(errCode, errMsg || reason || message);
+        }
+
+        if (errMsg) {
+            errCode = errorCodeFromStatus(errMsg) || GeoError.Code.UNKNOWN_ERROR;
+            return new GeoError(errCode, errMsg || message);
+        }
+
+        return null;
     }
 
     /**
@@ -351,6 +337,12 @@ GeoError.Code = {
      */
     REQUEST_DENIED: 'REQUEST_DENIED',
     /**
+     * Indicates that the request has failed.
+     * This will generally occur because of an XHR error.
+     * @type {String}
+     */
+    REQUEST_FAILED: 'REQUEST_FAILED',
+    /**
      * Indicates that Google API could not be loaded.
      * @type {String}
      */
@@ -420,6 +412,49 @@ GeoError.Code = {
      */
     UNKNOWN_ERROR: 'UNKNOWN_ERROR'
 };
+
+// ---------------------------
+// HELPER METHODS
+// ---------------------------
+
+/**
+ *  @private
+ */
+function errorCodeFromStatus(status) {
+    if (!status) return GeoError.Code.INVALID_RESPONSE;
+    if (status === 'OK') return null;
+    if (status === 'ZERO_RESULTS') return GeoError.Code.NOT_FOUND;
+    if (GeoError.Code.hasOwnProperty(status)) return status;
+    return null;
+}
+
+/**
+ *  Gets `GeoError.Code` from the given response error reason.
+ *  @private
+ *
+ *  @param {String} reason
+ *         Google response error reason.
+ *
+ *  @returns {String}
+ */
+function errorCodeFromReason(reason) {
+    switch (reason) {
+        case 'invalid':
+            return GeoError.Code.INVALID_REQUEST;
+        case 'dailyLimitExceeded':
+            return GeoError.Code.DAILY_LIMIT_EXCEEDED;
+        case 'keyInvalid':
+            return GeoError.Code.GOOGLE_KEY_INVALID;
+        case 'userRateLimitExceeded':
+            return GeoError.Code.USER_RATE_LIMIT_EXCEEDED;
+        case 'notFound':
+            return GeoError.Code.NOT_FOUND;
+        case 'parseError':
+            return GeoError.Code.PARSE_ERROR;
+        default:
+            return null;
+    }
+}
 
 // ---------------------------
 // EXPORT
