@@ -69,10 +69,18 @@ module.exports = function (grunt) {
             'dist': {
                 files: [
                     {
+                        expand: true,
                         src: [
                             'dist/geolocator.min.js'
                         ],
-                        dest: '../../onury.github.io/'
+                        dest: '../../onury.github.io/',
+                        // rename geolocator.min.js to geolocator.js bec.
+                        // example/index.html has reference to geolocator.js not
+                        // geolocator.min.js - otherwise, webpack-server will
+                        // not hot-update.
+                        rename: function (dest, src) { // (dest, src)
+                            return dest + 'dist/geolocator.js';
+                        }
                     }
                 ]
             }

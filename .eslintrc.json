@@ -4,6 +4,7 @@
         "sourceType": "module",
         "ecmaFeatures": {
             "globalReturn": true,
+            "modules": true,
             "jsx": false
         }
     },
