@@ -1036,13 +1036,7 @@ class geolocator {
      * }
      */
     static geocode(options, callback) {
-        checkGoogleKey();
-        geoHelper.geocode(
-            false,
-            geolocator._.config,
-            options,
-            callbackMap(options, callback)
-        );
+        geocode(false, options, callback);
     }
 
     /**
@@ -1126,13 +1120,7 @@ class geolocator {
      * }
      */
     static reverseGeocode(options, callback) {
-        checkGoogleKey();
-        geoHelper.geocode(
-            true,
-            geolocator._.config,
-            options,
-            callbackMap(options, callback)
-        );
+        geocode(true, options, callback);
     }
 
     /**
@@ -1323,12 +1311,9 @@ class geolocator {
 
             let o = options.origins || options.origin || options.from,
                 d = options.destinations || options.destination || options.to;
-            if (!utils.isPlainObject(options)
-                    || (!utils.isString(o) && !utils.isArray(o) && !utils.isPlainObject(o))
-                    || (!utils.isString(d) && !utils.isArray(d) && !utils.isPlainObject(d))) {
+            if (!utils.isPlainObject(options) || invalidOriginOrDest(o) || invalidOriginOrDest(d)) {
                 throw new GeoError(GeoError.Code.INVALID_PARAMETERS);
             }
-
             options.origins = geoHelper.toPointList(o);
             options.destinations = geoHelper.toPointList(d);
 
@@ -1631,6 +1616,16 @@ class geolocator {
 // ---------------------------
 
 /**
+ *  Used with distance matrix calls.
+ *  @private
+ */
+function invalidOriginOrDest(value) {
+    return !utils.isString(value)
+        && !utils.isArray(value)
+        && !utils.isPlainObject(value);
+}
+
+/**
  *  Check if XHR response is an error response and returns a `GeoError`.
  *  If not, returns the parsed response.
  *  @private
@@ -1821,6 +1816,27 @@ function callbackMap(options, callback) {
             return callback(null, location);
         });
     };
+}
+
+/**
+ *  Sends a geocode or reverse-geocode request with the given options.
+ *  @private
+ *
+ *  @param {Boolean} reverse
+ *         Whether to send reverse-geocode request.
+ *  @param {Object} options
+ *         Geocode options.
+ *  @param {Function} callback
+ *         Callback to be nested and executed with map callback.
+ */
+function geocode(reverse, options, callback) {
+    checkGoogleKey();
+    geoHelper.geocode(
+        reverse,
+        geolocator._.config,
+        options,
+        callbackMap(options, callback)
+    );
 }
 
 /**
