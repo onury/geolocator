@@ -1,7 +1,31 @@
+engines:
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
 languages:
-  Ruby: false
   JavaScript: true
-  PHP: false
-  Python: false
+ratings:
+  paths:
+  - "src/**"
+  - "**.js"
+ecmaFeatures:
+  modules: true
+env:
+  amd: true
+  browser: true
+  es6: true
+  jquery: false
+  node: false
 exclude_paths:
+- "test/"
+- "dist/"
+- "example/"
 - "src/geo-ip-sources/"
