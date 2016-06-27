@@ -78,7 +78,7 @@ module.exports = function (grunt) {
                         // example/index.html has reference to geolocator.js not
                         // geolocator.min.js - otherwise, webpack-server will
                         // not hot-update.
-                        rename: function (dest, src) { // (dest, src)
+                        rename: function (dest) { // (dest, src)
                             return dest + 'dist/geolocator.js';
                         }
                     }
