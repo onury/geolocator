@@ -1730,7 +1730,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Documented in separately in enums.js
+	         * Documented separately in enums.js
 	         * @private
 	         */
 	
@@ -1741,7 +1741,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Documented in separately in enums.js
+	         * Documented separately in enums.js
 	         * @private
 	         */
 	
@@ -1752,7 +1752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Documented in separately in enums.js
+	         * Documented separately in enums.js
 	         * @private
 	         */
 	
@@ -1763,7 +1763,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Documented in separately in enums.js
+	         * Documented separately in enums.js
 	         * @private
 	         */
 	
@@ -1774,7 +1774,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Documented in separately in enums.js
+	         * Documented separately in enums.js
 	         * @private
 	         */
 	
@@ -1785,7 +1785,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Documented in separately in enums.js
+	         * Documented separately in enums.js
 	         * @private
 	         */
 	
@@ -2156,9 +2156,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	// ---------------------------
 
 	/**
-	 *  Specifies the geographic location of the device. The location is expressed
-	 *  as a set of geographic coordinates together with information about heading
-	 *  and speed.
+	 *  `Coordinates` inner type that specifies the geographic position of the
+	 *  device. The position is expressed as a set of geographic coordinates
+	 *  together with information about heading and speed.
+	 *
+	 *  This is generally returned as part of the
+	 *  {@link ?api=geolocator#geolocator~Location|`Location` result object}.
 	 *
 	 *  @typedef geolocator~Coordinates
 	 *  @type Object
@@ -2185,8 +2188,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	/**
-	 *	Specifies the address of the fetched location. The address is expressed
-	 *	as a set of political and locality components.
+	 *	`Address` inner type that specifies the address of the fetched location.
+	 *	The address is expressed as a set of political and locality components.
+	 *
+	 *  This is generally returned as part of the
+	 *  {@link ?api=geolocator#geolocator~Location|`Location` result object}.
 	 *
 	 *  @typedef geolocator~Address
 	 *  @type Object
@@ -2221,8 +2227,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	/**
-	 *	Specifies time offset data for the fetched location on the surface of the
-	 *	earth.
+	 *	`TimeZone` inner type that specifies time offset data for the fetched
+	 *	location on the surface of the earth.
+	 *
+	 *  This is generally returned as part of the
+	 *  {@link ?api=geolocator#geolocator~Location|`Location` result object}.
 	 *
 	 *  @typedef geolocator~TimeZone
 	 *  @type Object
@@ -2249,8 +2258,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	/**
-	 *	Provides references to the components of a created Google Maps `Map` and
-	 *	the containing DOM element.
+	 *	`MapData` inner type that provides references to the components of a
+	 *	created Google Maps `Map` and the containing DOM element.
+	 *
+	 *  This is generally returned as part of the
+	 *  {@link ?api=geolocator#geolocator~Location|`Location` result object}.
 	 *
 	 *  @typedef geolocator~MapData
 	 *  @type Object
@@ -2268,13 +2280,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	/**
-	 *	Specifies geographic coordinates, address and time zone information
-	 *	for the fetched location.
+	 *	`Location` inner type that specifies geographic coordinates, address and
+	 *	time zone information for the fetched location.
 	 *
 	 *  This result object is passed to the callbacks of the corresponding
-	 *  asynchronous Geolocator methods, as the second argument. The contents of
-	 *  this object will differ for various Geolocator methods, depending on the
-	 *  configured method options.
+	 *  asynchronous Geolocator methods (such as `.locate()` method), as the second
+	 *  argument. The contents of this object will differ for various  Geolocator
+	 *  methods, depending on the configured method options.
 	 *
 	 *  @typedef geolocator~Location
 	 *  @type Object
@@ -2540,10 +2552,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Sets the protocol of the given URL.
 	     * @memberof utils
 	     *
-	     * @param {String} url - The URL to be modified.
-	     * @param {Boolean} https - Optional. Default: `undefined`
-	     * Specifies whether to set the protocol to HTTPS.
-	     * If omitted, current page protocol will be used.
+	     * @param {String} url
+	     *        The URL to be modified.
+	     * @param {Boolean} [https]
+	     *        Specifies whether to set the protocol to HTTPS.
+	     *        If omitted, current page protocol will be used.
+	     *
 	     * @returns {String} - The modified URL string.
 	     */
 	    setProtocol: function setProtocol(url, https) {
@@ -2598,7 +2612,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    /**
 	     * Converts the given value to string.
-	     * null and undefined converts to empty string.
+	     * `null` and `undefined` converts to empty string.
 	     * If value is a function, it's native `toString()` method is used.
 	     * Otherwise, value is coerced.
 	     * @memberof utils
@@ -2619,8 +2633,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Generates a random string with the number of characters.
 	     * @memberof utils
 	     *
-	     * @param {Number} len - Optional. Default: `1`.
-	     * Length of the string.
+	     * @param {Number} [len=1] - Length of the string.
 	     * @returns {String} - Returns a random string.
 	     */
 	    randomString: function randomString(len) {
@@ -2634,10 +2647,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Gets the abbreviation of the given phrase.
 	     * @memberof utils
 	     *
-	     * @param {String} str - String to abbreviate.
-	     * @param {Object} options - Abbreviation options.
-	     *     @param {Boolean} options.upper - Whether to convert to upper-case.
-	     *     @param {Boolean} options.dots - Whether to add dots after each abbreviation.
+	     * @param {String} str
+	     *        String to abbreviate.
+	     * @param {Object} [options]
+	     *        Abbreviation options.
+	     *     @param {Boolean} [options.upper=true]
+	     *            Whether to convert to upper-case.
+	     *     @param {Boolean} [options.dots=true]
+	     *            Whether to add dots after each abbreviation.
 	     *
 	     * @returns {String} - Returns the abbreviation of the given phrase.
 	     */
@@ -2659,15 +2676,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     * @param {Object} obj - Object to be processed.
 	     * @param {Object} options - Parameterize options.
-	     *     @param {Boolean} options.encode - Optional. Default: `true`.
-	     *     Whether to encode URI components.
-	     *     @param {String} options.operator - Optional. Default: `"="`.
-	     *     @param {String} options.separator - Optional. Default: `"&"`.
-	     *     @param {Array} options.include - Optional. Default: `undefined`.
-	     *     Keys to be included in the output params. If defined,
-	     *     `options.exclude` is ignored.
-	     *     @param {Array} options.exclude - Optional. Default: `undefined`.
-	     *     Keys to be excluded from the output params.
+	     *     @param {Boolean} [options.encode=true]
+	     *            Whether to encode URI components.
+	     *     @param {String} [options.operator="="]
+	     *     @param {String} [options.separator="&"]
+	     *     @param {Array} [options.include]
+	     *            Keys to be included in the output params. If defined,
+	     *            `options.exclude` is ignored.
+	     *     @param {Array} [options.exclude]
+	     *            Keys to be excluded from the output params.
 	     *
 	     * @returns {String} - URI parameters string.
 	     */
@@ -2730,10 +2747,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * property.
 	     * @memberof utils
 	     *
-	     * @param {Object} obj - Object to be processed.
-	     * @param {Function} callback - Callback function with the following
-	     * signature: `function (value, key, object) { ... }`.
-	     * Explicitly returning `false` will exit the iteration early.
+	     * @param {Object} obj
+	     *        Object to be processed.
+	     * @param {Function} callback
+	     *        Callback function with the following signature:
+	     *        `function (value, key, object) { ... }`.
+	     *        Explicitly returning `false` will exit the iteration early.
 	     * @returns {void}
 	     */
 	    forIn: function forIn(obj, callback) {
@@ -2751,9 +2770,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * NOTE: This is not a full implementation. Use with caution.
 	     * @memberof utils
 	     *
-	     * @param {Object} destination - Destionation Object that will be extended
-	     * and holds the default values.
-	     * @param {...Object} sources - Source objects to be merged.
+	     * @param {Object} destination
+	     *        Destionation Object that will be extended and holds the default
+	     *        values.
+	     * @param {...Object} sources
+	     *        Source objects to be merged.
+	     *
 	     * @returns {Object} - Returns the extended object.
 	     */
 	    extend: function extend(destination) {
@@ -2789,14 +2811,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * NOTE: This is not a full implementation. Use with caution.
 	     * @memberof utils
 	     *
-	     * @param {Object} obj - Target Object to be cloned.
-	     * @param {Object|Array} options - Optional. Clone options or array of keys
-	     * to be cloned.
-	     *     @param {Array} options.keys - Optional. Default: `undefined`.
-	     *     Keys of the properties to be cloned.
-	     *     @param {Boolean} options.own - Optional. Default: `true`.
-	     *     Whether to clone own properties only. This is only effective if
-	     *     `keys` is not defined.
+	     * @param {Object} obj
+	     *        Target Object to be cloned.
+	     * @param {Object|Array} [options]
+	     *        Clone options or array of keys to be cloned.
+	     *     @param {Array} [options.keys]
+	     *            Keys of the properties to be cloned.
+	     *     @param {Boolean} [options.own=true]
+	     *            Whether to clone own properties only. This is only effective
+	     *            if `keys` is not defined.
+	     *
 	     * @returns {Object} - Returns the cloned object.
 	     */
 	    clone: function clone(obj, options) {
@@ -2832,15 +2856,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *  object.
 	     *  @memberof utils
 	     *
-	     *  @param {Object} obj - Original object to be mapped.
-	     *  @param {Object} schema - Schema to be used to map the object.
+	     *  @param {Object} obj
+	     *         Original object to be mapped.
+	     *  @param {Object} schema
+	     *         Schema to be used to map the object.
+	     *
 	     *  @returns {Object} - Mapped object.
 	     */
 	    mapToSchema: function mapToSchema(obj, schema) {
 	        var mapped = {};
 	        utils.forIn(schema, function (value, key) {
 	            if (utils.isPlainObject(value)) {
-	                // TODO: dot notation in schema values???
 	                mapped[key] = utils.mapToSchema(obj, value);
 	            } else {
 	                mapped[key] = obj[value];
@@ -2878,8 +2904,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * January 1, 1970 UTC.
 	     * @memberof utils
 	     *
-	     * @param {Boolean} seconds - Optional. Default: `false`.
-	     * Specifies whether seconds should be returned instead of milliseconds.
+	     * @param {Boolean} [seconds=false]
+	     *        Specifies whether seconds should be returned instead of
+	     *        milliseconds.
+	     *
 	     * @returns {Number} - Returns seconds or milliseconds since midnight,
 	     * January 1, 1970 UTC.
 	     */
@@ -2940,87 +2968,94 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @param {Object|String} options - Required. Either the URL string which
 	         *     will set other options to defaults or an options object with the
 	         *     following properties.
-	         *     @param {String} options.url - Required. Source URL to be called.
-	         *     @param {String} options.type - Optional. Default: `undefined`.
-	         *     The MIME type that identifies the scripting language of the code
-	         *     referenced within the script element. e.g. `"text/javascript"`
-	         *     @param {String} options.charset - Optional. Default: `undefined`.
-	         *     Indicates the character encoding of the external resource. e.g. `"utf-8"`.
-	         *     @param {Boolean} options.async - Optional. Default: `true`.
-	         *     Indicates whether or not to perform the operation asynchronously.
-	         *     See {@link http://caniuse.com/#feat=script-async|browser support}.
-	         *     @param {Boolean} options.defer - Optional. Default: `false`.
-	         *     Indicates whether the script should be executed when the page has
-	         *     finished parsing. See {@link http://caniuse.com/#feat=script-defer|browser support}.
-	         *     @param {String} options.crossorigin - Optional. Default: `undefined`.
-	         *     Indicates the CORS setting for the script element being injected.
-	         *     Note that this attribute is not widely supported.
-	         *     Valid values: `"anonymous"`, `"use-credentials"`.
-	         *     See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes|CORS settings}.
-	         *     @param {Number} options.timeout - Optional. Default: `0` (no timeout).
-	         *     The number of milliseconds a request can take before automatically
-	         *     being terminated.
-	         *     @param {Boolean} options.clean - Optional. Default: `false`.
-	         *     Whether to remove the loaded script from DOM when the operation ends.
-	         *     Note that the initial source might load additional sources which are
-	         *     not deteceted or removed. Only the initial source is removed.
-	         *     @param {Object} options.params - Optional. Default: `undefined`.
-	         *     Optional query parameters to be appended at the end of the URL.
-	         *     e.g. `{ key: "MY-KEY" }`
-	         *     You can also include the JSONP callback name parameter here but
-	         *     if you want the object to be passed to the callback argument of this
-	         *     method, use `options.callbackParam` to set the callback parameter.
-	         *     @param {String} options.callbackParam - Optional. Default: `undefined`.
-	         *     If the endpoint supports JSONP callbacks, you can set the callback
-	         *     parameter with this setting. This will enable a second `obj` argument
-	         *     in the callback of this method which is useful if the JSONP source
-	         *     invokes the callback with an argument.
-	         *     @param {String} options.rootName - Optional. Default: `undefined`.
-	         *     The name (or notation) of the object that the generated JSONP
-	         *     callback function should be assigned to. By default, this is the
-	         *     `window` object but you can set this to a custom object notation;
-	         *     for example, to prevent global namespace polution. Note that this
-	         *     root object has to be globally accessible for this to work.
-	         *     e.g. `"window.myObject"` (as string)
-	         * @param {Function} callback - Optional. The callback function that will be
-	         * executed when the script is loaded. This callback has the following
-	         * signature: `function (err, obj) { ... }`. Note that the second argument
-	         * `obj` will always be `undefined` if the source endpoint does not support
-	         * JSONP callbacks or a callback param is not set explicitly via
-	         * `options.callbackParam` (or if the source does not invoke the jsonp with an
-	         * argument). However, the function will always execute when the script
-	         * loads or an error occurs.
+	         *     @param {String} options.url
+	         *            Source URL to be called.
+	         *     @param {String} [options.type]
+	         *            The MIME type that identifies the scripting language of the
+	         *            code referenced within the script element.
+	         *            e.g. `"text/javascript"`
+	         *     @param {String} [options.charset]
+	         *            Indicates the character encoding of the external resource.
+	         *            e.g. `"utf-8"`.
+	         *     @param {Boolean} [options.async=true]
+	         *            Indicates whether or not to perform the operation
+	         *            asynchronously. See {@link http://caniuse.com/#feat=script-async|browser support}.
+	         *     @param {Boolean} [options.defer=false]
+	         *            Indicates whether the script should be executed when the page
+	         *            has finished parsing. See {@link http://caniuse.com/#feat=script-defer|browser support}.
+	         *     @param {String} [options.crossorigin]
+	         *            Indicates the CORS setting for the script element being
+	         *            injected. Note that this attribute is not widely supported.
+	         *            Valid values: `"anonymous"`, `"use-credentials"`.
+	         *            See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes|CORS settings}.
+	         *     @param {Number} [options.timeout=0]
+	         *            The number of milliseconds a request can take before
+	         *            automatically being terminated. `0` disables timeout.
+	         *     @param {Boolean} [options.clean=false]
+	         *            Whether to remove the loaded script from DOM when the
+	         *            operation ends. Note that the initial source might load
+	         *            additional sources which are not deteceted or removed. Only
+	         *            the initial source is removed.
+	         *     @param {Object} [options.params]
+	         *            Optional query parameters to be appended at the end of the URL.
+	         *            e.g. `{ key: "MY-KEY" }`
+	         *            You can also include the JSONP callback name parameter here
+	         *            but if you want the object to be passed to the callback
+	         *            argument of this method, use `options.callbackParam` to set
+	         *            the callback parameter.
+	         *     @param {String} [options.callbackParam]
+	         *            If the endpoint supports JSONP callbacks, you can set the
+	         *            callback parameter with this setting. This will enable a
+	         *            second `obj` argument in the callback of this method which is
+	         *            useful if the JSONP source invokes the callback with an
+	         *            argument.
+	         *     @param {String} [options.rootName]
+	         *            The name (or notation) of the object that the generated JSONP
+	         *            callback function should be assigned to. By default, this is
+	         *            the `window` object but you can set this to a custom object
+	         *            notation; for example, to prevent global namespace polution.
+	         *            Note that this root object has to be globally accessible for
+	         *            this to work. e.g. `"window.myObject"` (as string)
+	         * @param {Function} [callback]
+	         *        The callback function that will be executed when the script is
+	         *        loaded. This callback has the following signature:
+	         *        `function (err, obj) { ... }`. Note that the second argument
+	         *        `obj` will always be `undefined` if the source endpoint does not
+	         *        support JSONP callbacks or a callback param is not set explicitly
+	         *        via `options.callbackParam` (or if the source does not invoke the
+	         *        jsonp with an argument). However, the function will always execute
+	         *        when the script loads or an error occurs.
 	         *
 	         * @returns {void}
 	         *
 	         * @example
 	         * var opts1 = {
-	         * 	url: 'some/api',
-	         * 	callbackParam: 'jsonCallback',
-	         * 	params: { key: 'MY-KEY' }
+	         * 	   url: 'some/api',
+	         * 	   callbackParam: 'jsonCallback',
+	         * 	   params: { key: 'MY-KEY' }
 	         * };
 	         * // This will load the following source:
 	         * // some/api?jsonCallback={auto-generated-fn-name}&key=MY-KEY
 	         * fetch.jsonp(opts1, function (err, obj) {
-	         * 	console.log(obj); // some object
+	         * 	   console.log(obj); // some object
 	         * });
 	         *
 	         * var opts2 = {
-	         * 	url: 'some/api',
-	         * 	params: {
-	         * 		key: 'MY-KEY',
-	         * 		jsonCallback: 'my-fn-name'
-	         * 	}
+	         * 	   url: 'some/api',
+	         * 	   params: {
+	         * 		   key: 'MY-KEY',
+	         * 		   jsonCallback: 'my-fn-name'
+	         * 	   }
 	         * };
 	         * // This will load the following source:
 	         * // some/api?jsonCallback=my-fn-name&key=MY-KEY
 	         * fetch.jsonp(options, function (err, obj) {
-	         * 	console.log(obj); // undefined
-	         * 	// still executes, catch errors here
+	         * 	   console.log(obj); // undefined
+	         * 	   // still executes, catch errors here
 	         * });
 	         * // JSON callback should be explicitly set.
 	         * window['my-fn-name'] = function (obj) {
-	         * 	console.log(obj); // some object
+	         * 	   console.log(obj); // some object
 	         * };
 	         */
 	        value: function jsonp(options, callback) {
@@ -3149,39 +3184,47 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest|XMLHttpRequest}.
 	         * @memberof fetch
 	         *
-	         * @param {Object|String} options - Required. Either the URL string which
-	         *     will set other options to defaults or the full options object.
-	         *     @param {String} options.url - Required. Target URL to be called.
-	         *     @param {String} options.method - Default: `"GET"`. HTTP method.
-	         *     @param {*} options.data - Optional. Default: `undefined`.
-	         *     Data to be sent with the request, if the HTTP method is set to "POST".
-	         *     @param {Number} options.timeout - Optional. Default: `0` (no timeout).
-	         *     The number of milliseconds a request can take before automatically
-	         *     being terminated.
-	         *     @param {Boolean} options.withCredentials - Optional. Default: `false`.
-	         *     Indicates whether or not cross-site Access-Control requests should
-	         *     be made using credentials such as cookies or authorization headers.
-	         *     @param {Boolean} options.async - Optional. Default: `true`.
-	         *     Indicating whether or not to perform the operation asynchronously.
-	         *     If this value is false, the `send()` method does not return until
-	         *     the response is received. If `true`, notification of a completed
-	         *     transaction is provided using event listeners. This must be `true`
-	         *     if the multipart attribute is `true`, or an exception will be thrown.
-	         *     @param {String} options.mimeType - Optional. Default: `undefined`.
-	         *     If set, overrides the MIME type returned by the server. This may be
-	         *     used, for example, to force a stream to be treated and parsed as
-	         *     `text/xml`, even if the server does not report it as such.
-	         *     @param {Object} options.headers - Optional. Default: `undefined`.
-	         *     Sets the HTTP request headers. Each key should be a header name
-	         *     with a value. e.g. `{ 'Content-Length': 50 }`. For security reasons,
-	         *     some headers cannot be set and can only be controlled by the user agent.
-	         *     @param {String} options.username - Optional. Default: `""`.
-	         *     User name to use for authentication purposes.
-	         *     @param {String} options.password - Optional. Default: `""`.
-	         *     Password to use for authentication purposes.
-	         * @param {Function} callback - Optional. The callback function in the
-	         *     following signature: `function (err, xhr) { ... }`
-	         *     Note that `xhr` object is always passed regardless of an error.
+	         * @param {Object|String} options
+	         *        Either the URL string which will set other options to defaults or
+	         *        the full options object.
+	         *     @param {String} options.url
+	         *            Target URL to be called.
+	         *     @param {String} [options.method="GET"]
+	         *            HTTP method.
+	         *     @param {*} [options.data]
+	         *            Data to be sent with the request.
+	         *     @param {Number} [options.timeout]
+	         *            The number of milliseconds a request can take before
+	         *            automatically being terminated. `0` disables timeout.
+	         *     @param {Boolean} [options.withCredentials=false]
+	         *            Indicates whether or not cross-site Access-Control requests
+	         *            should be made using credentials such as cookies or
+	         *            authorization headers.
+	         *     @param {Boolean} [options.async=true]
+	         *            Indicating whether or not to perform the operation
+	         *            asynchronously. If this value is false, the `send()` method
+	         *            does not return until the response is received. If `true`,
+	         *            notification of a completed transaction is provided using
+	         *            event listeners. This must be `true` if the multipart
+	         *            attribute is `true`, or an exception will be thrown.
+	         *     @param {String} [options.mimeType]
+	         *            If set, overrides the MIME type returned by the server. This
+	         *            may be used, for example, to force a stream to be treated and
+	         *            parsed as `text/xml`, even if the server does not report it as
+	         *            such.
+	         *     @param {Object} [options.headers]
+	         *            Sets the HTTP request headers. Each key should be a header
+	         *            name with a value. e.g. `{ 'Content-Length': 50 }`. For
+	         *            security reasons, some headers cannot be set and can only be
+	         *            controlled by the user agent.
+	         *     @param {String} [options.username=""]
+	         *            User name to use for authentication purposes.
+	         *     @param {String} [options.password=""]
+	         *            Password to use for authentication purposes.
+	         * @param {Function} [callback]
+	         *        The callback function in the following signature:
+	         *        `function (err, xhr) { ... }`
+	         *        Note that `xhr` object is always passed regardless of an error.
 	         *
 	         * @returns {void}
 	         */
@@ -3281,12 +3324,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * Alias of `fetch.xhr()` with request method set to `"GET"` by default.
 	         * @memberof fetch
 	         *
-	         * @param {Object} options - Required. Either the URL string which
-	         * will set other options to defaults or the full options object.
-	         * See `fetch.xhr()` method options for details.
-	         * @param {Function} callback - Optional. The callback function in the
-	         * following signature: `function (err, xhr) { ... }`
-	         * Note that `xhr` object is always passed regardless of an error.
+	         * @param {Object} options
+	         *        Either the URL string which will set other options to defaults or
+	         *        the full options object. See `fetch.xhr()` method options for
+	         *        details.
+	         * @param {Function} [callback]
+	         *        The callback function in the following signature:
+	         *        `function (err, xhr) { ... }`
+	         *        Note that `xhr` object is always passed regardless of an error.
 	         * @returns {void}
 	         */
 	
@@ -3300,12 +3345,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * Alias of `fetch.xhr()` with request method set to `"POST"` by default.
 	         * @memberof fetch
 	         *
-	         * @param {Object} options - Required. Either the URL string which
-	         * will set other options to defaults or the full options object.
-	         * See `fetch.xhr()` method options for details.
-	         * @param {Function} callback - Optional. The callback function in the
-	         * following signature: `function (err, xhr) { ... }`
-	         * Note that `xhr` object is always passed regardless of an error.
+	         * @param {Object} options
+	         *        Either the URL string which will set other options to defaults or
+	         *        the full options object. See `fetch.xhr()` method options for
+	         *        details.
+	         * @param {Function} [callback]
+	         *        The callback function in the following signature:
+	         *        `function (err, xhr) { ... }`
+	         *        Note that `xhr` object is always passed regardless of an error.
 	         * @returns {void}
 	         */
 	
@@ -3319,12 +3366,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * Alias of `fetch.xhr()` with request method set to `"PUT"` by default.
 	         * @memberof fetch
 	         *
-	         * @param {Object} options - Required. Either the URL string which
-	         * will set other options to defaults or the full options object.
-	         * See `fetch.xhr()` method options for details.
-	         * @param {Function} callback - Optional. The callback function in the
-	         * following signature: `function (err, xhr) { ... }`
-	         * Note that `xhr` object is always passed regardless of an error.
+	         * @param {Object} options
+	         *        Either the URL string which will set other options to defaults or
+	         *        the full options object. See `fetch.xhr()` method options for
+	         *        details.
+	         * @param {Function} [callback]
+	         *        The callback function in the following signature:
+	         *        `function (err, xhr) { ... }`
+	         *        Note that `xhr` object is always passed regardless of an error.
 	         * @returns {void}
 	         */
 	
@@ -3338,12 +3387,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * Alias of `fetch.xhr()` with request method set to `"DELETE"` by default.
 	         * @memberof fetch
 	         *
-	         * @param {Object} options - Required. Either the URL string which
-	         * will set other options to defaults or the full options object.
-	         * See `fetch.xhr()` method options for details.
-	         * @param {Function} callback - Optional. The callback function in the
-	         * following signature: `function (err, xhr) { ... }`
-	         * Note that `xhr` object is always passed regardless of an error.
+	         * @param {Object} options
+	         *        Either the URL string which will set other options to defaults or
+	         *        the full options object. See `fetch.xhr()` method options for
+	         *        details.
+	         * @param {Function} [callback]
+	         *        The callback function in the following signature:
+	         *        `function (err, xhr) { ... }`
+	         *        Note that `xhr` object is always passed regardless of an error.
 	         * @returns {void}
 	         */
 	
@@ -3402,10 +3453,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    DONE: 4
 	};
-	
-	// aliases
-	// fetch.script = fetch.jsonp;
-	// fetch.ajax = fetch.xhr;
 	
 	exports.default = fetch;
 
@@ -4118,21 +4165,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return err;
 	            }
 	
+	            var code = void 0,
+	                msg = void 0;
+	
 	            if (_utils2.default.isPositionError(err) && err.code) {
 	                switch (err.code) {
 	                    case 1:
-	                        return new GeoError(GeoError.Code.PERMISSION_DENIED, err.message);
+	                        code = GeoError.Code.PERMISSION_DENIED;
+	                        break;
 	                    case 2:
-	                        return new GeoError(GeoError.Code.POSITION_UNAVAILABLE, err.message);
+	                        code = GeoError.Code.POSITION_UNAVAILABLE;
+	                        break;
 	                    case 3:
-	                        return new GeoError(GeoError.Code.TIMEOUT, err.message);
+	                        code = GeoError.Code.TIMEOUT;
+	                        break;
 	                    default:
-	                        return new GeoError(GeoError.Code.UNKNOWN_ERROR, err.message || '');
+	                        code = GeoError.Code.UNKNOWN_ERROR;
+	                        break;
 	                }
+	                return new GeoError(code, err.message || '');
 	            }
 	
-	            var code = void 0,
-	                msg = void 0;
 	            if (typeof err === 'string') {
 	                code = msg = err;
 	            } else if ((typeof err === 'undefined' ? 'undefined' : _typeof(err)) === 'object') {
@@ -4492,7 +4545,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint no-nested-ternary:0 */
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _utils = __webpack_require__(2);
 	
