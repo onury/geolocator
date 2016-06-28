@@ -1,13 +1,17 @@
 /* eslint no-console:1 */
-/* globals geolocator:false */
+/* globals geolocator, googleKey */
 
 'use strict';
 
 describe('geolocator', function () {
+
+    // NOTE: googleKey is not commited to the repo.
+    // You should have a google-key.helper.js file within /test directory.
+    // var googleKey = "YOUR-GOOGLE-API-KEY";
+
     var googleConf = {
             version: '3',
-            // DO NOT USE THIS KEY!!! THIS IS FOR TESTING ONLY AND WILL BE DISABLED!
-            key: 'AIzaSyBQyiPdykn05YIdBgrMSTyq_z9kUXZi14g'
+            key: googleKey
         },
         configEN = {
             language: 'en',
