@@ -195,10 +195,12 @@ const utils = {
      * Sets the protocol of the given URL.
      * @memberof utils
      *
-     * @param {String} url - The URL to be modified.
-     * @param {Boolean} https - Optional. Default: `undefined`
-     * Specifies whether to set the protocol to HTTPS.
-     * If omitted, current page protocol will be used.
+     * @param {String} url
+     *        The URL to be modified.
+     * @param {Boolean} [https]
+     *        Specifies whether to set the protocol to HTTPS.
+     *        If omitted, current page protocol will be used.
+     *
      * @returns {String} - The modified URL string.
      */
     setProtocol(url, https) {
@@ -249,7 +251,7 @@ const utils = {
 
     /**
      * Converts the given value to string.
-     * null and undefined converts to empty string.
+     * `null` and `undefined` converts to empty string.
      * If value is a function, it's native `toString()` method is used.
      * Otherwise, value is coerced.
      * @memberof utils
@@ -269,8 +271,7 @@ const utils = {
      * Generates a random string with the number of characters.
      * @memberof utils
      *
-     * @param {Number} len - Optional. Default: `1`.
-     * Length of the string.
+     * @param {Number} [len=1] - Length of the string.
      * @returns {String} - Returns a random string.
      */
     randomString(len) {
@@ -283,10 +284,14 @@ const utils = {
      * Gets the abbreviation of the given phrase.
      * @memberof utils
      *
-     * @param {String} str - String to abbreviate.
-     * @param {Object} options - Abbreviation options.
-     *     @param {Boolean} options.upper - Whether to convert to upper-case.
-     *     @param {Boolean} options.dots - Whether to add dots after each abbreviation.
+     * @param {String} str
+     *        String to abbreviate.
+     * @param {Object} [options]
+     *        Abbreviation options.
+     *     @param {Boolean} [options.upper=true]
+     *            Whether to convert to upper-case.
+     *     @param {Boolean} [options.dots=true]
+     *            Whether to add dots after each abbreviation.
      *
      * @returns {String} - Returns the abbreviation of the given phrase.
      */
@@ -307,15 +312,15 @@ const utils = {
      *
      * @param {Object} obj - Object to be processed.
      * @param {Object} options - Parameterize options.
-     *     @param {Boolean} options.encode - Optional. Default: `true`.
-     *     Whether to encode URI components.
-     *     @param {String} options.operator - Optional. Default: `"="`.
-     *     @param {String} options.separator - Optional. Default: `"&"`.
-     *     @param {Array} options.include - Optional. Default: `undefined`.
-     *     Keys to be included in the output params. If defined,
-     *     `options.exclude` is ignored.
-     *     @param {Array} options.exclude - Optional. Default: `undefined`.
-     *     Keys to be excluded from the output params.
+     *     @param {Boolean} [options.encode=true]
+     *            Whether to encode URI components.
+     *     @param {String} [options.operator="="]
+     *     @param {String} [options.separator="&"]
+     *     @param {Array} [options.include]
+     *            Keys to be included in the output params. If defined,
+     *            `options.exclude` is ignored.
+     *     @param {Array} [options.exclude]
+     *            Keys to be excluded from the output params.
      *
      * @returns {String} - URI parameters string.
      */
@@ -377,10 +382,12 @@ const utils = {
      * property.
      * @memberof utils
      *
-     * @param {Object} obj - Object to be processed.
-     * @param {Function} callback - Callback function with the following
-     * signature: `function (value, key, object) { ... }`.
-     * Explicitly returning `false` will exit the iteration early.
+     * @param {Object} obj
+     *        Object to be processed.
+     * @param {Function} callback
+     *        Callback function with the following signature:
+     *        `function (value, key, object) { ... }`.
+     *        Explicitly returning `false` will exit the iteration early.
      * @returns {void}
      */
     forIn(obj, callback) {
@@ -397,9 +404,12 @@ const utils = {
      * NOTE: This is not a full implementation. Use with caution.
      * @memberof utils
      *
-     * @param {Object} destination - Destionation Object that will be extended
-     * and holds the default values.
-     * @param {...Object} sources - Source objects to be merged.
+     * @param {Object} destination
+     *        Destionation Object that will be extended and holds the default
+     *        values.
+     * @param {...Object} sources
+     *        Source objects to be merged.
+     *
      * @returns {Object} - Returns the extended object.
      */
     extend(destination, ...sources) {
@@ -427,14 +437,16 @@ const utils = {
      * NOTE: This is not a full implementation. Use with caution.
      * @memberof utils
      *
-     * @param {Object} obj - Target Object to be cloned.
-     * @param {Object|Array} options - Optional. Clone options or array of keys
-     * to be cloned.
-     *     @param {Array} options.keys - Optional. Default: `undefined`.
-     *     Keys of the properties to be cloned.
-     *     @param {Boolean} options.own - Optional. Default: `true`.
-     *     Whether to clone own properties only. This is only effective if
-     *     `keys` is not defined.
+     * @param {Object} obj
+     *        Target Object to be cloned.
+     * @param {Object|Array} [options]
+     *        Clone options or array of keys to be cloned.
+     *     @param {Array} [options.keys]
+     *            Keys of the properties to be cloned.
+     *     @param {Boolean} [options.own=true]
+     *            Whether to clone own properties only. This is only effective
+     *            if `keys` is not defined.
+     *
      * @returns {Object} - Returns the cloned object.
      */
     clone(obj, options) {
@@ -471,8 +483,11 @@ const utils = {
      *  object.
      *  @memberof utils
      *
-     *  @param {Object} obj - Original object to be mapped.
-     *  @param {Object} schema - Schema to be used to map the object.
+     *  @param {Object} obj
+     *         Original object to be mapped.
+     *  @param {Object} schema
+     *         Schema to be used to map the object.
+     *
      *  @returns {Object} - Mapped object.
      */
     mapToSchema(obj, schema) {
@@ -514,8 +529,10 @@ const utils = {
      * January 1, 1970 UTC.
      * @memberof utils
      *
-     * @param {Boolean} seconds - Optional. Default: `false`.
-     * Specifies whether seconds should be returned instead of milliseconds.
+     * @param {Boolean} [seconds=false]
+     *        Specifies whether seconds should be returned instead of
+     *        milliseconds.
+     *
      * @returns {Number} - Returns seconds or milliseconds since midnight,
      * January 1, 1970 UTC.
      */
