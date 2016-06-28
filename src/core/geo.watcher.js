@@ -1,5 +1,3 @@
-/* eslint no-nested-ternary:0 */
-
 import utils from '../lib/utils';
 
 class GeoWatcher {
