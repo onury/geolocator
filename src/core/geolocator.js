@@ -85,7 +85,7 @@ class geolocator {
     }
 
     /**
-     * Documented in separately in enums.js
+     * Documented separately in enums.js
      * @private
      */
     static get MapTypeId() {
@@ -93,7 +93,7 @@ class geolocator {
     }
 
     /**
-     * Documented in separately in enums.js
+     * Documented separately in enums.js
      * @private
      */
     static get LocationType() {
@@ -101,7 +101,7 @@ class geolocator {
     }
 
     /**
-     * Documented in separately in enums.js
+     * Documented separately in enums.js
      * @private
      */
     static get TravelMode() {
@@ -109,7 +109,7 @@ class geolocator {
     }
 
     /**
-     * Documented in separately in enums.js
+     * Documented separately in enums.js
      * @private
      */
     static get UnitSystem() {
@@ -117,7 +117,7 @@ class geolocator {
     }
 
     /**
-     * Documented in separately in enums.js
+     * Documented separately in enums.js
      * @private
      */
     static get RadioType() {
@@ -125,7 +125,7 @@ class geolocator {
     }
 
     /**
-     * Documented in separately in enums.js
+     * Documented separately in enums.js
      * @private
      */
     static get DistanceFormula() {
