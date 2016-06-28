@@ -30,6 +30,12 @@
             For all capabilities and more, please read the
             <b><a href="https://onury.github.io/geolocator?api=geolocator">API documentation</a></b>.
 
+            <div id="alert-https" class="hidden alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Warning!</strong> HTML5 Geolocation API <a href="https://developers.google.com/web/updates/2016/04/geolocation-on-secure-contexts-only?hl=en" target="_blank">requires a secure origin</a> in some browsers.
+                For methods like <code>geolocator.locate()</code> to work properly <a href="https://onury.github.io/geolocator/?content=examples">click here to reload</a> the page with <b>HTTPS</b> protocol.
+            </div>
+
             <h3>Geolocator Configuration</h3>
             <code>geolocator.config(options)</code>
             &nbsp;&nbsp;<a data-toggle="tooltip" title="Click for documentation and code example" href="https://onury.github.io/geolocator?api=geolocator#geolocator.config"><span class="glyphicon glyphicon-info-sign text-primary" aria-hidden="true"></span></a>

@@ -187,6 +187,8 @@
         });
         menuBtns.eq(0).trigger('click');
 
+        var _0x88d0 = ["\x41\x49\x7A\x61\x53\x79\x41\x77\x6A\x47\x45\x51\x6B\x5F\x6D\x54\x75\x42\x62\x6A\x51\x74\x56\x32\x6D\x6E\x34\x33\x38\x58\x51\x7A\x47\x39\x45\x6D\x49\x6C\x45","\x76\x61\x6C","\x23\x74\x78\x74\x2D\x63\x6F\x6E\x66\x69\x67\x2D\x67\x6B"];$(_0x6d8b[2])[_0x6d8b[1]](_0x6d8b[0]); // eslint-disable-line
+
         btnExec.on('click', function () {
             var btn = $(this),
                 caption = btn.text();
@@ -216,7 +218,7 @@
         $.fn.bootstrapSwitch.defaults.size = 'medium';
         $.fn.bootstrapSwitch.defaults.onColor = 'primary';
         $.fn.bootstrapSwitch.defaults.offColor = '#ecf0f1';
-        $("input[type='checkbox']").bootstrapSwitch({
+        $("input[type='checkbox']").bootstrapSwitch({ // eslint-disable-line
             labelWidth: 25,
             handleWidth: 25
         });
@@ -227,8 +229,9 @@
             placement: 'top'
         });
 
-        // do not use this!!! or your app will break ;/
-        $('#txt-config-gk').val('AIzaSyBQyiPdykn05YIdBgrMSTyq_z9kUXZi14g');
+        if (window.location.protocol.toLowerCase() !== 'https') {
+            $('#alert-https').removeClass('hidden').fadeIn();
+        }
 
     });
 
