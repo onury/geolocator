@@ -111,20 +111,26 @@ class GeoError { // extends Error (doesn't work with transpilers)
             return err;
         }
 
+        let code, msg;
+
         if (utils.isPositionError(err) && err.code) {
             switch (err.code) {
                 case 1:
-                    return new GeoError(GeoError.Code.PERMISSION_DENIED, err.message);
+                    code = GeoError.Code.PERMISSION_DENIED;
+                    break;
                 case 2:
-                    return new GeoError(GeoError.Code.POSITION_UNAVAILABLE, err.message);
+                    code = GeoError.Code.POSITION_UNAVAILABLE;
+                    break;
                 case 3:
-                    return new GeoError(GeoError.Code.TIMEOUT, err.message);
+                    code = GeoError.Code.TIMEOUT;
+                    break;
                 default:
-                    return new GeoError(GeoError.Code.UNKNOWN_ERROR, err.message || '');
+                    code = GeoError.Code.UNKNOWN_ERROR;
+                    break;
             }
+            return new GeoError(code, err.message || '');
         }
 
-        let code, msg;
         if (typeof err === 'string') {
             code = msg = err;
         } else if (typeof err === 'object') {
