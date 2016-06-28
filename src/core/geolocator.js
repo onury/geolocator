@@ -1974,9 +1974,12 @@ export default geolocator;
 // ---------------------------
 
 /**
- *  Specifies the geographic location of the device. The location is expressed
- *  as a set of geographic coordinates together with information about heading
- *  and speed.
+ *  `Coordinates` inner type that specifies the geographic position of the
+ *  device. The position is expressed as a set of geographic coordinates
+ *  together with information about heading and speed.
+ *
+ *  This is generally returned as part of the
+ *  {@link ?api=geolocator#geolocator~Location|`Location` result object}.
  *
  *  @typedef geolocator~Coordinates
  *  @type Object
@@ -2003,8 +2006,11 @@ export default geolocator;
  */
 
 /**
- *	Specifies the address of the fetched location. The address is expressed
- *	as a set of political and locality components.
+ *	`Address` inner type that specifies the address of the fetched location.
+ *	The address is expressed as a set of political and locality components.
+ *
+ *  This is generally returned as part of the
+ *  {@link ?api=geolocator#geolocator~Location|`Location` result object}.
  *
  *  @typedef geolocator~Address
  *  @type Object
@@ -2039,8 +2045,11 @@ export default geolocator;
  */
 
 /**
- *	Specifies time offset data for the fetched location on the surface of the
- *	earth.
+ *	`TimeZone` inner type that specifies time offset data for the fetched
+ *	location on the surface of the earth.
+ *
+ *  This is generally returned as part of the
+ *  {@link ?api=geolocator#geolocator~Location|`Location` result object}.
  *
  *  @typedef geolocator~TimeZone
  *  @type Object
@@ -2067,8 +2076,11 @@ export default geolocator;
  */
 
 /**
- *	Provides references to the components of a created Google Maps `Map` and
- *	the containing DOM element.
+ *	`MapData` inner type that provides references to the components of a
+ *	created Google Maps `Map` and the containing DOM element.
+ *
+ *  This is generally returned as part of the
+ *  {@link ?api=geolocator#geolocator~Location|`Location` result object}.
  *
  *  @typedef geolocator~MapData
  *  @type Object
@@ -2086,13 +2098,13 @@ export default geolocator;
  */
 
 /**
- *	Specifies geographic coordinates, address and time zone information
- *	for the fetched location.
+ *	`Location` inner type that specifies geographic coordinates, address and
+ *	time zone information for the fetched location.
  *
  *  This result object is passed to the callbacks of the corresponding
- *  asynchronous Geolocator methods, as the second argument. The contents of
- *  this object will differ for various Geolocator methods, depending on the
- *  configured method options.
+ *  asynchronous Geolocator methods (such as `.locate()` method), as the second
+ *  argument. The contents of this object will differ for various  Geolocator
+ *  methods, depending on the configured method options.
  *
  *  @typedef geolocator~Location
  *  @type Object
