@@ -229,7 +229,11 @@
             placement: 'top'
         });
 
-        if (window.location.protocol.toLowerCase() !== 'https') {
+        function requireHttps(win) {
+            return win ? win.location.protocol.toLowerCase() !== 'https:' : false;
+        }
+
+        if (requireHttps(window) || requireHttps(window.top)) {
             $('#alert-https').removeClass('hidden').fadeIn();
         }
 
