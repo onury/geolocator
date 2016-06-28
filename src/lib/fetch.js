@@ -21,87 +21,94 @@ class fetch {
      * @param {Object|String} options - Required. Either the URL string which
      *     will set other options to defaults or an options object with the
      *     following properties.
-     *     @param {String} options.url - Required. Source URL to be called.
-     *     @param {String} options.type - Optional. Default: `undefined`.
-     *     The MIME type that identifies the scripting language of the code
-     *     referenced within the script element. e.g. `"text/javascript"`
-     *     @param {String} options.charset - Optional. Default: `undefined`.
-     *     Indicates the character encoding of the external resource. e.g. `"utf-8"`.
-     *     @param {Boolean} options.async - Optional. Default: `true`.
-     *     Indicates whether or not to perform the operation asynchronously.
-     *     See {@link http://caniuse.com/#feat=script-async|browser support}.
-     *     @param {Boolean} options.defer - Optional. Default: `false`.
-     *     Indicates whether the script should be executed when the page has
-     *     finished parsing. See {@link http://caniuse.com/#feat=script-defer|browser support}.
-     *     @param {String} options.crossorigin - Optional. Default: `undefined`.
-     *     Indicates the CORS setting for the script element being injected.
-     *     Note that this attribute is not widely supported.
-     *     Valid values: `"anonymous"`, `"use-credentials"`.
-     *     See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes|CORS settings}.
-     *     @param {Number} options.timeout - Optional. Default: `0` (no timeout).
-     *     The number of milliseconds a request can take before automatically
-     *     being terminated.
-     *     @param {Boolean} options.clean - Optional. Default: `false`.
-     *     Whether to remove the loaded script from DOM when the operation ends.
-     *     Note that the initial source might load additional sources which are
-     *     not deteceted or removed. Only the initial source is removed.
-     *     @param {Object} options.params - Optional. Default: `undefined`.
-     *     Optional query parameters to be appended at the end of the URL.
-     *     e.g. `{ key: "MY-KEY" }`
-     *     You can also include the JSONP callback name parameter here but
-     *     if you want the object to be passed to the callback argument of this
-     *     method, use `options.callbackParam` to set the callback parameter.
-     *     @param {String} options.callbackParam - Optional. Default: `undefined`.
-     *     If the endpoint supports JSONP callbacks, you can set the callback
-     *     parameter with this setting. This will enable a second `obj` argument
-     *     in the callback of this method which is useful if the JSONP source
-     *     invokes the callback with an argument.
-     *     @param {String} options.rootName - Optional. Default: `undefined`.
-     *     The name (or notation) of the object that the generated JSONP
-     *     callback function should be assigned to. By default, this is the
-     *     `window` object but you can set this to a custom object notation;
-     *     for example, to prevent global namespace polution. Note that this
-     *     root object has to be globally accessible for this to work.
-     *     e.g. `"window.myObject"` (as string)
-     * @param {Function} callback - Optional. The callback function that will be
-     * executed when the script is loaded. This callback has the following
-     * signature: `function (err, obj) { ... }`. Note that the second argument
-     * `obj` will always be `undefined` if the source endpoint does not support
-     * JSONP callbacks or a callback param is not set explicitly via
-     * `options.callbackParam` (or if the source does not invoke the jsonp with an
-     * argument). However, the function will always execute when the script
-     * loads or an error occurs.
+     *     @param {String} options.url
+     *            Source URL to be called.
+     *     @param {String} [options.type]
+     *            The MIME type that identifies the scripting language of the
+     *            code referenced within the script element.
+     *            e.g. `"text/javascript"`
+     *     @param {String} [options.charset]
+     *            Indicates the character encoding of the external resource.
+     *            e.g. `"utf-8"`.
+     *     @param {Boolean} [options.async=true]
+     *            Indicates whether or not to perform the operation
+     *            asynchronously. See {@link http://caniuse.com/#feat=script-async|browser support}.
+     *     @param {Boolean} [options.defer=false]
+     *            Indicates whether the script should be executed when the page
+     *            has finished parsing. See {@link http://caniuse.com/#feat=script-defer|browser support}.
+     *     @param {String} [options.crossorigin]
+     *            Indicates the CORS setting for the script element being
+     *            injected. Note that this attribute is not widely supported.
+     *            Valid values: `"anonymous"`, `"use-credentials"`.
+     *            See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes|CORS settings}.
+     *     @param {Number} [options.timeout=0]
+     *            The number of milliseconds a request can take before
+     *            automatically being terminated. `0` disables timeout.
+     *     @param {Boolean} [options.clean=false]
+     *            Whether to remove the loaded script from DOM when the
+     *            operation ends. Note that the initial source might load
+     *            additional sources which are not deteceted or removed. Only
+     *            the initial source is removed.
+     *     @param {Object} [options.params]
+     *            Optional query parameters to be appended at the end of the URL.
+     *            e.g. `{ key: "MY-KEY" }`
+     *            You can also include the JSONP callback name parameter here
+     *            but if you want the object to be passed to the callback
+     *            argument of this method, use `options.callbackParam` to set
+     *            the callback parameter.
+     *     @param {String} [options.callbackParam]
+     *            If the endpoint supports JSONP callbacks, you can set the
+     *            callback parameter with this setting. This will enable a
+     *            second `obj` argument in the callback of this method which is
+     *            useful if the JSONP source invokes the callback with an
+     *            argument.
+     *     @param {String} [options.rootName]
+     *            The name (or notation) of the object that the generated JSONP
+     *            callback function should be assigned to. By default, this is
+     *            the `window` object but you can set this to a custom object
+     *            notation; for example, to prevent global namespace polution.
+     *            Note that this root object has to be globally accessible for
+     *            this to work. e.g. `"window.myObject"` (as string)
+     * @param {Function} [callback]
+     *        The callback function that will be executed when the script is
+     *        loaded. This callback has the following signature:
+     *        `function (err, obj) { ... }`. Note that the second argument
+     *        `obj` will always be `undefined` if the source endpoint does not
+     *        support JSONP callbacks or a callback param is not set explicitly
+     *        via `options.callbackParam` (or if the source does not invoke the
+     *        jsonp with an argument). However, the function will always execute
+     *        when the script loads or an error occurs.
      *
      * @returns {void}
      *
      * @example
      * var opts1 = {
-     * 	url: 'some/api',
-     * 	callbackParam: 'jsonCallback',
-     * 	params: { key: 'MY-KEY' }
+     * 	   url: 'some/api',
+     * 	   callbackParam: 'jsonCallback',
+     * 	   params: { key: 'MY-KEY' }
      * };
      * // This will load the following source:
      * // some/api?jsonCallback={auto-generated-fn-name}&key=MY-KEY
      * fetch.jsonp(opts1, function (err, obj) {
-     * 	console.log(obj); // some object
+     * 	   console.log(obj); // some object
      * });
      *
      * var opts2 = {
-     * 	url: 'some/api',
-     * 	params: {
-     * 		key: 'MY-KEY',
-     * 		jsonCallback: 'my-fn-name'
-     * 	}
+     * 	   url: 'some/api',
+     * 	   params: {
+     * 		   key: 'MY-KEY',
+     * 		   jsonCallback: 'my-fn-name'
+     * 	   }
      * };
      * // This will load the following source:
      * // some/api?jsonCallback=my-fn-name&key=MY-KEY
      * fetch.jsonp(options, function (err, obj) {
-     * 	console.log(obj); // undefined
-     * 	// still executes, catch errors here
+     * 	   console.log(obj); // undefined
+     * 	   // still executes, catch errors here
      * });
      * // JSON callback should be explicitly set.
      * window['my-fn-name'] = function (obj) {
-     * 	console.log(obj); // some object
+     * 	   console.log(obj); // some object
      * };
      */
     static jsonp(options, callback) {
@@ -237,39 +244,47 @@ class fetch {
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest|XMLHttpRequest}.
      * @memberof fetch
      *
-     * @param {Object|String} options - Required. Either the URL string which
-     *     will set other options to defaults or the full options object.
-     *     @param {String} options.url - Required. Target URL to be called.
-     *     @param {String} options.method - Default: `"GET"`. HTTP method.
-     *     @param {*} options.data - Optional. Default: `undefined`.
-     *     Data to be sent with the request, if the HTTP method is set to "POST".
-     *     @param {Number} options.timeout - Optional. Default: `0` (no timeout).
-     *     The number of milliseconds a request can take before automatically
-     *     being terminated.
-     *     @param {Boolean} options.withCredentials - Optional. Default: `false`.
-     *     Indicates whether or not cross-site Access-Control requests should
-     *     be made using credentials such as cookies or authorization headers.
-     *     @param {Boolean} options.async - Optional. Default: `true`.
-     *     Indicating whether or not to perform the operation asynchronously.
-     *     If this value is false, the `send()` method does not return until
-     *     the response is received. If `true`, notification of a completed
-     *     transaction is provided using event listeners. This must be `true`
-     *     if the multipart attribute is `true`, or an exception will be thrown.
-     *     @param {String} options.mimeType - Optional. Default: `undefined`.
-     *     If set, overrides the MIME type returned by the server. This may be
-     *     used, for example, to force a stream to be treated and parsed as
-     *     `text/xml`, even if the server does not report it as such.
-     *     @param {Object} options.headers - Optional. Default: `undefined`.
-     *     Sets the HTTP request headers. Each key should be a header name
-     *     with a value. e.g. `{ 'Content-Length': 50 }`. For security reasons,
-     *     some headers cannot be set and can only be controlled by the user agent.
-     *     @param {String} options.username - Optional. Default: `""`.
-     *     User name to use for authentication purposes.
-     *     @param {String} options.password - Optional. Default: `""`.
-     *     Password to use for authentication purposes.
-     * @param {Function} callback - Optional. The callback function in the
-     *     following signature: `function (err, xhr) { ... }`
-     *     Note that `xhr` object is always passed regardless of an error.
+     * @param {Object|String} options
+     *        Either the URL string which will set other options to defaults or
+     *        the full options object.
+     *     @param {String} options.url
+     *            Target URL to be called.
+     *     @param {String} [options.method="GET"]
+     *            HTTP method.
+     *     @param {*} [options.data]
+     *            Data to be sent with the request.
+     *     @param {Number} [options.timeout]
+     *            The number of milliseconds a request can take before
+     *            automatically being terminated. `0` disables timeout.
+     *     @param {Boolean} [options.withCredentials=false]
+     *            Indicates whether or not cross-site Access-Control requests
+     *            should be made using credentials such as cookies or
+     *            authorization headers.
+     *     @param {Boolean} [options.async=true]
+     *            Indicating whether or not to perform the operation
+     *            asynchronously. If this value is false, the `send()` method
+     *            does not return until the response is received. If `true`,
+     *            notification of a completed transaction is provided using
+     *            event listeners. This must be `true` if the multipart
+     *            attribute is `true`, or an exception will be thrown.
+     *     @param {String} [options.mimeType]
+     *            If set, overrides the MIME type returned by the server. This
+     *            may be used, for example, to force a stream to be treated and
+     *            parsed as `text/xml`, even if the server does not report it as
+     *            such.
+     *     @param {Object} [options.headers]
+     *            Sets the HTTP request headers. Each key should be a header
+     *            name with a value. e.g. `{ 'Content-Length': 50 }`. For
+     *            security reasons, some headers cannot be set and can only be
+     *            controlled by the user agent.
+     *     @param {String} [options.username=""]
+     *            User name to use for authentication purposes.
+     *     @param {String} [options.password=""]
+     *            Password to use for authentication purposes.
+     * @param {Function} [callback]
+     *        The callback function in the following signature:
+     *        `function (err, xhr) { ... }`
+     *        Note that `xhr` object is always passed regardless of an error.
      *
      * @returns {void}
      */
@@ -369,12 +384,14 @@ class fetch {
      * Alias of `fetch.xhr()` with request method set to `"GET"` by default.
      * @memberof fetch
      *
-     * @param {Object} options - Required. Either the URL string which
-     * will set other options to defaults or the full options object.
-     * See `fetch.xhr()` method options for details.
-     * @param {Function} callback - Optional. The callback function in the
-     * following signature: `function (err, xhr) { ... }`
-     * Note that `xhr` object is always passed regardless of an error.
+     * @param {Object} options
+     *        Either the URL string which will set other options to defaults or
+     *        the full options object. See `fetch.xhr()` method options for
+     *        details.
+     * @param {Function} [callback]
+     *        The callback function in the following signature:
+     *        `function (err, xhr) { ... }`
+     *        Note that `xhr` object is always passed regardless of an error.
      * @returns {void}
      */
     static get(options, callback) {
@@ -385,12 +402,14 @@ class fetch {
      * Alias of `fetch.xhr()` with request method set to `"POST"` by default.
      * @memberof fetch
      *
-     * @param {Object} options - Required. Either the URL string which
-     * will set other options to defaults or the full options object.
-     * See `fetch.xhr()` method options for details.
-     * @param {Function} callback - Optional. The callback function in the
-     * following signature: `function (err, xhr) { ... }`
-     * Note that `xhr` object is always passed regardless of an error.
+     * @param {Object} options
+     *        Either the URL string which will set other options to defaults or
+     *        the full options object. See `fetch.xhr()` method options for
+     *        details.
+     * @param {Function} [callback]
+     *        The callback function in the following signature:
+     *        `function (err, xhr) { ... }`
+     *        Note that `xhr` object is always passed regardless of an error.
      * @returns {void}
      */
     static post(options, callback) {
@@ -401,12 +420,14 @@ class fetch {
      * Alias of `fetch.xhr()` with request method set to `"PUT"` by default.
      * @memberof fetch
      *
-     * @param {Object} options - Required. Either the URL string which
-     * will set other options to defaults or the full options object.
-     * See `fetch.xhr()` method options for details.
-     * @param {Function} callback - Optional. The callback function in the
-     * following signature: `function (err, xhr) { ... }`
-     * Note that `xhr` object is always passed regardless of an error.
+     * @param {Object} options
+     *        Either the URL string which will set other options to defaults or
+     *        the full options object. See `fetch.xhr()` method options for
+     *        details.
+     * @param {Function} [callback]
+     *        The callback function in the following signature:
+     *        `function (err, xhr) { ... }`
+     *        Note that `xhr` object is always passed regardless of an error.
      * @returns {void}
      */
     static put(options, callback) {
@@ -417,12 +438,14 @@ class fetch {
      * Alias of `fetch.xhr()` with request method set to `"DELETE"` by default.
      * @memberof fetch
      *
-     * @param {Object} options - Required. Either the URL string which
-     * will set other options to defaults or the full options object.
-     * See `fetch.xhr()` method options for details.
-     * @param {Function} callback - Optional. The callback function in the
-     * following signature: `function (err, xhr) { ... }`
-     * Note that `xhr` object is always passed regardless of an error.
+     * @param {Object} options
+     *        Either the URL string which will set other options to defaults or
+     *        the full options object. See `fetch.xhr()` method options for
+     *        details.
+     * @param {Function} [callback]
+     *        The callback function in the following signature:
+     *        `function (err, xhr) { ... }`
+     *        Note that `xhr` object is always passed regardless of an error.
      * @returns {void}
      */
     static delete(options, callback) {
@@ -475,9 +498,5 @@ fetch.XHR_READY_STATE = {
      */
     DONE: 4
 };
-
-// aliases
-// fetch.script = fetch.jsonp;
-// fetch.ajax = fetch.xhr;
 
 export default fetch;
