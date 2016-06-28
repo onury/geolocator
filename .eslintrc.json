@@ -11,7 +11,7 @@
     },
     "env": {
         "es6": true,
-        "node": false,
+        "node": true,
         "browser": true,
         "jasmine": true
     },

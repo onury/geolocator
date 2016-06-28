@@ -155,7 +155,7 @@ module.exports = function (grunt) {
     grunt.registerTask('doc', ['docma', 'copy:example', 'copy:dist']);
     grunt.registerTask('min', ['webpack:min']);
     grunt.registerTask('build', ['webpack:full', 'webpack:min']);
-    grunt.registerTask('build-all', ['dust', 'build', 'doc']);
+    grunt.registerTask('build-all', ['build', 'doc']);
     grunt.registerTask('test', ['build', 'connect', 'watch:test']);
     grunt.registerTask('watch-compile', ['watch:compile']);
 
