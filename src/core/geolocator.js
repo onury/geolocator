@@ -656,7 +656,7 @@ class geolocator {
      * 	   timezone: true,
      * 	   map: "my-map"
      * };
-     * geolocator.locateByIp(options, function (err, location) {
+     * geolocator.locateByIP(options, function (err, location) {
      * 	   console.log(err || location);
      * });
      *
