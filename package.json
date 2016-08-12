@@ -62,7 +62,7 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-jasmine": "^1.0.3",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-docma": "^0.6.1",
+    "grunt-docma": "^0.6.4",
     "grunt-webpack": "^1.0.11",
     "html-loader": "^0.4.3",
     "matchdep": "^1.0.1",
