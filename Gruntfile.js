@@ -44,7 +44,7 @@ module.exports = function (grunt) {
         'copy': {
             options: {
                 mode: false,
-                encoding: "utf-8"
+                encoding: 'utf-8'
             },
             'example': {
                 files: [
