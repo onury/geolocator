@@ -111,8 +111,7 @@ const geoHelper = {
             }
         }
 
-        let isUS = o.country_s === 'US',
-            geometry = data.geometry;
+        let geometry = data.geometry;
         return {
             coords: geometry && geometry.location ? {
                 latitude: geometry.location.lat,
@@ -140,10 +139,10 @@ const geoHelper = {
                     || o.administrative_area_level_1
                     || '',
                 postalCode: o.postal_code || '',
-                state: isUS
+                state: o.hasOwnProperty('administrative_area_level_1')
                     ? (o.administrative_area_level_1 || '')
                     : '',
-                stateCode: isUS
+                stateCode: o.hasOwnProperty('administrative_area_level_1_s')
                     ? (o.administrative_area_level_1_s || '')
                     : '',
                 country: o.country || '',
