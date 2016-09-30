@@ -1,9 +1,18 @@
 
 ## Change Log:
 
-### v2.0.0 (2016-06-25)
+### v2.1.0 (2016-09-30)
+
+- Feature: Get static Google Maps (image) via `.getStaticMap()` method. [#34](https://github.com/onury/geolocator/issues/34). *Make sure you have enabled Google Static Maps API in Google Developers console.*
+- Feature: Ability to style Google Maps. Either set global styles via `geolocator.config()` or corresponding methods such as `.createMap()` or `.getStaticMap()`.
+- Revision: Improved desired accuracy logic. Added `maximumWait:Number` and `onProgress:Function` options for `.locate()` method.
+- Fix: Changed Geo-IP provider to [FreeGeoIP](https://freegeoip.net). (Wikimedia has shutdown the geo service.) Fixes issue [#36](https://github.com/onury/geolocator/issues/36).
+- Fix: Respecting countries with states, other than US. Fixes [#37](https://github.com/onury/geolocator/pull/37).
+- Minor revisions, updated dev-dependencies.
 
 Please read the [**API documentation**][api-docs].
+
+### v2.0.0 (2016-06-25)
 
 - Improvement: Better Geolocation accuracy. Fixes issue [#28](https://github.com/onury/geolocator/issues/28).
 - Feature: Watch geographic position.
@@ -26,6 +35,8 @@ Please read the [**API documentation**][api-docs].
     + Revision: Most features make use of Google APIs. So you'll need a (single) Google API key to use them all.
     If you don't have a key, you can still use Geolocator like the previous versions, but with limited features.
     + Revision: `geolocator.location` property is dropped. You can always access the result, via the second argument of each async method's callback. See documented examples.
+
+Please read the [**API documentation**][api-docs].
 
 ---
 
