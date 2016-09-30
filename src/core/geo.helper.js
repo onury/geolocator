@@ -111,8 +111,7 @@ const geoHelper = {
             }
         }
 
-        let isUS = o.country_s === 'US',
-            geometry = data.geometry;
+        let geometry = data.geometry;
         return {
             coords: geometry && geometry.location ? {
                 latitude: geometry.location.lat,
@@ -140,12 +139,8 @@ const geoHelper = {
                     || o.administrative_area_level_1
                     || '',
                 postalCode: o.postal_code || '',
-                state: isUS
-                    ? (o.administrative_area_level_1 || '')
-                    : '',
-                stateCode: isUS
-                    ? (o.administrative_area_level_1_s || '')
-                    : '',
+                state: o.administrative_area_level_1 || '',
+                stateCode: o.administrative_area_level_1_s || '',
                 country: o.country || '',
                 countryCode: o.country_s || ''
             },
@@ -280,6 +275,30 @@ const geoHelper = {
         });
 
         return arr;
+    },
+
+    // Converts a map-styles object in to static map styles (formatted query-string params).
+    // See https://developers.google.com/maps/documentation/static-maps/styling
+    mapStylesToParams(styles) {
+        if (!styles) return '';
+        if (!utils.isArray(styles)) styles = [styles];
+        let result = [];
+        styles.forEach((v, i, a) => {
+            let style = '';
+            if (v.stylers) { // only if there is a styler object
+                if (v.stylers.length > 0) { // Needs to have a style rule to be valid.
+                    style += (v.hasOwnProperty('featureType') ? 'feature:' + v.featureType : 'feature:all') + '|';
+                    style += (v.hasOwnProperty('elementType') ? 'element:' + v.elementType : 'element:all') + '|';
+                    v.stylers.forEach((val, i, a) => {
+                        let propName = Object.keys(val)[0],
+                            propVal = val[propName].toString().replace('#', '0x');
+                        style += propName + ':' + propVal + '|';
+                    });
+                }
+            }
+            result.push('style=' + encodeURIComponent(style));
+        });
+        return result.join('&');
     }
 
 };
