@@ -40,6 +40,7 @@
         "max-lines": 0,
         "complexity": 0,
         "no-nested-ternary": 0,
-        "no-mixed-operators": 0
+        "no-mixed-operators": 0,
+        "func-names": 0
     }
 }
