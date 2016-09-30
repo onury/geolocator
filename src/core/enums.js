@@ -1,3 +1,5 @@
+const GOOGLE_MAPS_API_BASE = '//maps.googleapis.com/maps/api';
+
 /**
  * This file only includes partial documentation about `geolocator` enumerations.
  * Note that these enumerations are mostly an aggregation of
@@ -37,7 +39,13 @@ const enums = Object.freeze({
          * @type {String}
          * @private
          */
-        GOOGLE_MAPS_API: '//maps.googleapis.com/maps/api/js',
+        GOOGLE_MAPS_API: GOOGLE_MAPS_API_BASE + '/js',
+        /**
+         * Google Maps API Static Map endpoint.
+         * @type {String}
+         * @private
+         */
+        GOOGLE_SATATIC_MAP: GOOGLE_MAPS_API_BASE + '/staticmap',
         /**
          * Google Geolocation API endpoint.
          * @type {String}
@@ -255,6 +263,47 @@ const enums = Object.freeze({
          * @type {String}
          */
         PYTHAGOREAN: 'pythagorean'
+    },
+    /**
+     *  Enumerates the image formats used for getting static Google Map images.
+     *  @memberof! geolocator
+     *
+     *  @readonly
+     *  @enum {String}
+     */
+    ImageFormat: {
+        /**
+         *  Specifies the PNG image format.
+         *  Same as `PNG_8`.
+         *  @type {String}
+         */
+        PNG: 'png',
+        /**
+         *  Specifies the 8-bit PNG image format.
+         *  Same as `PNG`.
+         *  @type {String}
+         */
+        PNG_8: 'png8',
+        /**
+         *  Specifies the 32-bit PNG image format.
+         *  @type {String}
+         */
+        PNG_32: 'png32',
+        /**
+         *  Specifies the GIF image format.
+         *  @type {String}
+         */
+        GIF: 'gif',
+        /**
+         *  Specifies the JPEG compressed image format.
+         *  @type {String}
+         */
+        JPG: 'jpg',
+        /**
+         *  Specifies a non-progressive JPEG compression image format.
+         *  @type {String}
+         */
+        JPG_BASELINE: 'jpg-baseline'
     }
 });
 
