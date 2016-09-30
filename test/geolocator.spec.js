@@ -107,7 +107,7 @@ describe('geolocator', function () {
                 expect(location.address).toEqual(jasmine.any(Object));
                 expect(location.timezone).toEqual(jasmine.any(Object));
                 expect(location.ip).toEqual(jasmine.any(String));
-                expect(location.provider).toEqual('wikimedia');
+                expect(location.provider).toEqual('freegeoip');
             }
             done();
         });
@@ -129,7 +129,7 @@ describe('geolocator', function () {
                 expect(location.address).toEqual(jasmine.any(Object));
                 expect(location.flag).toEqual(jasmine.any(String));
                 expect(location.ip).toEqual(jasmine.any(String));
-                expect(location.provider).toEqual('wikimedia');
+                expect(location.provider).toEqual('freegeoip');
             }
             done();
         });
@@ -163,7 +163,7 @@ describe('geolocator', function () {
 
     it('geocode()', function (done) {
         var options = {
-            address: "1600 Amphitheatre Parkway, CA",
+            address: '1600 Amphitheatre Parkway, CA',
             map: null
         };
 
@@ -181,6 +181,34 @@ describe('geolocator', function () {
                 expect(location.type).toEqual(jasmine.any(String));
                 expect(location.placeId).toEqual(jasmine.any(String));
                 expect(location.flag).toEqual(jasmine.any(String));
+            }
+            done();
+        });
+    });
+
+    it('getStaticMap() - sync and async', function (done) {
+        // geolocator.config(configEN);
+        var options = {
+            center: {
+                latitude: 40.714224,
+                longitude: -73.961452
+            },
+            mapTypeId: geolocator.MapTypeId.ROADMAP,
+            size: '600x300',
+            scale: 1,
+            zoom: 7,
+            marker: '0xFFCC00',
+            format: geolocator.ImageFormat.PNG
+        };
+        var url = geolocator.getStaticMap(options);
+        expect(url).toEqual(jasmine.any(String));
+        options.center = 'Los Angles, CA, US';
+        url = geolocator.getStaticMap(options, function (err, mapURL) {
+            expect(err).toEqual(null);
+            if (!err) {
+                expect(url).toBeUndefined();
+                expect(mapURL).toEqual(jasmine.any(String));
+                // console.log(mapURL);
             }
             done();
         });
