@@ -47,13 +47,18 @@
                 enableHighAccuracy: $('#chk-html5-accuracy').is(':checked'),
                 desiredAccuracy: parseInt($('#txt-html5-desired').val(), 10),
                 timeout: parseInt($('#txt-html5-timeout').val(), 10),
+                maximumWait: parseInt($('#txt-html5-wait').val(), 10),
+                onProgress: function (position) {
+                    console.log('progress:', position);
+                },
                 maximumAge: parseInt($('#txt-html5-maxage').val(), 10),
                 addressLookup: $('#chk-html5-lookup').is(':checked'),
                 timezone: $('#chk-html5-timezone').is(':checked'),
                 fallbackToIP: $('#chk-html5-ip').is(':checked'),
                 map: $('#chk-html5-map').is(':checked')
                     ? 'map-canvas'
-                    : null
+                    : null,
+                staticMap: false
             };
             console.log('options =', options);
             geolocator.locate(options, callback);
@@ -64,7 +69,8 @@
                 timezone: $('#chk-ip-timezone').is(':checked'),
                 map: $('#chk-ip-map').is(':checked')
                     ? 'map-canvas'
-                    : null
+                    : null,
+                staticMap: false
             };
             console.log('options =', options);
             geolocator.locateByIP(options, callback);
@@ -80,7 +86,8 @@
                 timezone: $('#chk-mobile-timezone').is(':checked'),
                 map: $('#chk-mobile-map').is(':checked')
                     ? 'map-canvas'
-                    : null
+                    : null,
+                staticMap: false
             };
             console.log('options =', options);
             geolocator.locateByMobile(options, callback);
@@ -90,7 +97,8 @@
                 address: $('#txt-geocode-address').val(),
                 map: $('#chk-geocode-map').is(':checked')
                     ? 'map-canvas'
-                    : null
+                    : null,
+                staticMap: false
             };
             geolocator.geocode(options, callback);
         },
