@@ -1,5 +1,7 @@
 /* global geolocator */
 
+// CAUTION: Wikimedia seems to have dropped this service.
+
 // Provider: wikimedia.org
 // https://meta.wikimedia.org/wiki/Geo_IP_lookup
 
