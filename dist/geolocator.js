@@ -76,7 +76,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -109,59 +109,60 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	/**
-	 * Radius of earth in kilometers.
-	 * @private
-	 * @type {Number}
+	 *  Radius of earth in kilometers.
+	 *  @private
+	 *  @type {Number}
 	 */
 	var EARTH_RADIUS_KM = 6371;
 	
 	/**
-	 * Radius of earth in miles.
-	 * @private
-	 * @type {Number}
+	 *  Radius of earth in miles.
+	 *  @private
+	 *  @type {Number}
 	 */
 	var EARTH_RADIUS_MI = 3959;
 	
 	/**
-	 * Storage for Geolocator default configuration.
+	 *  Storage for Geolocator default configuration.
 	 *
-	 * @readonly
-	 * @private
+	 *  @readonly
+	 *  @private
 	 */
 	var defaultConfig = {
 	    language: 'en',
 	    https: true,
 	    google: {
 	        version: '3', // latest 3.x
-	        key: ''
+	        key: '',
+	        styles: null
 	    }
 	};
 	
 	/**
-	 * Geolocator library that provides methods for getting geo-location information,
-	 * geocoding, address look-ups, distance & durations, timezone information and more...
-	 * This library makes use of HTML5 position feautures, implements Google APIs
-	 * and other services.
+	 *  Geolocator library that provides methods for getting geo-location information,
+	 *  geocoding, address look-ups, distance & durations, timezone information and more...
+	 *  This library makes use of HTML5 position feautures, implements Google APIs
+	 *  and other services.
 	 *
-	 * <b>Important Notes:</b>
+	 *  <b>Important Notes:</b>
 	 *
-	 * Although some calls might work without a key, it is generally required by
-	 * most {@link https://developers.google.com/maps/faq#using-google-maps-apis|Goolge APIs}
-	 * (such as Time Zone API). To get a free (or premium) key,
-	 * {@link https://developers.google.com/maps/documentation/javascript/|click here}.
-	 * After getting a key, you can enable multiple APIs for it. Make sure you
-	 * {@link https://console.developers.google.com|enable}
-	 * all the APIs supported by Geolocator.
+	 *  Although some calls might work without a key, it is generally required by
+	 *  most {@link https://developers.google.com/maps/faq#using-google-maps-apis|Goolge APIs}
+	 *  (such as Time Zone API). To get a free (or premium) key,
+	 *  {@link https://developers.google.com/maps/documentation/javascript/|click here}.
+	 *  After getting a key, you can enable multiple APIs for it. Make sure you
+	 *  {@link https://console.developers.google.com|enable}
+	 *  all the APIs supported by Geolocator.
 	 *
-	 * Note that browser API keys cannot have referer restrictions when used
-	 * with some Google APIs.
+	 *  Note that browser API keys cannot have referer restrictions when used
+	 *  with some Google APIs.
 	 *
-	 * Make sure your doctype is HTML5 and you're calling Geolocation APIs from an
-	 * HTTPS page. Geolocation API is removed from unsecured origins in Chrome 50.
-	 * Other browsers are expected to follow.
+	 *  Make sure your doctype is HTML5 and you're calling Geolocation APIs from an
+	 *  HTTPS page. Geolocation API is removed from unsecured origins in Chrome 50.
+	 *  Other browsers are expected to follow.
 	 *
-	 * @license MIT
-	 * @copyright 2016, Onur Yıldırım (onur@cutepilot.com)
+	 *  @license MIT
+	 *  @copyright 2016, Onur Yıldırım (onur@cutepilot.com)
 	 */
 	
 	var geolocator = function () {
@@ -178,50 +179,55 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // ---------------------------
 	
 	        /**
-	         * Sets or gets the geolocator configuration object.
-	         * Make sure you configure Geolocator before calling other methods that
-	         * require a Google API key.
+	         *  Sets or gets the geolocator configuration object.
+	         *  Make sure you configure Geolocator before calling other methods that
+	         *  require a Google API key.
 	         *
-	         * @param {Object} [options]
-	         *        Configuration object. If omitted, this method returns the current
-	         *        configuration.
-	         *     @param {String} [options.language="en"]
-	         *            Language to be used for API requests that supports language
-	         *            configurations. This is generally used for Google APIs.
-	         *            See {@link https://developers.google.com/maps/faq#languagesupport|supported languages}.
-	         *     @param {Boolean} [options.https=true]
-	         *            As Google recommends; using HTTPS encryption makes your site
-	         *            more secure, and more resistant to snooping or tampering.
-	         *            If set to `true`, the API calls are made over HTTPS, at all
-	         *            times. Setting to `false` will switch to HTTP (even if the
-	         *            page is on HTTPS). And if set to `null`, current protocol will
-	         *            be used. Note that some APIs might not work with HTTP such as
-	         *            Google Maps TimeZone API.
-	         *     @param {Object} [options.google]
-	         *            Google specific options.
-	         *         @param {String} [options.google.version="3"]
-	         *                Google Maps API version to be used (with
-	         *                `geolocator.createMap()`) method. The default version
-	         *                value is tested and works with Geolocator. You can set a
-	         *                greater value or the latest version number and it should
-	         *                work; but it's not guaranteed. Find out the
-	         *                {@link https://developers.google.com/maps/documentation/javascript/versions|latest version here}.
-	         *         @param {String} [options.google.key=""]
-	         *                API key to be used with Google API calls. Although some
-	         *                calls might work without a key, it is generally required
-	         *                by most Goolge APIs. To get a free (or premium) key,
-	         *                {@link https://developers.google.com/maps/documentation/javascript/|click here}.
+	         *  @param {Object} [options]
+	         *         Configuration object. If omitted, this method returns the current
+	         *         configuration.
+	         *      @param {String} [options.language="en"]
+	         *             Language to be used for API requests that supports language
+	         *             configurations. This is generally used for Google APIs.
+	         *             See {@link https://developers.google.com/maps/faq#languagesupport|supported languages}.
+	         *      @param {Boolean} [options.https=true]
+	         *             As Google recommends; using HTTPS encryption makes your site
+	         *             more secure, and more resistant to snooping or tampering.
+	         *             If set to `true`, the API calls are made over HTTPS, at all
+	         *             times. Setting to `false` will switch to HTTP (even if the
+	         *             page is on HTTPS). And if set to `null`, current protocol will
+	         *             be used. Note that some APIs might not work with HTTP such as
+	         *             Google Maps TimeZone API.
+	         *      @param {Object} [options.google]
+	         *             Google specific options.
+	         *          @param {String} [options.google.version="3"]
+	         *                 Google Maps API version to be used (with
+	         *                 `geolocator.createMap()`) method. The default version
+	         *                 value is tested and works with Geolocator. You can set a
+	         *                 greater value or the latest version number and it should
+	         *                 work; but it's not guaranteed. Find out the
+	         *                 {@link https://developers.google.com/maps/documentation/javascript/versions|latest version here}.
+	         *          @param {String} [options.google.key=""]
+	         *                 API key to be used with Google API calls. Although some
+	         *                 calls might work without a key, it is generally required
+	         *                 by most Goolge APIs. To get a free (or premium) key,
+	         *                 {@link https://developers.google.com/maps/documentation/javascript/|click here}.
+	         *          @param {Array} [options.google.styles]
+	         *                 An array of objects to customize the presentation of the
+	         *                 Google base maps, changing the visual display of such
+	         *                 elements as roads, parks, and built-up areas.
+	         *                 See {@link https://developers.google.com/maps/documentation/javascript/styling|Styling Maps}.
 	         *
-	         * @returns {Object} - Returns the current or updated configuration object.
+	         *  @returns {Object} - Returns the current or updated configuration object.
 	         *
-	         * @example
-	         * geolocator.config({
-	         *     language: "en",
-	         *     google: {
-	         *     	   version: "3",
-	         *         key: "YOUR-GOOGLE-API-KEY"
-	         *     }
-	         * });
+	         *  @example
+	         *  geolocator.config({
+	         *      language: "en",
+	         *      google: {
+	         *          version: "3",
+	         *          key: "YOUR-GOOGLE-API-KEY"
+	         *      }
+	         *  });
 	         */
 	        value: function config(options) {
 	            if (options) {
@@ -231,65 +237,238 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Creates a Google Map within the given element.
-	         * @see {@link https://developers.google.com/maps/documentation/javascript/reference|Google Maps JavaScript API}
-	         * @see {@link https://developers.google.com/maps/documentation/javascript/usage|Usage Limits}
+	         *  Gets a static map image URL which can be embeded via an `<img />` tag
+	         *  on the page.
 	         *
-	         * @param {Object|String|HTMLElement|Map} options
-	         *        Either map options object with the following properties or; the ID
-	         *        of a DOM element, or element itself which the map will be
-	         *        created within; or a previously created `google.maps.Map` instance.
-	         *        If a map instance is set, this only will apply the options without
-	         *        re-creating it.
-	         *     @param {String|HTMLElement|Map} options.element
-	         *            Either the ID of a DOM element or the element itself;
-	         *            which the map will be created within; or a previously created
-	         *            `google.maps.Map` instance. If a map instance is set, this
-	         *            only will apply the options without re-creating it.
-	         *     @param {Object} options.center
-	         *            Center coordinates for the map to be created.
-	         *         @param {Number} options.center.latitude
-	         *                Latitude of the center point coordinates.
-	         *         @param {Number} options.center.longitude
-	         *                Longitude of the center point coordinates.
-	         *     @param {String} [options.mapTypeId="roadmap"]
-	         *            Type of the map to be created.
-	         *            See {@link #geolocator.MapTypeId|`geolocator.MapTypeId` enumeration}
-	         *            for possible values.
-	         *     @param {String} [options.title]
-	         *            Title text to be displayed within an `InfoWindow`, when the
-	         *            marker is clicked. This only take effect if `marker` is
-	         *            enabled.
-	         *     @param {Boolean} [options.marker=true]
-	         *            Whether to place a marker at the given coordinates.
-	         *            If `title` is set, an `InfoWindow` will be opened when the
-	         *            marker is clicked.
-	         *     @param {Number} [options.zoom=9]
-	         *            Zoom level to be set for the map.
+	         *  Note that, if `options.center` is set to an address (instead of
+	         *  coordinates) and `options.marker` is also set; we will need to geocode
+	         *  that address to get center coordinates for the marker.
+	         *  In this case, you must use the `callback` parameter to get the async
+	         *  result. Otherwise, this method will directly return a `String`.
 	         *
-	         * @param {Function} callback
-	         *        Callback function to be executed when the map is created.
-	         *        This takes 2 arguments: `function (err, map) { ... }`.
-	         *        See {@link #geolocator~MapData|`geolocator~MapData` type} for details.
+	         *  Make sure you have enabled Static Maps API (and Geocoding API if
+	         *  `marker` is enabled) in your Google Developers console.
 	         *
-	         * @returns {void}
+	         *  For interactive map, see {@link #geolocator.createMap|`geolocator.createMap()` method}.
 	         *
-	         * @example
-	         * var options = {
-	         *     element: "my-map",
-	         * 	   center: {
-	         * 	       latitude: 48.8534100,
-	         *         longitude: 2.3488000
-	         * 	   },
-	         * 	   marker: true,
-	         * 	   title: "Paris, France",
-	         * 	   zoom: 12
-	         * };
-	         * geolocator.createMap(options, function (err, map) {
-	         * 	   if (map && map.infoWindow) {
-	         * 		   map.infoWindow.open(map.instance, map.marker);
-	         * 	   }
-	         * });
+	         *  @see {@link https://developers.google.com/maps/documentation/static-maps/intro|Static Maps}
+	         *  @see {@link https://developers.google.com/maps/documentation/static-maps/usage-limits|Usage Limits}
+	         *
+	         *  @param {Object} options
+	         *         Static map options.
+	         *         @param {String|Object} options.center
+	         *                Defines the center of the map and the location.
+	         *                Either an address `String` or an coordinates `Object` with
+	         *                `latitude:Number` and `longitude:Number` properties.
+	         *         @param {String} [options.mapTypeId="roadmap"]
+	         *                Type of the map to be created.
+	         *                See {@link #geolocator.MapTypeId|`geolocator.MapTypeId` enumeration}
+	         *                for possible values.
+	         *         @param {String|Object} [options.size="600x300"]
+	         *                Defines the size (in pixels) of the returned image.
+	         *                Either a string in `widthxheight` format or an Object
+	         *                with `width:Number` and `height:Number` properties.
+	         *         @param {Number} [options.scale=1]
+	         *                Affects the number of pixels that are returned. scale=2
+	         *                returns twice as many pixels as scale=1 while retaining
+	         *                the same coverage area and level of detail (i.e. the
+	         *                contents of the map don't change). Accepted values are 1,
+	         *                2 and 4 (4 is only available to Google Maps APIs Premium
+	         *                Plan customers.)
+	         *         @param {Number} [options.zoom=9]
+	         *                Zoom level to be set for the map.
+	         *         @param {String} [options.format=png]
+	         *                Defines the format of the resulting image.
+	         *                See {@link #geolocator.ImageFormat|`geolocator.ImageFormat` enumeration}
+	         *                for possible values.
+	         *         @param {Boolean|String} [options.marker=true]
+	         *                Specifies whether to add a marker to the center of the map.
+	         *                You can define the color of the marker by passing a color
+	         *                `String` instead of a `Boolean`. Color can be a predefined
+	         *                color from the set `red` (default), `black`, `brown`,
+	         *                `green`, `purple`, `yellow`, `blue`, `gray`, `orange` and
+	         *                `white`; or a HEX 24-bit color (e.g. `"0xFF0000"`).
+	         *                Note that marker will not be visible if `center` is set to
+	         *                a `String` address and you don't use the callback.
+	         *         @param {String} [options.region]
+	         *                Defines the appropriate borders to display, based on
+	         *                geo-political sensitivities. Accepts a region code
+	         *                specified as a two-character ccTLD (top-level domain)
+	         *                value. e.g. `"us"`.
+	         *         @param {Array} [options.styles]
+	         *                An array of objects to customize the presentation of the
+	         *                Google base maps, changing the visual display of such
+	         *                elements as roads, parks, and built-up areas.
+	         *                This will default to the global styles set via
+	         *                {@link #geolocator.config|`geolocator.config()` method}, if any.
+	         *                See {@link https://developers.google.com/maps/documentation/javascript/styling|Styling Maps}.
+	         *
+	         *  @param {Function} [callback]
+	         *         Callback function to be executed when the static map URL is built.
+	         *         This takes 2 arguments: `function (err, url) { ... }`.
+	         *         If omitted, this method will directly return the static map
+	         *         image URL; but (if enabled) the marker will not be visible if
+	         *         `options.center` is set to an address `String` instead of a
+	         *         coordinates `Object`.
+	         *
+	         *  @returns {String|void}
+	         *           If a callback is passed, this will return `void`.
+	         *           Otherwise, a `String` that represents the URL of the static map.
+	         *
+	         *  @example
+	         *  // Async example (with address and marker)
+	         *  var options = {
+	         *      center: "Los Angles, CA, US",
+	         *      mapTypeId: geolocator.MapTypeId.ROADMAP,
+	         *      size: "600x300",
+	         *      scale: 1,
+	         *      zoom: 5,
+	         *      marker: "0xFFCC00",
+	         *      format: geolocator.ImageFormat.PNG
+	         *  };
+	         *  geolocator.getStaticMap(options, function (err, url) {
+	         *      if (!err) {
+	         *          document.getElementById('my-img').src = url;
+	         *      }
+	         *  });
+	         *
+	         *  @example
+	         *  // Sync example (with coordinates)
+	         *  var options = {
+	         *      center: {
+	         *          longitude: 34.0522342,
+	         *          latitude: -118.2436849
+	         *      },
+	         *      mapTypeId: geolocator.MapTypeId.ROADMAP,
+	         *      size: "600x300",
+	         *      scale: 1,
+	         *      zoom: 5,
+	         *      marker: "0xFFCC00",
+	         *      format: geolocator.ImageFormat.PNG
+	         *  };
+	         *  document.getElementById('my-img').src = geolocator.getStaticMap(options);
+	         */
+	
+	    }, {
+	        key: 'getStaticMap',
+	        value: function getStaticMap(options, callback) {
+	            if (!_utils2.default.isPlainObject(options) || !options.center) {
+	                throw new _geo4.default(_geo4.default.Code.INVALID_PARAMETERS, 'A center address or coordinates are required.');
+	            }
+	
+	            if (_utils2.default.isString(options.center)) {
+	                return geolocator.geocode(options.center, function (err, location) {
+	                    if (err) callback(err);
+	                    options.center = location.coords;
+	                    callback(null, geolocator.getStaticMap(options));
+	                });
+	            }
+	
+	            var conf = geolocator._.config;
+	            var opts = _utils2.default.extend({
+	                mapTypeId: _enums2.default.MapTypeId.ROADMAP,
+	                size: {
+	                    width: 600,
+	                    height: 300
+	                },
+	                scale: 1, // 1 | 2 | (4 for business customers of google maps)
+	                zoom: 9,
+	                marker: 'red',
+	                format: _enums2.default.ImageFormat.PNG,
+	                language: conf.language || 'en',
+	                region: null
+	            }, options);
+	
+	            var center = _utils2.default.isPlainObject(opts.center) ? opts.center.latitude + ',' + opts.center.longitude : String(opts.center);
+	
+	            var size = _utils2.default.isPlainObject(opts.size) ? opts.size.width + 'x' + opts.size.height : String(opts.size);
+	
+	            var url = _enums2.default.URL.GOOGLE_SATATIC_MAP // not using utils.setProtocol() here
+	            + ('?center=' + center + '&maptype=' + opts.mapTypeId) + ('&size=' + size + '&scale=' + opts.scale + '&zoom=' + opts.zoom) + ('&format=' + opts.format + '&language=' + opts.language);
+	
+	            if (opts.marker) {
+	                var color = _utils2.default.isString(opts.marker) ? opts.marker : 'red';
+	                url += '&markers=' + encodeURIComponent('color:' + color + '|' + center);
+	            }
+	            if (opts.region) url += '&region=' + opts.region;
+	            if (conf.google.key) url += '&key=' + conf.google.key;
+	
+	            var styles = !_utils2.default.isFilledArray(opts.styles) ? _utils2.default.isFilledArray(conf.google.styles) ? conf.google.styles : null : opts.styles;
+	            if (styles) url += '&' + _geo2.default.mapStylesToParams(styles);
+	
+	            if (_utils2.default.isFunction(callback)) return callback(null, url);
+	            return url;
+	        }
+	
+	        /**
+	         *  Creates an interactive Google Map within the given element.
+	         *  Make sure you have enabled Google Static Maps API in your Google Developers console.
+	         *  For static map, see {@link #geolocator.getStaticMap|`geolocator.getStaticMap()` method}.
+	         *  @see {@link https://developers.google.com/maps/documentation/javascript/reference|Google Maps JavaScript API}
+	         *  @see {@link https://developers.google.com/maps/documentation/javascript/usage|Usage Limits}
+	         *
+	         *  @param {Object|String|HTMLElement|Map} options
+	         *         Either map options object with the following properties or; the ID
+	         *         of a DOM element, or element itself which the map will be
+	         *         created within; or a previously created `google.maps.Map` instance.
+	         *         If a map instance is set, this only will apply the options without
+	         *         re-creating it.
+	         *      @param {String|HTMLElement|Map} options.element
+	         *             Either the ID of a DOM element or the element itself;
+	         *             which the map will be created within; or a previously created
+	         *             `google.maps.Map` instance. If a map instance is set, this
+	         *             only will apply the options without re-creating it.
+	         *      @param {Object} options.center
+	         *             Center coordinates for the map to be created.
+	         *          @param {Number} options.center.latitude
+	         *                 Latitude of the center point coordinates.
+	         *          @param {Number} options.center.longitude
+	         *                 Longitude of the center point coordinates.
+	         *      @param {String} [options.mapTypeId="roadmap"]
+	         *             Type of the map to be created.
+	         *             See {@link #geolocator.MapTypeId|`geolocator.MapTypeId` enumeration}
+	         *             for possible values.
+	         *      @param {String} [options.title]
+	         *             Title text to be displayed within an `InfoWindow`, when the
+	         *             marker is clicked. This only take effect if `marker` is
+	         *             enabled.
+	         *      @param {Boolean} [options.marker=true]
+	         *             Whether to place a marker at the given coordinates.
+	         *             If `title` is set, an `InfoWindow` will be opened when the
+	         *             marker is clicked.
+	         *      @param {Number} [options.zoom=9]
+	         *             Zoom level to be set for the map.
+	         *      @param {Array} [options.styles]
+	         *             An array of objects to customize the presentation of the
+	         *             Google base maps, changing the visual display of such
+	         *             elements as roads, parks, and built-up areas.
+	         *             This will default to the global styles set via
+	         *             {@link #geolocator.config|`geolocator.config` method}`, if any.
+	         *             See {@link https://developers.google.com/maps/documentation/javascript/styling|Styling Maps}.
+	         *
+	         *  @param {Function} callback
+	         *         Callback function to be executed when the map is created.
+	         *         This takes 2 arguments: `function (err, map) { ... }`.
+	         *         See {@link #geolocator~MapData|`geolocator~MapData` type} for details.
+	         *
+	         *  @returns {void}
+	         *
+	         *  @example
+	         *  var options = {
+	         *      element: "my-map",
+	         *      center: {
+	         *          latitude: 48.8534100,
+	         *          longitude: 2.3488000
+	         *  	},
+	         *  	marker: true,
+	         *  	title: "Paris, France",
+	         *  	zoom: 12
+	         *  };
+	         *  geolocator.createMap(options, function (err, map) {
+	         *      if (map && map.infoWindow) {
+	         *          map.infoWindow.open(map.instance, map.marker);
+	         *      }
+	         *  });
 	         */
 	
 	    }, {
@@ -329,7 +508,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            options.element = elem;
 	
-	            var key = geolocator._.config.google.key;
+	            var conf = geolocator._.config,
+	                key = conf.google.key;
+	
+	            options.styles = !_utils2.default.isFilledArray(options.styles) ? _utils2.default.isFilledArray(conf.google.styles) ? conf.google.styles : null : options.styles;
+	
 	            geolocator.ensureGoogleLoaded(key, function (err) {
 	                if (err) {
 	                    throw new _geo4.default(_geo4.default.Code.GOOGLE_API_FAILED, String(err.message || err));
@@ -341,135 +524,150 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Locates the user's location via HTML5 geolocation. This may
-	         * require/prompt for user's permission. If the permission is granted we'll
-	         * get the most accurate location information. Otherwise, we'll fallback to
-	         * locating via user's IP (if enabled).
+	         *  Locates the user's location via HTML5 geolocation. This may
+	         *  require/prompt for user's permission. If the permission is granted we'll
+	         *  get the most accurate location information. Otherwise, we'll fallback to
+	         *  locating via user's IP (if enabled).
 	         *
-	         * For better accuracy, Geolocator implements a different approach than the
-	         * `getCurrentPosition` API; which generally triggers before the device's
-	         * GPS hardware can provide anything accurate. Thanks to
-	         * {@link https://github.com/gwilson/getAccurateCurrentPosition#background|Greg Wilson}
-	         * for the idea.
+	         *  For better accuracy, Geolocator implements a different approach than the
+	         *  `getCurrentPosition` API; which generally triggers before the device's
+	         *  GPS hardware can provide anything accurate. Thanks to
+	         *  {@link https://github.com/gwilson/getAccurateCurrentPosition#background|Greg Wilson}
+	         *  for the idea.
 	         *
-	         * Also note that HTML5 Geolocation feature no more allows insecure origins.
-	         * See {@link https://goo.gl/rStTGz|this} for more details.
-	         * This means if you don't call this method from an HTTPS page, it will
-	         * fail. And if `options.fallbackToIP` is enabled, this will locate by IP.
+	         *  Also note that HTML5 Geolocation feature no more allows insecure origins.
+	         *  See {@link https://goo.gl/rStTGz|this} for more details.
+	         *  This means if you don't call this method from an HTTPS page, it will
+	         *  fail. And if `options.fallbackToIP` is enabled, this will locate by IP.
 	         *
-	         * @param {Object} [options]
-	         *        HTML5 geo-location settings with some additional options.
-	         *     @param {Boolean} [options.enableHighAccuracy=true]
-	         *            Specifies whether the device should provide the most accurate
-	         *            position it can. Note that setting this to `true` might
-	         *            consume more CPU and/or battery power; and result in slower
-	         *            response times.
-	         *     @param {Number} [options.timeout=6000]
-	         *            HTML5 position timeout setting in milliseconds. Setting this
-	         *            to `Infinity` means that Geolocator won't return until the
-	         *            position is available.
-	         *     @param {Number} [options.maximumAge=0]
-	         *            HTML5 position maximum age. Indicates the maximum age in
-	         *            milliseconds of a possible cached position that is acceptable
-	         *            to return. `0` means, the device cannot use a cached position
-	         *            and must attempt to retrieve the real current position. If set
-	         *            to `Infinity` the device must return a cached position
-	         *            regardless of its age. Note that if `enableHighAccuracy` is
-	         *            set to `true`, `maximumAge` will be forced to `0`.
-	         *     @param {Number} [options.desiredAccuracy=30]
-	         *            Minimum accuracy desired, in meters. Position will not be
-	         *            returned until this is met, before the timeout. This only
-	         *            takes effect if `enableHighAccuracy` is set to `true`.
-	         *     @param {Boolean} [options.fallbackToIP=false]
-	         *            Specifies whether to fallback to IP geolocation if the HTML5
-	         *            geolocation fails (e.g. user rejection).
-	         *     @param {Boolean} [options.addressLookup=false]
-	         *            Specifies whether to run a reverse-geocode operation for the
-	         *            fetched coordinates to retrieve detailed address information.
-	         *            Note that this means an additional request which requires a
-	         *            Google API key to be set in the Geolocator configuration.
-	         *            See {@link #geolocator.config|`geolocator.config()`}.
-	         *     @param {Boolean} [options.timezone=false]
-	         *            Specifies whether to also fetch the time zone information for
-	         *            the receieved coordinates. Note that this means an additional
-	         *            request which requires a Google API key to be set in the
-	         *            Geolocator configuration.
-	         *            See {@link #geolocator.config|`geolocator.config()`}.
-	         *     @param {String|Object} [options.map]
-	         *            In order to create a map from the fetched location coordinates;
-	         *            either set this to map options object or; the ID of a DOM
-	         *            element or DOM element itself which the map will be created
-	         *            within.
+	         *  @param {Object} [options]
+	         *         HTML5 geo-location settings with some additional options.
+	         *      @param {Boolean} [options.enableHighAccuracy=true]
+	         *             Specifies whether the device should provide the most accurate
+	         *             position it can. Note that setting this to `true` might
+	         *             consume more CPU and/or battery power; and result in slower
+	         *             response times.
+	         *      @param {Number} [options.desiredAccuracy=30]
+	         *             Minimum accuracy desired, in meters. Position will not be
+	         *             returned until this is met, before the timeout. This only
+	         *             takes effect if `enableHighAccuracy` is set to `true`.
+	         *      @param {Number} [options.timeout=5000]
+	         *             HTML5 position timeout setting in milliseconds. Setting this
+	         *             to `Infinity` means that Geolocator won't return until the
+	         *             position is available.
+	         *      @param {Number} [options.maximumWait=10000]
+	         *             Maximum time to wait (in milliseconds) for the desired
+	         *             accuracy (which should be greater than `timeout`).
+	         *             This only takes effect if `enableHighAccuracy` is set to
+	         *             `true`.
+	         *      @param {Number} [options.maximumAge=0]
+	         *             HTML5 position maximum age. Indicates the maximum age in
+	         *             milliseconds of a possible cached position that is acceptable
+	         *             to return. `0` means, the device cannot use a cached position
+	         *             and must attempt to retrieve the real current position. If set
+	         *             to `Infinity` the device must return a cached position
+	         *             regardless of its age. Note that if `enableHighAccuracy` is
+	         *             set to `true`, `maximumAge` will be forced to `0`.
+	         *      @param {Function} [options.onProgress]
+	         *             If `enableHighAccuracy` is set to `true`, you can use this
+	         *             callback to check the progress of the location accuracy;
+	         *             while waiting for the final, best accurate location.
+	         *      @param {Boolean} [options.fallbackToIP=false]
+	         *             Specifies whether to fallback to IP geolocation if the HTML5
+	         *             geolocation fails (e.g. user rejection).
+	         *      @param {Boolean} [options.addressLookup=false]
+	         *             Specifies whether to run a reverse-geocode operation for the
+	         *             fetched coordinates to retrieve detailed address information.
+	         *             Note that this means an additional request which requires a
+	         *             Google API key to be set in the Geolocator configuration.
+	         *             See {@link #geolocator.config|`geolocator.config()`}.
+	         *      @param {Boolean} [options.timezone=false]
+	         *             Specifies whether to also fetch the time zone information for
+	         *             the receieved coordinates. Note that this means an additional
+	         *             request which requires a Google API key to be set in the
+	         *             Geolocator configuration.
+	         *             See {@link #geolocator.config|`geolocator.config()`}.
+	         *      @param {String|Object} [options.map]
+	         *             In order to create an interactive map from the fetched
+	         *             location coordinates; either set this to map options object
+	         *             or; the ID of a DOM element or DOM element itself which the
+	         *             map will be created within.
+	         *      @param {Boolean|Object} [options.staticMap=false]
+	         *             Set to `true` to get a static Google Map image URL (with
+	         *             default options); or pass a static map options object.
 	         *
-	         * @param {Function} callback
-	         *        Callback function to be executed when the request completes.
-	         *        This takes 2 arguments: `function (err, location) { ... }`.
-	         *        See {@link #geolocator~Location|`geolocator~Location` type} for details.
+	         *  @param {Function} callback
+	         *         Callback function to be executed when the request completes.
+	         *         This takes 2 arguments: `function (err, location) { ... }`.
+	         *         See {@link #geolocator~Location|`geolocator~Location` type} for details.
 	         *
-	         * @returns {void}
+	         *  @returns {void}
+	         *
+	         *  @example
+	         *  var options = {
+	         *      enableHighAccuracy: true,
+	         *      desiredAccuracy: 30,
+	         *      timeout: 5000,
+	         *      maximumWait: 10000,
+	         *      maximumAge: 0,
+	         *      fallbackToIP: true,
+	         *      addressLookup: true,
+	         *      timezone: true,
+	         *      map: "my-map",
+	         *      staticMap: true
+	         *  };
+	         *  geolocator.locate(options, function (err, location) {
+	         *      console.log(err || location);
+	         *  });
 	         *
 	         * @example
-	         * var options = {
-	         *     enableHighAccuracy: true,
-	         *     timeout: 6000,
-	         *     maximumAge: 0,
-	         *     desiredAccuracy: 30,
-	         *     fallbackToIP: true,
-	         *     addressLookup: true,
-	         *     timezone: true,
-	         *     map: "my-map"
-	         * };
-	         * geolocator.locate(options, function (err, location) {
-	         *     console.log(err || location);
-	         * });
-	         *
-	         * @example
-	         * // location result:
-	         * {
-	         *     coords: {
-	         *         latitude: 37.4224764,
-	         *         longitude: -122.0842499,
-	         *         accuracy: 30,
-	         *         altitude: null,
-	         *         altitudeAccuracy: null,
-	         *         heading: null,
-	         *         speed: null
-	         *     },
-	         *     address: {
-	         *         commonName: "",
-	         *         street: "Amphitheatre Pkwy",
-	         *         route: "Amphitheatre Pkwy",
-	         *         streetNumber: "1600",
-	         *         neighborhood: "",
-	         *         town: "",
-	         *         city: "Mountain View",
-	         *         region: "Santa Clara County",
-	         *         state: "California",
-	         *         stateCode: "CA",
-	         *         postalCode: "94043",
-	         *         country: "United States",
-	         *         countryCode: "US"
-	         *     },
-	         *     formattedAddress: "1600 Amphitheatre Parkway, Mountain View, CA 94043, USA",
-	         *     type: "ROOFTOP",
-	         *     placeId: "ChIJ2eUgeAK6j4ARbn5u_wAGqWA",
-	         *     timezone: {
-	         *         id: "America/Los_Angeles",
-	         *         name: "Pacific Standard Time",
-	         *         abbr: "PST",
-	         *         dstOffset: 0,
-	         *         rawOffset: -28800
-	         *     },
-	         *     flag: "//cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/flags/4x3/us.svg",
-	         *     map: {
-	         *     	   element: HTMLElement,
-	         *     	   instance: Object, // google.maps.Map
-	         *     	   marker: Object, // google.maps.Marker
-	         *     	   infoWindow: Object, // google.maps.InfoWindow
-	         *     	   options: Object // map options
-	         *     },
-	         *     timestamp: 1456795956380
-	         * }
+	         *  // location result:
+	         *  {
+	         *      coords: {
+	         *          latitude: 37.4224764,
+	         *          longitude: -122.0842499,
+	         *          accuracy: 30,
+	         *          altitude: null,
+	         *          altitudeAccuracy: null,
+	         *          heading: null,
+	         *          speed: null
+	         *      },
+	         *      address: {
+	         *          commonName: "",
+	         *          street: "Amphitheatre Pkwy",
+	         *          route: "Amphitheatre Pkwy",
+	         *          streetNumber: "1600",
+	         *          neighborhood: "",
+	         *          town: "",
+	         *          city: "Mountain View",
+	         *          region: "Santa Clara County",
+	         *          state: "California",
+	         *          stateCode: "CA",
+	         *          postalCode: "94043",
+	         *          country: "United States",
+	         *          countryCode: "US"
+	         *      },
+	         *      formattedAddress: "1600 Amphitheatre Parkway, Mountain View, CA 94043, USA",
+	         *      type: "ROOFTOP",
+	         *      placeId: "ChIJ2eUgeAK6j4ARbn5u_wAGqWA",
+	         *      timezone: {
+	         *          id: "America/Los_Angeles",
+	         *          name: "Pacific Standard Time",
+	         *          abbr: "PST",
+	         *          dstOffset: 0,
+	         *          rawOffset: -28800
+	         *      },
+	         *      flag: "//cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/flags/4x3/us.svg",
+	         *      map: {
+	         *          element: HTMLElement,
+	         *          instance: Object, // google.maps.Map
+	         *          marker: Object, // google.maps.Marker
+	         *          infoWindow: Object, // google.maps.InfoWindow
+	         *          options: Object // map options
+	         *      },
+	         *      staticMap: "//maps.googleapis.com/maps/api/staticmap?center=37.4224764,-122.0842499&maptype=roadmap&size=600x300&scale=1&zoom=9&format=png&language=en&markers=color%3Ared%7C37.4224764%2C2-122.0842499&key=YOUR-GOOGLE-API-KEY",
+	         *      timestamp: 1456795956380
+	         *  }
 	         */
 	
 	    }, {
@@ -477,17 +675,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	        value: function locate(options, callback) {
 	            options = _utils2.default.extend({
 	                enableHighAccuracy: true,
-	                timeout: 6000,
+	                timeout: 5000,
+	                maximumWait: 10000,
 	                maximumAge: 0,
 	                desiredAccuracy: 30,
+	                onProgress: _utils2.default.noop,
 	                fallbackToIP: false,
 	                addressLookup: false,
 	                timezone: false,
-	                map: undefined
+	                map: undefined,
+	                staticMap: false
 	            }, options);
 	
 	            // force disable cache if high-accuracy is enabled
 	            if (options.enableHighAccuracy) options.maximumAge = 0;
+	            // set a min value for timeout
+	            if (options.timeout < 1000) options.timeout = 1000;
+	            // max wait should not be less than timeout
+	            if (options.maximumWait < options.timeout) options.maximumWait = options.timeout;
+	
 	            // check options and Google key
 	            checkGoogleKey(options);
 	
@@ -523,76 +729,80 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Returns a location and accuracy radius based on information about cell
-	         * towers and WiFi nodes that the mobile client can detect; via the Google
-	         * Maps Geolocation API.
-	         * @see {@link https://developers.google.com/maps/documentation/geolocation/intro|Google Maps Geolocation API}
-	         * @see {@link https://developers.google.com/maps/documentation/geolocation/usage-limits|Usage Limits}
+	         *  Returns a location and accuracy radius based on information about cell
+	         *  towers and WiFi nodes that the mobile client can detect; via the Google
+	         *  Maps Geolocation API.
+	         *  @see {@link https://developers.google.com/maps/documentation/geolocation/intro|Google Maps Geolocation API}
+	         *  @see {@link https://developers.google.com/maps/documentation/geolocation/usage-limits|Usage Limits}
 	         *
-	         * @param {Object} [options]
-	         *        Geolocation options.
-	         *     @param {Number} [options.homeMobileCountryCode]
-	         *            The mobile country code (MCC) for the device's home network.
-	         *     @param {Number} [options.homeMobileNetworkCode]
-	         *            The mobile network code (MNC) for the device's home network.
-	         *     @param {String} [options.radioType]
-	         *            The mobile radio type.
-	         *            See {@link #geolocator.RadioType|`geolocator.RadioType` enumeration}
-	         *            for possible values. While this field is optional, it should
-	         *            be included if a value is available, for more accurate results.
-	         *     @param {string} [options.carrier]
-	         *            The carrier name. e.g. "Vodafone"
-	         *     @param {Boolean} [options.fallbackToIP=false]
-	         *            Specifies whether to fallback to IP geolocation if wifi and
-	         *            cell tower signals are not available. Note that the IP address
-	         *            in the request header may not be the IP of the device. Set
-	         *            `fallbackToIP` to `false` to disable fall back.
-	         *     @param {Array} [options.cellTowers]
-	         *            An array of cell tower objects.
-	         *            See {@link https://developers.google.com/maps/documentation/geolocation/intro#cell_tower_object|Cell tower objects} for details.
-	         *     @param {Array} [options.wifiAccessPoints]
-	         *            An array of WiFi access point objects.
-	         *            See {@link https://developers.google.com/maps/documentation/geolocation/intro#wifi_access_point_object|WiFi access point objects} for details.
-	         *     @param {Boolean} [options.addressLookup=false]
-	         *            Specifies whether to run a reverse-geocode operation for the
-	         *            fetched coordinates to retrieve detailed address information.
-	         *            Note that this means an additional request which requires a
-	         *            Google API key to be set in the Geolocator configuration.
-	         *            See {@link #geolocator.config|`geolocator.config()`}.
-	         *     @param {Boolean} [options.timezone=false]
-	         *            Specifies whether to also fetch the time zone information for
-	         *            the receieved coordinates. Note that this means an additional
-	         *            request which requires a Google API key to be set in the
-	         *            Geolocator configuration.
-	         *            See {@link #geolocator.config|`geolocator.config()`}.
-	         *     @param {String|Object} [options.map]
-	         *            In order to create a map from the fetched location coordinates;
-	         *            either set this to map options object or; the ID of a DOM
-	         *            element or DOM element itself which the map will be created
-	         *            within.
-	         *     @param {Boolean} [options.raw=false]
-	         *     	      Whether to return the raw Google API result.
-	         * @param {Function} callback
-	         *        Callback function to be executed when the request completes.
-	         *        This takes 2 arguments: `function (err, location) { ... }`.
-	         *        See {@link #geolocator~Location|`geolocator~Location` type} for details.
+	         *  @param {Object} [options]
+	         *         Geolocation options.
+	         *      @param {Number} [options.homeMobileCountryCode]
+	         *             The mobile country code (MCC) for the device's home network.
+	         *      @param {Number} [options.homeMobileNetworkCode]
+	         *             The mobile network code (MNC) for the device's home network.
+	         *      @param {String} [options.radioType]
+	         *             The mobile radio type.
+	         *             See {@link #geolocator.RadioType|`geolocator.RadioType` enumeration}
+	         *             for possible values. While this field is optional, it should
+	         *             be included if a value is available, for more accurate results.
+	         *      @param {string} [options.carrier]
+	         *             The carrier name. e.g. "Vodafone"
+	         *      @param {Boolean} [options.fallbackToIP=false]
+	         *             Specifies whether to fallback to IP geolocation if wifi and
+	         *             cell tower signals are not available. Note that the IP address
+	         *             in the request header may not be the IP of the device. Set
+	         *             `fallbackToIP` to `false` to disable fall back.
+	         *      @param {Array} [options.cellTowers]
+	         *             An array of cell tower objects.
+	         *             See {@link https://developers.google.com/maps/documentation/geolocation/intro#cell_tower_object|Cell tower objects} for details.
+	         *      @param {Array} [options.wifiAccessPoints]
+	         *             An array of WiFi access point objects.
+	         *             See {@link https://developers.google.com/maps/documentation/geolocation/intro#wifi_access_point_object|WiFi access point objects} for details.
+	         *      @param {Boolean} [options.addressLookup=false]
+	         *             Specifies whether to run a reverse-geocode operation for the
+	         *             fetched coordinates to retrieve detailed address information.
+	         *             Note that this means an additional request which requires a
+	         *             Google API key to be set in the Geolocator configuration.
+	         *             See {@link #geolocator.config|`geolocator.config()`}.
+	         *      @param {Boolean} [options.timezone=false]
+	         *             Specifies whether to also fetch the time zone information for
+	         *             the receieved coordinates. Note that this means an additional
+	         *             request which requires a Google API key to be set in the
+	         *             Geolocator configuration.
+	         *             See {@link #geolocator.config|`geolocator.config()`}.
+	         *      @param {String|Object} [options.map]
+	         *             In order to create an interactive map from the fetched
+	         *             location coordinates; either set this to map options object
+	         *             or; the ID of a DOM element or DOM element itself which the
+	         *             map will be created within.
+	         *      @param {Boolean|Object} [options.staticMap=false]
+	         *             Set to `true` to get a static Google Map image URL (with
+	         *             default options); or pass a static map options object.
+	         *      @param {Boolean} [options.raw=false]
+	         *      	      Whether to return the raw Google API result.
+	         *  @param {Function} callback
+	         *         Callback function to be executed when the request completes.
+	         *         This takes 2 arguments: `function (err, location) { ... }`.
+	         *         See {@link #geolocator~Location|`geolocator~Location` type} for details.
 	         *
-	         * @returns {void}
+	         *  @returns {void}
 	         *
-	         * @example
-	         * var options = {
-	         *     homeMobileCountryCode: 310,
-	         *     homeMobileNetworkCode: 410,
-	         *     carrier: 'Vodafone',
-	         *     radioType: geolocator.RadioType.GSM,
-	         *     fallbackToIP: true,
-	         *     addressLookup: false,
-	         *     timezone: false,
-	         *     map: "my-map"
-	         * };
-	         * geolocator.locateByMobile(options, function (err, location) {
-	         *     console.log(err || location);
-	         * });
+	         *  @example
+	         *  var options = {
+	         *      homeMobileCountryCode: 310,
+	         *      homeMobileNetworkCode: 410,
+	         *      carrier: 'Vodafone',
+	         *      radioType: geolocator.RadioType.GSM,
+	         *      fallbackToIP: true,
+	         *      addressLookup: false,
+	         *      timezone: false,
+	         *      map: "my-map",
+	         *      staticMap: false
+	         *  };
+	         *  geolocator.locateByMobile(options, function (err, location) {
+	         *      console.log(err || location);
+	         *  });
 	         */
 	
 	    }, {
@@ -661,86 +871,91 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Locates the user's location by the client's IP.
+	         *  Locates the user's location by the client's IP.
 	         *
-	         * This method uses Wikimedia's Geo-IP lookup service, by default.
-	         * In order to change the source provider, you can use
-	         * {@link #geolocator.setGeoIPSource|`geolocator.setGeoIPSource()` method}.
+	         *  This method uses FreeGeoIP's lookup service, by default.
+	         *  In order to change the source provider, you can use
+	         *  {@link #geolocator.setGeoIPSource|`geolocator.setGeoIPSource()` method}.
 	         *
-	         * @param {Object} [options]
-	         *        Locate options.
-	         *     @param {Boolean} [options.addressLookup=false]
-	         *            Specifies whether to run a reverse-geocode operation for the
-	         *            fetched coordinates to retrieve detailed address information.
-	         *            Since no precise address can be fetched from an IP addres; you
-	         *            should only enable this if the Geo-IP Source returns no useful
-	         *            address information other than coordinates. Also, note that
-	         *            this means an additional request which requires a Google API
-	         *            key to be set in the Geolocator configuration.
-	         *            See {@link #geolocator.config|`geolocator.config()`}.
-	         *     @param {Boolean} [options.timezone=false]
-	         *            Specifies whether to also fetch the time zone information for
-	         *            the receieved coordinates. Note that this means an additional
-	         *            request which requires a Google API key to be set in the
-	         *            Geolocator configuration.
-	         *            See {@link #geolocator.config|`geolocator.config()`}.
-	         *     @param {String|Object} [options.map]
-	         *            In order to create a map from the fetched location coordinates;
-	         *            either set this to map options object or; the ID of a DOM
-	         *            element or DOM element itself which the map will be created
-	         *            within.
-	         * @param {Function} callback
-	         *        Callback function to be executed when the request completes.
-	         *        This takes 2 arguments: `function (err, location) { ... }`.
-	         *        See {@link #geolocator~Location|`geolocator~Location` type} for details.
+	         *  @param {Object} [options]
+	         *         Locate options.
+	         *      @param {Boolean} [options.addressLookup=false]
+	         *             Specifies whether to run a reverse-geocode operation for the
+	         *             fetched coordinates to retrieve detailed address information.
+	         *             Since no precise address can be fetched from an IP addres; you
+	         *             should only enable this if the Geo-IP Source returns no useful
+	         *             address information other than coordinates. Also, note that
+	         *             this means an additional request which requires a Google API
+	         *             key to be set in the Geolocator configuration.
+	         *             See {@link #geolocator.config|`geolocator.config()`}.
+	         *      @param {Boolean} [options.timezone=false]
+	         *             Specifies whether to also fetch the time zone information for
+	         *             the receieved coordinates. Note that this means an additional
+	         *             request which requires a Google API key to be set in the
+	         *             Geolocator configuration.
+	         *             See {@link #geolocator.config|`geolocator.config()`}.
+	         *      @param {String|Object} [options.map]
+	         *             In order to create an interactive map from the fetched
+	         *             location coordinates; either set this to map options object
+	         *             or; the ID of a DOM element or DOM element itself which the
+	         *             map will be created within.
+	         *      @param {Boolean|Object} [options.staticMap=false]
+	         *             Set to `true` to get a static Google Map image URL (with
+	         *             default options); or pass a static map options object.
+	         *  @param {Function} callback
+	         *         Callback function to be executed when the request completes.
+	         *         This takes 2 arguments: `function (err, location) { ... }`.
+	         *         See {@link #geolocator~Location|`geolocator~Location` type} for details.
 	         *
-	         * @returns {void}
+	         *  @returns {void}
 	         *
-	         * @example
-	         * var options = {
-	         * 	   addressLookup: true,
-	         * 	   timezone: true,
-	         * 	   map: "my-map"
-	         * };
-	         * geolocator.locateByIp(options, function (err, location) {
-	         * 	   console.log(err || location);
-	         * });
+	         *  @example
+	         *  var options = {
+	         *  	addressLookup: true,
+	         *  	timezone: true,
+	         *  	map: "my-map",
+	         *  	staticMap: true
+	         *  };
+	         *  geolocator.locateByIP(options, function (err, location) {
+	         *  	console.log(err || location);
+	         *  });
 	         *
-	         * @example
-	         * // location result:
-	         * {
-	         *     coords: {
-	         *         latitude: 37.4224764,
-	         *         longitude: -122.0842499,
-	         *     },
-	         *     address: {
-	         *         city: "Istanbul",
-	         *         region: "34",
-	         *         state: "34",
-	         *         country: "TR",
-	         *         countryCode: "TR"
-	         *     },
-	         *     formattedAddress: "Demirtaş, Tesviyeci Sk. No:7, 34134 Fatih/İstanbul, Turkey",
-	         *     type: "ROOFTOP",
-	         *     placeId: "ChIJ-ZRLfO25yhQRBi5YJxX80Q0",
-	         *     timezone: {
-	         *         id: "Europe/Istanbul",
-	         *         name: "Eastern European Summer Time",
-	         *         abbr: "EEST",
-	         *         dstOffset: 3600,
-	         *         rawOffset: 7200
-	         *     },
-	         *     flag: "//cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/flags/4x3/tr.svg",
-	         *     map: {
-	         *     	   element: HTMLElement,
-	         *     	   instance: Object, // google.maps.Map
-	         *     	   marker: Object, // google.maps.Marker
-	         *     	   infoWindow: Object, // google.maps.InfoWindow
-	         *     	   options: Object // map options
-	         *     },
-	         *     provider: "wikimedia",
-	         *     timestamp: 1466216325223
-	         * }
+	         *  @example
+	         *  // location result:
+	         *  {
+	         *      coords: {
+	         *          latitude: 41.0214,
+	         *          longitude: 28.9948,
+	         *      },
+	         *      address: {
+	         *          city: "Istanbul",
+	         *          region: "34",
+	         *          state: "34",
+	         *          country: "Turkey",
+	         *          countryCode: "TR"
+	         *      },
+	         *      formattedAddress: "Demirtaş, Tesviyeci Sk. No:7, 34134 Fatih/İstanbul, Turkey",
+	         *      type: "ROOFTOP",
+	         *      placeId: "ChIJ-ZRLfO25yhQRBi5YJxX80Q0",
+	         *      timezone: {
+	         *          id: "Europe/Istanbul",
+	         *          name: "Eastern European Summer Time",
+	         *          abbr: "EEST",
+	         *          dstOffset: 3600,
+	         *          rawOffset: 7200
+	         *      },
+	         *      flag: "//cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/flags/4x3/tr.svg",
+	         *      map: {
+	         *          element: HTMLElement,
+	         *          instance: Object, // google.maps.Map
+	         *          marker: Object, // google.maps.Marker
+	         *          infoWindow: Object, // google.maps.InfoWindow
+	         *          options: Object // map options
+	         *      },
+	         *      staticMap: "//maps.googleapis.com/maps/api/staticmap?center=41.0214,28.9948&maptype=roadmap&size=600x300&scale=1&zoom=9&format=png&language=en&markers=color%3Ared%7C41.0214%2C228.9948&key=YOUR-GOOGLE-API-KEY",
+	         *      provider: "freegeoip",
+	         *      timestamp: 1466216325223
+	         *  }
 	         */
 	
 	    }, {
@@ -788,7 +1003,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    response = _utils2.default.mapToSchema(response, source.schema);
 	                }
 	                response.provider = source.provider || 'unknown';
-	                setFlagURL(response);
+	                setLocationURLs(response, options);
 	                if (response.coords) {
 	                    response.coords.latitude = Number(response.coords.latitude);
 	                    response.coords.longitude = Number(response.coords.longitude);
@@ -799,47 +1014,47 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Sets the Geo-IP source to be used for fetching location information
-	         * by user's IP; which is internally used by
-	         * {@link #geolocator.locateByIP|`geolocator.locateByIP()` method}.
+	         *  Sets the Geo-IP source to be used for fetching location information
+	         *  by user's IP; which is internally used by
+	         *  {@link #geolocator.locateByIP|`geolocator.locateByIP()` method}.
 	         *
-	         * By default, Geolocator uses Wikimedia as the Geo-IP source provider.
-	         * You can use this method to change this; or you can choose from
-	         * ready-to-use
-	         * {@link https://github.com/onury/geolocator/tree/master/src/geo-ip-sources|Geo-IP sources}.
+	         *  By default, Geolocator uses FreeGeoIP as the Geo-IP source provider.
+	         *  You can use this method to change this; or you can choose from
+	         *  ready-to-use
+	         *  {@link https://github.com/onury/geolocator/tree/master/src/geo-ip-sources|Geo-IP sources}.
 	         *
-	         * @param {Object} options
-	         *        Geo-IP Source options.
-	         *     @param {String} [options.provider]
-	         *            Source or service provider's name.
-	         *     @param {String} options.url
-	         *            Source URL without the callback query parameter. The callback
-	         *            name (if supported) should be set via `options.callbackParam`.
-	         *            Also, make sure the service supports the protocol you use in
-	         *            the enums.URL. If it supports both HTTP and HTTPS, you can omit the
-	         *            protocol. In this case, it will be determined via Geolocator
-	         *            configuration.
-	         *            See {@link #geolocator.config|`geolocator.config()`}.
-	         *            NOTE: Do not forget to include your API key in the query
-	         *            parameters of the URL, if you have one.
-	         *     @param {String} [options.callbackParam]
-	         *            If JSON callback is supported, pass the name of the callback
-	         *            parameter, defined by the provider.
-	         *     @param {Object} [options.globalVar]
-	         *            Set this instead of `options.callbackParam` if the service
-	         *            does not support JSON callbacks, but weirdly set a global
-	         *            variable in the document. For example, if the response is
-	         *            `Geo = { lat, lng }`, you should set this to `"Geo"`.
-	         *     @param {Object} [options.schema]
-	         *            Schema object to be used to re-structure the response returned
-	         *            from the service. Set the response object's keys as values of
-	         *            a custom object to map the format to the `location` object.
-	         *            For example; if the service returns a response like
-	         *            `{ lat: 40.112233, lng: 10.112233, otherProp: 'hello' }`.
-	         *            Then you should set the following schema:
-	         *            `{ coords: { latitude: 'lat', longitude: 'lng' } }`.
+	         *  @param {Object} options
+	         *         Geo-IP Source options.
+	         *      @param {String} [options.provider]
+	         *             Source or service provider's name.
+	         *      @param {String} options.url
+	         *             Source URL without the callback query parameter. The callback
+	         *             name (if supported) should be set via `options.callbackParam`.
+	         *             Also, make sure the service supports the protocol you use in
+	         *             the enums.URL. If it supports both HTTP and HTTPS, you can omit the
+	         *             protocol. In this case, it will be determined via Geolocator
+	         *             configuration.
+	         *             See {@link #geolocator.config|`geolocator.config()`}.
+	         *             NOTE: Do not forget to include your API key in the query
+	         *             parameters of the URL, if you have one.
+	         *      @param {String} [options.callbackParam]
+	         *             If JSON callback is supported, pass the name of the callback
+	         *             parameter, defined by the provider.
+	         *      @param {Object} [options.globalVar]
+	         *             Set this instead of `options.callbackParam` if the service
+	         *             does not support JSON callbacks, but weirdly set a global
+	         *             variable in the document. For example, if the response is
+	         *             `Geo = { lat, lng }`, you should set this to `"Geo"`.
+	         *      @param {Object} [options.schema]
+	         *             Schema object to be used to re-structure the response returned
+	         *             from the service. Set the response object's keys as values of
+	         *             a custom object to map the format to the `location` object.
+	         *             For example; if the service returns a response like
+	         *             `{ lat: 40.112233, lng: 10.112233, otherProp: 'hello' }`.
+	         *             Then you should set the following schema:
+	         *             `{ coords: { latitude: 'lat', longitude: 'lng' } }`.
 	         *
-	         * @return {geolocator}
+	         *  @return {geolocator}
 	         */
 	
 	    }, {
@@ -858,90 +1073,90 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Registers a handler for watching the user's location via HTML5
-	         * geolocation; that is triggered each time the position of the device
-	         * changes. This may require/prompt for user's permission.
+	         *  Registers a handler for watching the user's location via HTML5
+	         *  geolocation; that is triggered each time the position of the device
+	         *  changes. This may require/prompt for user's permission.
 	         *
-	         * @param {Object} [options]
-	         *        HTML5 geo-location settings.
-	         *     @param {Boolean} [options.enableHighAccuracy=true]
-	         *            Specifies whether the device should provide the most accurate
-	         *            position it can. Note that setting this to `true` might consume
-	         *            more CPU and/or battery power; and result in slower response
-	         *            times.
-	         *     @param {Number} [options.timeout=6000]
-	         *            HTML5 position timeout setting in milliseconds. Setting this
-	         *            to `Infinity` means that Geolocator won't return until the
-	         *            position is available.
-	         *     @param {Number} [options.maximumAge=0]
-	         *            HTML5 position maximum age. Indicates the maximum age in
-	         *            milliseconds of a possible cached position that is acceptable
-	         *            to return. `0` means, the device cannot use a cached position
-	         *            and must attempt to retrieve the real current position. If set
-	         *            to `Infinity` the device must return a cached position
-	         *            regardless of its age.
-	         *     @param {Boolean} [options.clearOnError=false]
-	         *            Specifies whether to clear the watcher on first error so that
-	         *            it does not execute any more callbacks.
-	         *     @param {Object} [options.target]
-	         *            Object that defines the target location and settings; that
-	         *            when the location is reached, the watcher will auto-clear
-	         *            itself and invoke the callback.
-	         *     @param {Number} options.target.latitude
-	         *            The `latitude` of the target location.
-	         *     @param {Number} options.target.longitude
-	         *            The `longitude` of the target location.
-	         *     @param {Number} [options.target.radius=0.5]
-	         *            The radius, in other words; the minimum distance (in
-	         *            kilometers or miles) to the target point that should be
-	         *            reached.
-	         *     @param {Number} [options.target.unitSystem=0]
-	         *            Unit system to be used for target radius.
-	         *            See {@link #geolocator.UnitSystem|`geolocator.UnitSystem` enumeration}
-	         *            for possible values.
-	         * @param {Function} callback
-	         *        Callback function to be executed when the request completes.
-	         *        This takes 2 arguments: `function (err, location) { ... }`.
-	         *        If `options.target` is set, `location` will also
-	         *        include a `targetReached:Boolean` property.
-	         *        See {@link #geolocator~Location|`geolocator~Location` type} for details.
+	         *  @param {Object} [options]
+	         *         HTML5 geo-location settings.
+	         *      @param {Boolean} [options.enableHighAccuracy=true]
+	         *             Specifies whether the device should provide the most accurate
+	         *             position it can. Note that setting this to `true` might consume
+	         *             more CPU and/or battery power; and result in slower response
+	         *             times.
+	         *      @param {Number} [options.timeout=6000]
+	         *             HTML5 position timeout setting in milliseconds. Setting this
+	         *             to `Infinity` means that Geolocator won't return until the
+	         *             position is available.
+	         *      @param {Number} [options.maximumAge=0]
+	         *             HTML5 position maximum age. Indicates the maximum age in
+	         *             milliseconds of a possible cached position that is acceptable
+	         *             to return. `0` means, the device cannot use a cached position
+	         *             and must attempt to retrieve the real current position. If set
+	         *             to `Infinity` the device must return a cached position
+	         *             regardless of its age.
+	         *      @param {Boolean} [options.clearOnError=false]
+	         *             Specifies whether to clear the watcher on first error so that
+	         *             it does not execute any more callbacks.
+	         *      @param {Object} [options.target]
+	         *             Object that defines the target location and settings; that
+	         *             when the location is reached, the watcher will auto-clear
+	         *             itself and invoke the callback.
+	         *      @param {Number} options.target.latitude
+	         *             The `latitude` of the target location.
+	         *      @param {Number} options.target.longitude
+	         *             The `longitude` of the target location.
+	         *      @param {Number} [options.target.radius=0.5]
+	         *             The radius, in other words; the minimum distance (in
+	         *             kilometers or miles) to the target point that should be
+	         *             reached.
+	         *      @param {Number} [options.target.unitSystem=0]
+	         *             Unit system to be used for target radius.
+	         *             See {@link #geolocator.UnitSystem|`geolocator.UnitSystem` enumeration}
+	         *             for possible values.
+	         *  @param {Function} callback
+	         *         Callback function to be executed when the request completes.
+	         *         This takes 2 arguments: `function (err, location) { ... }`.
+	         *         If `options.target` is set, `location` will also
+	         *         include a `targetReached:Boolean` property.
+	         *         See {@link #geolocator~Location|`geolocator~Location` type} for details.
 	         *
-	         * @returns {GeoWatcher} - A watcher object that provides a
-	         * `.clear(delay:Number, callback:Function)` method to clear the watcher
-	         * when needed. Optional `delay` argument can be set (in milliseconds) to
-	         * clear in a later time. Omitting this argument will clear the watcher
-	         * immediately. You should always call this method, except if you've set up
-	         * a target; which will auto-clear the watcher when reached.
+	         *  @returns {GeoWatcher} - A watcher object that provides a
+	         *  `.clear(delay:Number, callback:Function)` method to clear the watcher
+	         *  when needed. Optional `delay` argument can be set (in milliseconds) to
+	         *  clear in a later time. Omitting this argument will clear the watcher
+	         *  immediately. You should always call this method, except if you've set up
+	         *  a target; which will auto-clear the watcher when reached.
 	         *
-	         * @example
-	         * // Watch my position for 5 minutes.
-	         * var options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
-	         * var watcher = geolocator.watch(options, function (err, location) {
-	         *     console.log(err || location);
-	         * });
-	         * console.log(watcher.id); // ID of the watcher
-	         * watcher.clear(300000); // clear after 5 minutes.
+	         *  @example
+	         *  // Watch my position for 5 minutes.
+	         *  var options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 };
+	         *  var watcher = geolocator.watch(options, function (err, location) {
+	         *      console.log(err || location);
+	         *  });
+	         *  console.log(watcher.id); // ID of the watcher
+	         *  watcher.clear(300000); // clear after 5 minutes.
 	         *
-	         * @example
-	         * // Watch my position until I'm 350 meters near Disneyland Park.
-	         * options.target = {
-	         *     latitude: 33.8120918,
-	         *     longitude: -117.9233569,
-	         *     radius: 0.35,
-	         *     unitSystem: geolocator.UnitSystem.METRIC
-	         * };
-	         * watcher = geolocator.watch(options, function (err, location) {
-	         *     if (err) {
-	         *         console.log(err);
-	         *         return;
-	         *     }
-	         *     if (location.targetReached) {
-	         *         console.log(watcher.isCleared); // true
-	         *         console.log(watcher.cycle); // 15 — target reached after 15 cycles
-	         *     } else {
-	         *         console.log(watcher.isCleared); // false — watcher is active.
-	         *     }
-	         * });
+	         *  @example
+	         *  // Watch my position until I'm 350 meters near Disneyland Park.
+	         *  options.target = {
+	         *      latitude: 33.8120918,
+	         *      longitude: -117.9233569,
+	         *      radius: 0.35,
+	         *      unitSystem: geolocator.UnitSystem.METRIC
+	         *  };
+	         *  watcher = geolocator.watch(options, function (err, location) {
+	         *      if (err) {
+	         *          console.log(err);
+	         *          return;
+	         *      }
+	         *      if (location.targetReached) {
+	         *          console.log(watcher.isCleared); // true
+	         *          console.log(watcher.cycle); // 15 — target reached after 15 cycles
+	         *      } else {
+	         *          console.log(watcher.isCleared); // false — watcher is active.
+	         *      }
+	         *  });
 	         */
 	
 	    }, {
@@ -994,96 +1209,99 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Converts a given address (or address components) into geographic
-	         * coordinates (i.e. latitude, longitude); and gets detailed address
-	         * information.
-	         * @see {@link https://developers.google.com/maps/documentation/geocoding/intro|Google Maps Geocoding API}
-	         * @see {@link https://developers.google.com/maps/documentation/geocoding/usage-limits|Usage Limits}
+	         *  Converts a given address (or address components) into geographic
+	         *  coordinates (i.e. latitude, longitude); and gets detailed address
+	         *  information.
+	         *  @see {@link https://developers.google.com/maps/documentation/geocoding/intro|Google Maps Geocoding API}
+	         *  @see {@link https://developers.google.com/maps/documentation/geocoding/usage-limits|Usage Limits}
 	         *
-	         * @param {String|Object} options
-	         *        Either the address to geocode or geocoding options with the
-	         *        following properties.
-	         *     @param {String} options.address
-	         *            The street address to geocode, in the format used by the
-	         *            national postal service of the country concerned. Additional
-	         *            address elements such as business names and unit, suite or
-	         *            floor numbers should be avoided. Note that any address
-	         *            component (route, locality, administrativeArea, postalCode and
-	         *            country) should be specified either in address or the
-	         *            corresponding property - not both. Doing so may result in
-	         *            `ZERO_RESULTS`.
-	         *     @param {String} [options.route]
-	         *     	      Long or short name of a route.
-	         *     @param {String} [options.locality]
-	         *     	      Locality and sublocality of the location.
-	         *     @param {String} [options.administrativeArea]
-	         *     	      Administrative area of the location.
-	         *     @param {String} [options.postalCode]
-	         *     	      Postal code of the location.
-	         *     @param {String} [options.country]
-	         *     	      A country name or a two letter ISO 3166-1 country code.
-	         *     @param {String} [options.region]
-	         *     	      The region code, specified as a ccTLD ("top-level domain")
-	         *     	      two-character value. e.g.: `"fr"` for France.
-	         *     @param {Array|Object} [options.bounds]
-	         *     	      The bounding box of the viewport within which to bias geocode
-	         *     	      results more prominently. e.g.:
-	         *     	      `[ southwestLat:Number, southwestLng:Number, northeastLat:Number, northeastLng:Number ]`
-	         *     @param {String|Object} [options.map]
-	         *            In order to create a map from the fetched location coordinates;
-	         *            either set this to map options object or; the ID of a DOM
-	         *            element or DOM element itself which the map will be created
-	         *            within.
-	         *     @param {Boolean} [options.raw=false]
-	         *     	      Whether to return the raw Google API result.
-	         * @param {Function} callback
-	         *        Callback function to be executed when the request completes.
-	         *        This takes 2 arguments: `function (err, location) { ... }`.
-	         *        See {@link #geolocator~Location|`geolocator~Location` type} for details.
+	         *  @param {String|Object} options
+	         *         Either the address to geocode or geocoding options with the
+	         *         following properties.
+	         *      @param {String} options.address
+	         *             The street address to geocode, in the format used by the
+	         *             national postal service of the country concerned. Additional
+	         *             address elements such as business names and unit, suite or
+	         *             floor numbers should be avoided. Note that any address
+	         *             component (route, locality, administrativeArea, postalCode and
+	         *             country) should be specified either in address or the
+	         *             corresponding property - not both. Doing so may result in
+	         *             `ZERO_RESULTS`.
+	         *      @param {String} [options.route]
+	         *      	      Long or short name of a route.
+	         *      @param {String} [options.locality]
+	         *      	      Locality and sublocality of the location.
+	         *      @param {String} [options.administrativeArea]
+	         *      	      Administrative area of the location.
+	         *      @param {String} [options.postalCode]
+	         *      	      Postal code of the location.
+	         *      @param {String} [options.country]
+	         *      	      A country name or a two letter ISO 3166-1 country code.
+	         *      @param {String} [options.region]
+	         *      	      The region code, specified as a ccTLD ("top-level domain")
+	         *      	      two-character value. e.g.: `"fr"` for France.
+	         *      @param {Array|Object} [options.bounds]
+	         *      	      The bounding box of the viewport within which to bias geocode
+	         *      	      results more prominently. e.g.:
+	         *      	      `[ southwestLat:Number, southwestLng:Number, northeastLat:Number, northeastLng:Number ]`
+	         *      @param {String|Object} [options.map]
+	         *             In order to create an interactive map from the fetched
+	         *             location coordinates; either set this to map options object
+	         *             or; the ID of a DOM element or DOM element itself which the
+	         *             map will be created within.
+	         *      @param {Boolean|Object} [options.staticMap=false]
+	         *             Set to `true` to get a static Google Map image URL (with
+	         *             default options); or pass a static map options object.
+	         *      @param {Boolean} [options.raw=false]
+	         *      	      Whether to return the raw Google API result.
+	         *  @param {Function} callback
+	         *         Callback function to be executed when the request completes.
+	         *         This takes 2 arguments: `function (err, location) { ... }`.
+	         *         See {@link #geolocator~Location|`geolocator~Location` type} for details.
 	         *
-	         * @returns {void}
+	         *  @returns {void}
 	         *
-	         * @example
-	         * var address = '1600 Amphitheatre Parkway, CA';
-	         * geolocator.geocode(address, function (err, location) {
-	         *     console.log(err || location);
-	         * });
+	         *  @example
+	         *  var address = '1600 Amphitheatre Parkway, CA';
+	         *  geolocator.geocode(address, function (err, location) {
+	         *      console.log(err || location);
+	         *  });
 	         *
-	         * @example
-	         * // location result:
-	         * {
-	         *     coords: {
-	         *         latitude: 37.4224764,
-	         *         longitude: -122.0842499
-	         *     },
-	         *     address: {
-	         *         commonName: "",
-	         *         street: "Amphitheatre Pkwy",
-	         *         route: "Amphitheatre Pkwy",
-	         *         streetNumber: "1600",
-	         *         neighborhood: "",
-	         *         town: "",
-	         *         city: "Mountain View",
-	         *         region: "Santa Clara County",
-	         *         state: "California",
-	         *         stateCode: "CA",
-	         *         postalCode: "94043",
-	         *         country: "United States",
-	         *         countryCode: "US"
-	         *     },
-	         *     formattedAddress: "1600 Amphitheatre Parkway, Mountain View, CA 94043, USA",
-	         *     type: "ROOFTOP",
-	         *     placeId: "ChIJ2eUgeAK6j4ARbn5u_wAGqWA",
-	         *     flag: "//cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/flags/4x3/us.svg",
-	         *     map: {
-	         *     	   element: HTMLElement,
-	         *     	   instance: Object, // google.maps.Map
-	         *     	   marker: Object, // google.maps.Marker
-	         *     	   infoWindow: Object, // google.maps.InfoWindow
-	         *     	   options: Object // map options
-	         *     },
-	         *     timestamp: 1456795956380
-	         * }
+	         *  @example
+	         *  // location result:
+	         *  {
+	         *      coords: {
+	         *          latitude: 37.4224764,
+	         *          longitude: -122.0842499
+	         *      },
+	         *      address: {
+	         *          commonName: "",
+	         *          street: "Amphitheatre Pkwy",
+	         *          route: "Amphitheatre Pkwy",
+	         *          streetNumber: "1600",
+	         *          neighborhood: "",
+	         *          town: "",
+	         *          city: "Mountain View",
+	         *          region: "Santa Clara County",
+	         *          state: "California",
+	         *          stateCode: "CA",
+	         *          postalCode: "94043",
+	         *          country: "United States",
+	         *          countryCode: "US"
+	         *      },
+	         *      formattedAddress: "1600 Amphitheatre Parkway, Mountain View, CA 94043, USA",
+	         *      type: "ROOFTOP",
+	         *      placeId: "ChIJ2eUgeAK6j4ARbn5u_wAGqWA",
+	         *      flag: "//cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/flags/4x3/us.svg",
+	         *      map: {
+	         *          element: HTMLElement,
+	         *          instance: Object, // google.maps.Map
+	         *          marker: Object, // google.maps.Marker
+	         *          infoWindow: Object, // google.maps.InfoWindow
+	         *          options: Object // map options
+	         *      },
+	         *      timestamp: 1456795956380
+	         *  }
 	         */
 	
 	    }, {
@@ -1093,84 +1311,87 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Converts the given geographic coordinates into a human-readable address
-	         * information.
-	         * @see {@link https://developers.google.com/maps/documentation/geocoding/intro#ReverseGeocoding|Google Maps (Reverse) Geocoding API}
-	         * @see {@link https://developers.google.com/maps/documentation/geocoding/usage-limits|Usage Limits}
-	         * @alias geolocator.addressLookup
+	         *  Converts the given geographic coordinates into a human-readable address
+	         *  information.
+	         *  @see {@link https://developers.google.com/maps/documentation/geocoding/intro#ReverseGeocoding|Google Maps (Reverse) Geocoding API}
+	         *  @see {@link https://developers.google.com/maps/documentation/geocoding/usage-limits|Usage Limits}
+	         *  @alias geolocator.addressLookup
 	         *
-	         * @param {Object|String} options
-	         *        Either the `placeId` of the location or Reverse Geocoding options
-	         *        with the following properties.
-	         *     @param {Number} options.latitude
-	         *     Latitude of the target location.
-	         *     @param {Number} options.longitude
-	         *     Longitude of the target location.
-	         *     @param {String} [options.placeId]
-	         *            Required if `latitude` and `longitude` are omitted. The place
-	         *            ID of the place for which you wish to obtain the
-	         *            human-readable address. The place ID is a unique identifier
-	         *            that can be used with other Google APIs. Note that if
-	         *            `placeId` is set, `latitude` and `longitude` are ignored.
-	         *     @param {String|Object} [options.map]
-	         *            In order to create a map from the given location coordinates;
-	         *            either set this to map options object or; the ID of a DOM
-	         *            element or DOM element itself which the map will be created
-	         *            within.
-	         *     @param {Boolean} [options.raw=false]
-	         *            Whether to return the raw Google API result.
-	         * @param {Function} callback
-	         *        Callback function to be executed when the request completes.
-	         *        This takes 2 arguments: `function (err, location) { ... }`
-	         *        See {@link #geolocator~Location|`geolocator~Location` type} for details.
+	         *  @param {Object|String} options
+	         *         Either the `placeId` of the location or Reverse Geocoding options
+	         *         with the following properties.
+	         *      @param {Number} options.latitude
+	         *      Latitude of the target location.
+	         *      @param {Number} options.longitude
+	         *      Longitude of the target location.
+	         *      @param {String} [options.placeId]
+	         *             Required if `latitude` and `longitude` are omitted. The place
+	         *             ID of the place for which you wish to obtain the
+	         *             human-readable address. The place ID is a unique identifier
+	         *             that can be used with other Google APIs. Note that if
+	         *             `placeId` is set, `latitude` and `longitude` are ignored.
+	         *      @param {String|Object} [options.map]
+	         *             In order to create an interactive map from the fetched
+	         *             location coordinates; either set this to map options object
+	         *             or; the ID of a DOM element or DOM element itself which the
+	         *             map will be created within.
+	         *      @param {Boolean|Object} [options.staticMap=false]
+	         *             Set to `true` to get a static Google Map image URL (with
+	         *             default options); or pass a static map options object.
+	         *      @param {Boolean} [options.raw=false]
+	         *             Whether to return the raw Google API result.
+	         *  @param {Function} callback
+	         *         Callback function to be executed when the request completes.
+	         *         This takes 2 arguments: `function (err, location) { ... }`
+	         *         See {@link #geolocator~Location|`geolocator~Location` type} for details.
 	         *
-	         * @returns {void}
+	         *  @returns {void}
 	         *
-	         * @example
-	         * var coords = {
-	         *     latitude: 37.4224764,
-	         *     longitude: -122.0842499
-	         * };
+	         *  @example
+	         *  var coords = {
+	         *      latitude: 37.4224764,
+	         *      longitude: -122.0842499
+	         *  };
 	         *
-	         * geolocator.reverseGeocode(coords, function (err, location) {
-	         *     console.log(err || location);
-	         * });
+	         *  geolocator.reverseGeocode(coords, function (err, location) {
+	         *      console.log(err || location);
+	         *  });
 	         *
-	         * @example
-	         * // location result:
-	         * {
-	         *     coords: {
-	         *         latitude: 37.4224764,
-	         *         longitude: -122.0842499
-	         *     },
-	         *     address: {
-	         *         commonName: "",
-	         *         street: "Amphitheatre Pkwy",
-	         *         route: "Amphitheatre Pkwy",
-	         *         streetNumber: "1600",
-	         *         neighborhood: "",
-	         *         town: "",
-	         *         city: "Mountain View",
-	         *         region: "Santa Clara County",
-	         *         state: "California",
-	         *         stateCode: "CA",
-	         *         postalCode: "94043",
-	         *         country: "United States",
-	         *         countryCode: "US"
-	         *     },
-	         *     formattedAddress: "1600 Amphitheatre Parkway, Mountain View, CA 94043, USA",
-	         *     type: "ROOFTOP",
-	         *     placeId: "ChIJ2eUgeAK6j4ARbn5u_wAGqWA",
-	         *     flag: "//cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/flags/4x3/us.svg",
-	         *     map: {
-	         *     	   element: HTMLElement,
-	         *     	   instance: Object, // google.maps.Map
-	         *     	   marker: Object, // google.maps.Marker
-	         *     	   infoWindow: Object, // google.maps.InfoWindow
-	         *     	   options: Object // map options
-	         *     },
-	         *     timestamp: 1456795956380
-	         * }
+	         *  @example
+	         *  // location result:
+	         *  {
+	         *      coords: {
+	         *          latitude: 37.4224764,
+	         *          longitude: -122.0842499
+	         *      },
+	         *      address: {
+	         *          commonName: "",
+	         *          street: "Amphitheatre Pkwy",
+	         *          route: "Amphitheatre Pkwy",
+	         *          streetNumber: "1600",
+	         *          neighborhood: "",
+	         *          town: "",
+	         *          city: "Mountain View",
+	         *          region: "Santa Clara County",
+	         *          state: "California",
+	         *          stateCode: "CA",
+	         *          postalCode: "94043",
+	         *          country: "United States",
+	         *          countryCode: "US"
+	         *      },
+	         *      formattedAddress: "1600 Amphitheatre Parkway, Mountain View, CA 94043, USA",
+	         *      type: "ROOFTOP",
+	         *      placeId: "ChIJ2eUgeAK6j4ARbn5u_wAGqWA",
+	         *      flag: "//cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/flags/4x3/us.svg",
+	         *      map: {
+	         *          element: HTMLElement,
+	         *          instance: Object, // google.maps.Map
+	         *          marker: Object, // google.maps.Marker
+	         *          infoWindow: Object, // google.maps.InfoWindow
+	         *          options: Object // map options
+	         *      },
+	         *      timestamp: 1456795956380
+	         *  }
 	         */
 	
 	    }, {
@@ -1191,50 +1412,50 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Gets timezone information for the given coordinates.
-	         * Note: Google Browser API keys cannot have referer restrictions when used with this API.
-	         * @see {@link https://developers.google.com/maps/documentation/timezone/intro|Google Maps TimeZone API}
-	         * @see {@link https://developers.google.com/maps/documentation/timezone/usage-limits|Usage Limits}
+	         *  Gets timezone information for the given coordinates.
+	         *  Note: Google Browser API keys cannot have referer restrictions when used with this API.
+	         *  @see {@link https://developers.google.com/maps/documentation/timezone/intro|Google Maps TimeZone API}
+	         *  @see {@link https://developers.google.com/maps/documentation/timezone/usage-limits|Usage Limits}
 	         *
-	         * @param {Object} options
-	         *        Time zone options.
-	         *     @param {Number} options.latitude
-	         *            Latitude of location.
-	         *     @param {Number} options.longitude
-	         *            Longitude of location.
-	         *     @param {Number} [options.timestamp=Date.now()]
-	         *            Specifies the desired time as seconds since midnight, January
-	         *            1, 1970 UTC. This is used to determine whether or not Daylight
-	         *            Savings should be applied.
-	         *     @param {Boolean} [options.raw=false]
-	         *            Whether to return the raw Google API result.
-	         * @param {Function} callback
-	         *        Callback function to be executed when the request completes, in
-	         *        the following signature: `function (err, timezone) { ... }`.
-	         *        See {@link #geolocator~TimeZone|`geolocator~TimeZone` type} for
-	         *        details.
+	         *  @param {Object} options
+	         *         Time zone options.
+	         *      @param {Number} options.latitude
+	         *             Latitude of location.
+	         *      @param {Number} options.longitude
+	         *             Longitude of location.
+	         *      @param {Number} [options.timestamp=Date.now()]
+	         *             Specifies the desired time as seconds since midnight, January
+	         *             1, 1970 UTC. This is used to determine whether or not Daylight
+	         *             Savings should be applied.
+	         *      @param {Boolean} [options.raw=false]
+	         *             Whether to return the raw Google API result.
+	         *  @param {Function} callback
+	         *         Callback function to be executed when the request completes, in
+	         *         the following signature: `function (err, timezone) { ... }`.
+	         *         See {@link #geolocator~TimeZone|`geolocator~TimeZone` type} for
+	         *         details.
 	         *
-	         * @returns {void}
+	         *  @returns {void}
 	         *
-	         * @example
-	         * var options = {
-	         *     latitude: 48.8534100,
-	         *     longitude: 2.3488000
-	         * };
-	         * geolocator.getTimeZone(options, function (err, timezone) {
-	         *     console.log(err || timezone);
-	         * });
+	         *  @example
+	         *  var options = {
+	         *      latitude: 48.8534100,
+	         *      longitude: 2.3488000
+	         *  };
+	         *  geolocator.getTimeZone(options, function (err, timezone) {
+	         *      console.log(err || timezone);
+	         *  });
 	         *
-	         * @example
-	         * // timezone result:
-	         * {
-	         *     id: "Europe/Paris",
-	         *     name: "Central European Standard Time",
-	         *     abbr: "CEST",
-	         *     dstOffset: 0,
-	         *     rawOffset: 3600,
-	         *     timestamp: 1455733120
-	         * }
+	         *  @example
+	         *  // timezone result:
+	         *  {
+	         *      id: "Europe/Paris",
+	         *      name: "Central European Standard Time",
+	         *      abbr: "CEST",
+	         *      dstOffset: 0,
+	         *      rawOffset: 3600,
+	         *      timestamp: 1455733120
+	         *  }
 	         */
 	
 	    }, {
@@ -1276,89 +1497,89 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Gets the distance and duration values based on the recommended route
-	         * between start and end points.
-	         * @see {@link https://developers.google.com/maps/documentation/distance-matrix/intro|Google Maps Distance Matrix API}
-	         * @see {@link https://developers.google.com/maps/documentation/distance-matrix/usage-limits|Usage Limits}
+	         *  Gets the distance and duration values based on the recommended route
+	         *  between start and end points.
+	         *  @see {@link https://developers.google.com/maps/documentation/distance-matrix/intro|Google Maps Distance Matrix API}
+	         *  @see {@link https://developers.google.com/maps/documentation/distance-matrix/usage-limits|Usage Limits}
 	         *
-	         * @param {Object} options
-	         *        Distance matrix options.
-	         *     @param {String|Object|Array} options.origins
-	         *            One or more addresses and/or an object of latitude/longitude
-	         *            values, from which to calculate distance and time. If you pass
-	         *            an address as a string, the service will geocode the string
-	         *            and convert it to a latitude/longitude coordinate to calculate
-	         *            distances. Following are valid examples:
-	         * <pre><code>options.origins = 'London';
-	         * options.origins = ['London', 'Paris'];
-	         * options.origins = { latitude: 51.5085300, longitude: -0.1257400 };
-	         * options.origins = [
-	         *     { latitude: 51.5085300, longitude: -0.1257400 },
-	         *     { latitude: 48.8534100, longitude: 2.3488000 }
-	         * ];
-	         * </code></pre>
-	         *     @param {String|Object|Array} options.destinations
-	         *            One or more addresses and/or an object of latitude/longitude
-	         *            values, from which to calculate distance and time. If you pass
-	         *            an address as a string, the service will geocode the string
-	         *            and convert it to a latitude/longitude coordinate to calculate
-	         *            distances.
-	         *     @param {String} [options.travelMode="DRIVING"]
-	         *            Type of routing requested.
-	         *            See {@link #geolocator.TravelMode|`geolocator.TravelMode` enumeration}
-	         *            for possible values.
-	         *     @param {Boolean} [options.avoidFerries]
-	         *            If true, instructs the Distance Matrix service to avoid
-	         *            ferries where possible.
-	         *     @param {Boolean} [options.avoidHighways]
-	         *            If true, instructs the Distance Matrix service to avoid
-	         *            highways where possible.
-	         *     @param {Boolean} [options.avoidTolls]
-	         *            If true, instructs the Distance Matrix service to avoid toll
-	         *            roads where possible.
-	         *     @param {Number} [options.unitSystem=0]
-	         *            Preferred unit system to use when displaying distance.
-	         *            See {@link #geolocator.UnitSystem|`geolocator.UnitSystem` enumeration}
-	         *            for possible values.
-	         *     @param {String} [options.region]
-	         *            Region code used as a bias for geocoding requests.
-	         * @param {Boolean} [options.raw=false]
-	         *        Whether to return the raw Google API result.
-	         * @param {Function} callback
-	         *        Callback function to be executed when the request completes,
-	         *        in the following signature: `function (err, result) { ... }`
+	         *  @param {Object} options
+	         *         Distance matrix options.
+	         *      @param {String|Object|Array} options.origins
+	         *             One or more addresses and/or an object of latitude/longitude
+	         *             values, from which to calculate distance and time. If you pass
+	         *             an address as a string, the service will geocode the string
+	         *             and convert it to a latitude/longitude coordinate to calculate
+	         *             distances. Following are valid examples:
+	         *  <pre><code>options.origins = 'London';
+	         *  options.origins = ['London', 'Paris'];
+	         *  options.origins = { latitude: 51.5085300, longitude: -0.1257400 };
+	         *  options.origins = [
+	         *      { latitude: 51.5085300, longitude: -0.1257400 },
+	         *      { latitude: 48.8534100, longitude: 2.3488000 }
+	         *  ];
+	         *  </code></pre>
+	         *      @param {String|Object|Array} options.destinations
+	         *             One or more addresses and/or an object of latitude/longitude
+	         *             values, from which to calculate distance and time. If you pass
+	         *             an address as a string, the service will geocode the string
+	         *             and convert it to a latitude/longitude coordinate to calculate
+	         *             distances.
+	         *      @param {String} [options.travelMode="DRIVING"]
+	         *             Type of routing requested.
+	         *             See {@link #geolocator.TravelMode|`geolocator.TravelMode` enumeration}
+	         *             for possible values.
+	         *      @param {Boolean} [options.avoidFerries]
+	         *             If true, instructs the Distance Matrix service to avoid
+	         *             ferries where possible.
+	         *      @param {Boolean} [options.avoidHighways]
+	         *             If true, instructs the Distance Matrix service to avoid
+	         *             highways where possible.
+	         *      @param {Boolean} [options.avoidTolls]
+	         *             If true, instructs the Distance Matrix service to avoid toll
+	         *             roads where possible.
+	         *      @param {Number} [options.unitSystem=0]
+	         *             Preferred unit system to use when displaying distance.
+	         *             See {@link #geolocator.UnitSystem|`geolocator.UnitSystem` enumeration}
+	         *             for possible values.
+	         *      @param {String} [options.region]
+	         *             Region code used as a bias for geocoding requests.
+	         *  @param {Boolean} [options.raw=false]
+	         *         Whether to return the raw Google API result.
+	         *  @param {Function} callback
+	         *         Callback function to be executed when the request completes,
+	         *         in the following signature: `function (err, result) { ... }`
 	         *
-	         * @returns {void}
+	         *  @returns {void}
 	         *
-	         * @example
-	         * var options = {
-	         *     origins: [{ latitude: 51.5085300, longitude: -0.1257400 }],
-	         *     destinations: [{ latitude: 48.8534100, longitude: 2.3488000 }],
-	         *     travelMode: geolocator.TravelMode.DRIVING,
-	         *     unitSystem: geolocator.UnitSystem.METRIC
-	         * };
-	         * geolocator.getDistanceMatrix(options, function (err, result) {
-	         *     console.log(err || result);
-	         * });
+	         *  @example
+	         *  var options = {
+	         *      origins: [{ latitude: 51.5085300, longitude: -0.1257400 }],
+	         *      destinations: [{ latitude: 48.8534100, longitude: 2.3488000 }],
+	         *      travelMode: geolocator.TravelMode.DRIVING,
+	         *      unitSystem: geolocator.UnitSystem.METRIC
+	         *  };
+	         *  geolocator.getDistanceMatrix(options, function (err, result) {
+	         *      console.log(err || result);
+	         *  });
 	         *
-	         * @example
-	         * // result:
-	         * [
-	         * 	{
-	         * 		from: "449 Duncannon St, London WC2R 0DZ, UK",
-	         * 		to: "1 Parvis Notre-Dame - Pl. Jean-Paul II, 75004 Paris-4E-Arrondissement, France",
-	         * 		distance: {
-	         * 			value: 475104,
-	         * 			text: "475 km"
-	         * 		},
-	         * 		duration: {
-	         * 			value: 20193,
-	         * 			text: "5 hours 37 mins"
-	         * 		},
-	         * 		fare: undefined,
-	         * 		timestamp: 1456795956380
-	         * 	}
-	         * ]
+	         *  @example
+	         *  // result:
+	         *  [
+	         *  	{
+	         *  		from: "449 Duncannon St, London WC2R 0DZ, UK",
+	         *  		to: "1 Parvis Notre-Dame - Pl. Jean-Paul II, 75004 Paris-4E-Arrondissement, France",
+	         *  		distance: {
+	         *  			value: 475104,
+	         *  			text: "475 km"
+	         *  		},
+	         *  		duration: {
+	         *  			value: 20193,
+	         *  			text: "5 hours 37 mins"
+	         *  		},
+	         *  		fare: undefined,
+	         *  		timestamp: 1456795956380
+	         *  	}
+	         *  ]
 	         */
 	
 	    }, {
@@ -1403,39 +1624,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Calculates the distance between two geographic points.
+	         *  Calculates the distance between two geographic points.
 	         *
-	         * @param {Object} options
-	         *        Calculation and display options.
-	         *     @param {Object} options.from
-	         *            Object containing the `latitude` and `longitude` of original
-	         *            location.
-	         *     @param {Object} options.to
-	         *            Object containing the `latitude` and `longitude` of destination.
-	         *     @param {String} [options.formula="haversine"]
-	         *            The algorithm or formula to calculate the distance.
-	         *            See {@link #geolocator.DistanceFormula|`geolocator.DistanceFormula` enumeration}.
-	         *     @param {Number} [options.unitSystem=0]
-	         *            Preferred unit system to use when displaying distance.
-	         *            See {@link #geolocator.UnitSystem|`geolocator.UnitSystem` enumeration}.
+	         *  @param {Object} options
+	         *         Calculation and display options.
+	         *      @param {Object} options.from
+	         *             Object containing the `latitude` and `longitude` of original
+	         *             location.
+	         *      @param {Object} options.to
+	         *             Object containing the `latitude` and `longitude` of destination.
+	         *      @param {String} [options.formula="haversine"]
+	         *             The algorithm or formula to calculate the distance.
+	         *             See {@link #geolocator.DistanceFormula|`geolocator.DistanceFormula` enumeration}.
+	         *      @param {Number} [options.unitSystem=0]
+	         *             Preferred unit system to use when displaying distance.
+	         *             See {@link #geolocator.UnitSystem|`geolocator.UnitSystem` enumeration}.
 	         *
-	         * @returns {Number} - The calculated distance.
+	         *  @returns {Number} - The calculated distance.
 	         *
-	         * @example
-	         * // Calculate distance from London to Paris.
-	         * var result = geolocator.calcDistance({
-	         *     from: {
-	         *         latitude: 51.5085300,
-	         *         longitude: -0.1257400
-	         *     },
-	         *     to: {
-	         *         latitude: 48.8534100,
-	         *         longitude: 2.3488000
-	         *     },
-	         *     formula: geolocator.DistanceFormula.HAVERSINE,
-	         *     unitSystem: geolocator.UnitSystem.METRIC
-	         * });
-	         * // result: 366.41656039126093 (kilometers)
+	         *  @example
+	         *  // Calculate distance from London to Paris.
+	         *  var result = geolocator.calcDistance({
+	         *      from: {
+	         *          latitude: 51.5085300,
+	         *          longitude: -0.1257400
+	         *      },
+	         *      to: {
+	         *          latitude: 48.8534100,
+	         *          longitude: 2.3488000
+	         *      },
+	         *      formula: geolocator.DistanceFormula.HAVERSINE,
+	         *      unitSystem: geolocator.UnitSystem.METRIC
+	         *  });
+	         *  // result: 366.41656039126093 (kilometers)
 	         */
 	
 	    }, {
@@ -1468,25 +1689,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Gets the current public IP of the client.
+	         *  Gets the current public IP of the client.
 	         *
-	         * @param {Function} callback
-	         *        Callback function to be executed when the request completes, in
-	         *        the following signature: `function (err, result) { ... }`
+	         *  @param {Function} callback
+	         *         Callback function to be executed when the request completes, in
+	         *         the following signature: `function (err, result) { ... }`
 	         *
-	         * @returns {void}
+	         *  @returns {void}
 	         *
-	         * @example
-	         * geolocator.getIP(function (err, result) {
-	         *     console.log(err || result);
-	         * });
+	         *  @example
+	         *  geolocator.getIP(function (err, result) {
+	         *      console.log(err || result);
+	         *  });
 	         *
-	         * @example
-	         * // result:
-	         * {
-	         *     ip: "176.232.71.155",
-	         *     timestamp: 1457573683427
-	         * }
+	         *  @example
+	         *  // result:
+	         *  {
+	         *      ip: "176.232.71.155",
+	         *      timestamp: 1457573683427
+	         *  }
 	         */
 	
 	    }, {
@@ -1518,35 +1739,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Ensures Google Maps API is loaded. If not, this will load all of the
-	         * main Javascript objects and symbols for use in the Maps API.
+	         *  Ensures Google Maps API is loaded. If not, this will load all of the
+	         *  main Javascript objects and symbols for use in the Maps API.
 	         *
-	         * Note that, Google Maps API is loaded only when needed. For example,
-	         * the DistanceMatrix API does not support Web Service requests and
-	         * requires this API to be loaded. However, the TimeZone API requests are
-	         * made throught the Web Service without requiring a `google` object
-	         * within DOM.
+	         *  Note that, Google Maps API is loaded only when needed. For example,
+	         *  the DistanceMatrix API does not support Web Service requests and
+	         *  requires this API to be loaded. However, the TimeZone API requests are
+	         *  made throught the Web Service without requiring a `google` object
+	         *  within DOM.
 	         *
-	         * Also note that this will not re-load the API if `google.maps` object
-	         * already exists. In this case, the `callback` is still executed and
-	         * no errors are passed.
+	         *  Also note that this will not re-load the API if `google.maps` object
+	         *  already exists. In this case, the `callback` is still executed and
+	         *  no errors are passed.
 	         *
-	         * You can use the following overload to omit the `key` argument altogether:
+	         *  You can use the following overload to omit the `key` argument altogether:
 	         *
-	         * `geolocator.ensureGoogleLoaded(callback)`
+	         *  `geolocator.ensureGoogleLoaded(callback)`
 	         *
-	         * @param {String} [key]
-	         *        Google API key.
-	         * @param {Function} callback
-	         *        Callback function to be executed when the operation ends.
+	         *  @param {String} [key]
+	         *         Google API key.
+	         *  @param {Function} callback
+	         *         Callback function to be executed when the operation ends.
 	         *
-	         * @returns {void}
+	         *  @returns {void}
 	         *
-	         * @example
-	         * geolocator.ensureGoogleLoaded(function (err) {
-	         * 	   if (err) return;
-	         * 	   console.log('google' in window); // true
-	         * });
+	         *  @example
+	         *  geolocator.ensureGoogleLoaded(function (err) {
+	         *      if (err) return;
+	         *      console.log('google' in window); // true
+	         *  });
 	         */
 	
 	    }, {
@@ -1575,9 +1796,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Checks whether the Google Maps API is loaded.
+	         *  Checks whether the Google Maps API is loaded.
 	         *
-	         * @returns {Boolean} - Returns `true` if already loaded.
+	         *  @returns {Boolean} - Returns `true` if already loaded.
 	         */
 	
 	    }, {
@@ -1587,10 +1808,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Checks whether the type of the given object is an HTML5 `PositionError`.
+	         *  Checks whether the type of the given object is an HTML5 `PositionError`.
 	         *
-	         * @param {*} obj - Object to be checked.
-	         * @return {Boolean}
+	         *  @param {*} obj - Object to be checked.
+	         *  @return {Boolean}
 	         */
 	
 	    }, {
@@ -1600,10 +1821,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Checks whether the given value is an instance of `GeoError`.
+	         *  Checks whether the given value is an instance of `GeoError`.
 	         *
-	         * @param {*} obj - Object to be checked.
-	         * @return {Boolean}
+	         *  @param {*} obj - Object to be checked.
+	         *  @return {Boolean}
 	         */
 	
 	    }, {
@@ -1613,9 +1834,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Checks whether HTML5 Geolocation API is supported.
+	         *  Checks whether HTML5 Geolocation API is supported.
 	         *
-	         * @return {Boolean}
+	         *  @return {Boolean}
 	         */
 	
 	    }, {
@@ -1625,10 +1846,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Converts kilometers to miles.
+	         *  Converts kilometers to miles.
 	         *
-	         * @param {Number} km - Kilometers to be converted.
-	         * @returns {Number} - Miles.
+	         *  @param {Number} km - Kilometers to be converted.
+	         *  @returns {Number} - Miles.
 	         */
 	
 	    }, {
@@ -1638,10 +1859,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Converts miles to kilometers.
+	         *  Converts miles to kilometers.
 	         *
-	         * @param {Number} mi - Miles to be converted.
-	         * @returns {Number} - Kilometers.
+	         *  @param {Number} mi - Miles to be converted.
+	         *  @returns {Number} - Kilometers.
 	         */
 	
 	    }, {
@@ -1651,10 +1872,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Converts degrees to radians.
+	         *  Converts degrees to radians.
 	         *
-	         * @param {Number} deg - Degrees to be converted.
-	         * @returns {Number} - Radians.
+	         *  @param {Number} deg - Degrees to be converted.
+	         *  @returns {Number} - Radians.
 	         */
 	
 	    }, {
@@ -1664,10 +1885,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Converts radians to degrees.
+	         *  Converts radians to degrees.
 	         *
-	         * @param {Number} rad - Radians to be converted.
-	         * @returns {Number} - Degrees.
+	         *  @param {Number} rad - Radians to be converted.
+	         *  @returns {Number} - Degrees.
 	         */
 	
 	    }, {
@@ -1677,20 +1898,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Converts decimal coordinates (either lat or lng) to degrees, minutes, seconds.
+	         *  Converts decimal coordinates (either lat or lng) to degrees, minutes, seconds.
 	         *
-	         * @param {Number} dec
-	         *        Decimals to be converted.
-	         * @param {Boolean} [isLng=false]
-	         *        Indicates whether the given decimals is longitude.
+	         *  @param {Number} dec
+	         *         Decimals to be converted.
+	         *  @param {Boolean} [isLng=false]
+	         *         Indicates whether the given decimals is longitude.
 	         *
-	         * @returns {String} - Degrees, minutes, seconds.
+	         *  @returns {String} - Degrees, minutes, seconds.
 	         */
 	
 	    }, {
 	        key: 'decToDegMinSec',
 	        value: function decToDegMinSec(dec) {
-	            var isLng = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	            var isLng = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	
 	            // Degrees Latitude must be in the range of -90. to 90.
 	            // Degrees Longitude must be in the range of -180 to 180.
@@ -1712,26 +1933,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // ---------------------------
 	
 	        /**
-	         * Geolocator Error class that provides a common type of error object for
-	         * the various APIs implemented in Geolocator. All callbacks of Geolocator
-	         * will include an instance of this object as the first argument; if the
-	         * corresponding operation fails. Also all thrown errors will be an instance
-	         * of this object.
+	         *  Geolocator Error class that provides a common type of error object for
+	         *  the various APIs implemented in Geolocator. All callbacks of Geolocator
+	         *  will include an instance of this object as the first argument; if the
+	         *  corresponding operation fails. Also all thrown errors will be an instance
+	         *  of this object.
 	         *
-	         * This object also enumerates
-	         * {@link ?api=geolocator-error#GeoError.Code|Geolocator Error codes}.
+	         *  This object also enumerates
+	         *  {@link ?api=geolocator-error#GeoError.Code|Geolocator Error codes}.
 	         *
-	         * @see {@link ?api=geolocator-error|`GeoError` documentation}
-	         * @type {GeoError}
-	         * @readonly
+	         *  @see {@link ?api=geolocator-error|`GeoError` documentation}
+	         *  @type {GeoError}
+	         *  @readonly
 	         */
 	        get: function get() {
 	            return _geo4.default;
 	        }
 	
 	        /**
-	         * Documented separately in enums.js
-	         * @private
+	         *  Documented separately in enums.js
+	         *  @private
 	         */
 	
 	    }, {
@@ -1741,8 +1962,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Documented separately in enums.js
-	         * @private
+	         *  Documented separately in enums.js
+	         *  @private
 	         */
 	
 	    }, {
@@ -1752,8 +1973,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Documented separately in enums.js
-	         * @private
+	         *  Documented separately in enums.js
+	         *  @private
 	         */
 	
 	    }, {
@@ -1763,8 +1984,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Documented separately in enums.js
-	         * @private
+	         *  Documented separately in enums.js
+	         *  @private
 	         */
 	
 	    }, {
@@ -1774,8 +1995,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Documented separately in enums.js
-	         * @private
+	         *  Documented separately in enums.js
+	         *  @private
 	         */
 	
 	    }, {
@@ -1785,14 +2006,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	
 	        /**
-	         * Documented separately in enums.js
-	         * @private
+	         *  Documented separately in enums.js
+	         *  @private
 	         */
 	
 	    }, {
 	        key: 'DistanceFormula',
 	        get: function get() {
 	            return _enums2.default.DistanceFormula;
+	        }
+	
+	        /**
+	         *  Documented separately in enums.js
+	         *  @private
+	         */
+	
+	    }, {
+	        key: 'ImageFormat',
+	        get: function get() {
+	            return _enums2.default.ImageFormat;
 	        }
 	    }]);
 	
@@ -1843,7 +2075,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *         Options to be checked. If `undefined`, directly checks Googke key.
 	 */
 	function checkGoogleKey(options) {
-	    if (!options || options.addressLookup || options.timezone || options.map) {
+	    if (!options || options.addressLookup || options.timezone || options.map || options.staticMap) {
 	        if (!geolocator._.config.google.key) {
 	            throw new _geo4.default(_geo4.default.Code.GOOGLE_KEY_INVALID, 'A Google API key is required but it\'s not set or valid.');
 	        }
@@ -1910,15 +2142,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        mapOptions = {
 	        mapTypeId: options.mapTypeId,
 	        center: center,
-	        zoom: options.zoom
+	        zoom: options.zoom,
+	        styles: options.styles || null
 	    };
 	
 	    // if we have a map, we'll just configure it. otherwise, we'll create
 	    // one.
 	    if (map) {
-	        map.setMapTypeId(mapOptions.mapTypeId);
-	        map.setCenter(mapOptions.center);
-	        map.setZoom(mapOptions.zoom);
+	        map.setOptions(mapOptions);
 	    } else {
 	        map = new google.maps.Map(options.element, mapOptions);
 	    }
@@ -1961,12 +2192,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	
 	/**
-	 *  Sets the `flag` property of the given location.
+	 *  Sets the `flag` and `staticMap` (if enabled) property of the given location.
 	 *  @private
 	 *
-	 *  @param {Object} location
+	 *  @param {Object} location - Fetched location result.
+	 *  @param {Object} options - initial options.
 	 */
-	function setFlagURL(location) {
+	function setLocationURLs(location, options) {
 	    if (!location || !location.address) return;
 	    var cc = void 0,
 	        address = location.address;
@@ -1977,6 +2209,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    if (!cc) return;
 	    location.flag = _enums2.default.URL.FLAG + cc.toLowerCase() + '.svg';
+	    if (options.staticMap) {
+	        var opts = _utils2.default.isPlainObject(options.staticMap) ? _utils2.default.clone(options.staticMap) : {};
+	        opts.center = location.coords;
+	        location.staticMap = geolocator.getStaticMap(opts);
+	    }
 	}
 	
 	/**
@@ -1993,7 +2230,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function callbackMap(options, callback) {
 	    return function cb(err, location) {
 	        if (err) return callback(_geo4.default.create(err), null);
-	        setFlagURL(location);
+	        setLocationURLs(location, options);
 	        if (!options.map) return callback(null, location);
 	        options.map = getMapOpts(options.map, location);
 	        geolocator.createMap(options.map, function (error, map) {
@@ -2080,7 +2317,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function locateAccurate(options, onPositionReceived, onPositionError) {
 	    var loc = void 0,
-	        watcher = void 0;
+	        watcher = void 0,
+	        onProgress = !_utils2.default.isFunction(options.onProgress) ? _utils2.default.noop : options.onProgress;
 	
 	    function complete() {
 	        if (!loc) {
@@ -2096,15 +2334,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	                onPositionError(err);
 	            });
 	        }
-	        if (!loc || location.coords.accuracy <= loc.coords.accuracy) {
-	            loc = location;
-	        }
+	        loc = location;
 	        // ignore the first event if not the only result; for more accuracy.
 	        if (watcher.cycle > 1 && loc.coords.accuracy <= options.desiredAccuracy) {
 	            watcher.clear(complete);
+	        } else {
+	            onProgress(loc);
 	        }
 	    });
-	    watcher.clear(options.timeout, complete);
+	    watcher.clear(options.maximumWait + 100, complete);
 	}
 	
 	// ---------------------------
@@ -2121,26 +2359,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    cb: {}
 	};
 	
-	// setting default Geo-IP source, Wikimedia
+	// setting default Geo-IP source, FreeGeoIP
 	geolocator.setGeoIPSource({
-	    provider: 'wikimedia',
-	    url: 'https://bits.wikimedia.org/geoiplookup',
-	    callbackParam: null,
-	    globalVar: 'Geo',
+	    provider: 'freegeoip',
+	    url: 'https://freegeoip.net/json',
+	    callbackParam: 'callback',
 	    schema: {
-	        ip: 'IP',
+	        ip: 'ip',
 	        coords: {
-	            latitude: 'lat',
-	            longitude: 'lon'
+	            latitude: 'latitude',
+	            longitude: 'longitude'
 	        },
 	        address: {
 	            city: 'city',
-	            state: 'region',
-	            stateCode: 'region',
-	            postalCode: '',
-	            countryCode: 'country',
-	            country: 'country',
-	            region: 'region'
+	            state: 'region_name',
+	            stateCode: 'region_code',
+	            postalCode: 'zip_code',
+	            countryCode: 'country_code',
+	            country: 'country_name',
+	            region: 'region_name'
+	        },
+	        timezone: {
+	            id: 'time_zone'
 	        }
 	    }
 	});
@@ -2154,7 +2394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// ---------------------------
 	// ADDITIONAL DOCUMENTATION
 	// ---------------------------
-
+	
 	/**
 	 *  `Coordinates` inner type that specifies the geographic position of the
 	 *  device. The position is expressed as a set of geographic coordinates
@@ -2186,7 +2426,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *  @property {Number} speed
 	 *         Specifies the device's current ground speed in meters per second.
 	 */
-
+	
 	/**
 	 *	`Address` inner type that specifies the address of the fetched location.
 	 *	The address is expressed as a set of political and locality components.
@@ -2225,7 +2465,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *  @property {String} countryCode
 	 *         Indicates the ISO alpha-2 country code of the fetched location.
 	 */
-
+	
 	/**
 	 *	`TimeZone` inner type that specifies time offset data for the fetched
 	 *	location on the surface of the earth.
@@ -2256,7 +2496,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *         The offset from UTC (in seconds) for the given location. This does
 	 *         not take into effect daylight savings.
 	 */
-
+	
 	/**
 	 *	`MapData` inner type that provides references to the components of a
 	 *	created Google Maps `Map` and the containing DOM element.
@@ -2278,7 +2518,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *  @property {Object} options
 	 *         Arbitrary object of applied map options.
 	 */
-
+	
 	/**
 	 *	`Location` inner type that specifies geographic coordinates, address and
 	 *	time zone information for the fetched location.
@@ -2330,6 +2570,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *         Provides references to the components of a created Google Maps `Map`
 	 *         and the containing DOM element. See
 	 *         {@link #geolocator~MapData|`geolocator~MapData` type} for details.
+	 *  @property {String} staticMap
+	 *         URL of a static Google map image, for the location.
 	 *  @property {Number} timestamp
 	 *         Specifies the time when the location information was retrieved and
 	 *         the `Location` object created.
@@ -2345,7 +2587,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	var _toString = Object.prototype.toString;
 	
@@ -2427,6 +2669,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    isArray: function isArray(value) {
 	        return Boolean(value) && _toString.call(value) === '[object Array]';
+	    },
+	
+	
+	    /**
+	     * Checks if the given object is a non-empty `Array`.
+	     * @memberof utils
+	     *
+	     * @param {*} array - Object to be checked.
+	     * @returns {Boolean}
+	     */
+	    isFilledArray: function isFilledArray(array) {
+	        return utils.isArray(array) && array.length > 0;
 	    },
 	
 	
@@ -2795,6 +3049,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    destination[key] = value.concat();
 	                } else if (utils.isDate(value)) {
 	                    destination[key] = new Date(value);
+	                } else if (utils.isFunction(value)) {
+	                    // should be before object
+	                    destination[key] = value;
 	                } else if (utils.isObject(value)) {
 	                    destination[key] = utils.extend({}, value);
 	                } else {
@@ -2945,7 +3202,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @license MIT
 	 * @copyright 2016, Onur Yıldırım (onur@cutepilot.com)
 	 */
-	
 	var fetch = function () {
 	    function fetch() {
 	        _classCallCheck(this, fetch);
@@ -3593,8 +3849,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	
-	        var isUS = o.country_s === 'US',
-	            geometry = data.geometry;
+	        var geometry = data.geometry;
 	        return {
 	            coords: geometry && geometry.location ? {
 	                latitude: geometry.location.lat,
@@ -3610,8 +3865,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                city: o.locality || o.administrative_area_level_1 || '',
 	                region: o.administrative_area_level_2 || o.administrative_area_level_1 || '',
 	                postalCode: o.postal_code || '',
-	                state: isUS ? o.administrative_area_level_1 || '' : '',
-	                stateCode: isUS ? o.administrative_area_level_1_s || '' : '',
+	                state: o.administrative_area_level_1 || '',
+	                stateCode: o.administrative_area_level_1_s || '',
 	                country: o.country || '',
 	                countryCode: o.country_s || ''
 	            },
@@ -3743,6 +3998,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	
 	        return arr;
+	    },
+	
+	
+	    // Converts a map-styles object in to static map styles (formatted query-string params).
+	    // See https://developers.google.com/maps/documentation/static-maps/styling
+	    mapStylesToParams: function mapStylesToParams(styles) {
+	        if (!styles) return '';
+	        if (!_utils2.default.isArray(styles)) styles = [styles];
+	        var result = [];
+	        styles.forEach(function (v, i, a) {
+	            var style = '';
+	            if (v.stylers) {
+	                // only if there is a styler object
+	                if (v.stylers.length > 0) {
+	                    // Needs to have a style rule to be valid.
+	                    style += (v.hasOwnProperty('featureType') ? 'feature:' + v.featureType : 'feature:all') + '|';
+	                    style += (v.hasOwnProperty('elementType') ? 'element:' + v.elementType : 'element:all') + '|';
+	                    v.stylers.forEach(function (val, i, a) {
+	                        var propName = Object.keys(val)[0],
+	                            propVal = val[propName].toString().replace('#', '0x');
+	                        style += propName + ':' + propVal + '|';
+	                    });
+	                }
+	            }
+	            result.push('style=' + encodeURIComponent(style));
+	        });
+	        return result.join('&');
 	    }
 	};
 	
@@ -3757,6 +4039,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var GOOGLE_MAPS_API_BASE = '//maps.googleapis.com/maps/api';
+	
 	/**
 	 * This file only includes partial documentation about `geolocator` enumerations.
 	 * Note that these enumerations are mostly an aggregation of
@@ -3796,7 +4080,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @type {String}
 	     * @private
 	     */
-	    GOOGLE_MAPS_API: '//maps.googleapis.com/maps/api/js',
+	    GOOGLE_MAPS_API: GOOGLE_MAPS_API_BASE + '/js',
+	    /**
+	     * Google Maps API Static Map endpoint.
+	     * @type {String}
+	     * @private
+	     */
+	    GOOGLE_SATATIC_MAP: GOOGLE_MAPS_API_BASE + '/staticmap',
 	    /**
 	     * Google Geolocation API endpoint.
 	     * @type {String}
@@ -4014,6 +4304,47 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @type {String}
 	     */
 	    PYTHAGOREAN: 'pythagorean'
+	  },
+	  /**
+	   *  Enumerates the image formats used for getting static Google Map images.
+	   *  @memberof! geolocator
+	   *
+	   *  @readonly
+	   *  @enum {String}
+	   */
+	  ImageFormat: {
+	    /**
+	     *  Specifies the PNG image format.
+	     *  Same as `PNG_8`.
+	     *  @type {String}
+	     */
+	    PNG: 'png',
+	    /**
+	     *  Specifies the 8-bit PNG image format.
+	     *  Same as `PNG`.
+	     *  @type {String}
+	     */
+	    PNG_8: 'png8',
+	    /**
+	     *  Specifies the 32-bit PNG image format.
+	     *  @type {String}
+	     */
+	    PNG_32: 'png32',
+	    /**
+	     *  Specifies the GIF image format.
+	     *  @type {String}
+	     */
+	    GIF: 'gif',
+	    /**
+	     *  Specifies the JPEG compressed image format.
+	     *  @type {String}
+	     */
+	    JPG: 'jpg',
+	    /**
+	     *  Specifies a non-progressive JPEG compression image format.
+	     *  @type {String}
+	     */
+	    JPG_BASELINE: 'jpg-baseline'
 	  }
 	});
 	
@@ -4029,7 +4360,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -4052,7 +4383,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * @extends Error
 	 */
-	
 	var GeoError = function () {
 	    // extends Error (doesn't work with transpilers)
 	
@@ -4074,9 +4404,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * console.log(error.code); // "GEOLOCATION_NOT_SUPPORTED"
 	     * console.log(error instanceof GeoError); // true
 	     */
-	
 	    function GeoError() {
-	        var code = arguments.length <= 0 || arguments[0] === undefined ? GeoError.Code.UNKNOWN_ERROR : arguments[0];
+	        var code = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : GeoError.Code.UNKNOWN_ERROR;
 	        var message = arguments[1];
 	
 	        _classCallCheck(this, GeoError);
@@ -4225,7 +4554,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'fromResponse',
 	        value: function fromResponse(response) {
-	            var message = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
+	            var message = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 	
 	            // example Google Geolocation API response:
 	            // https://developers.google.com/maps/documentation/geolocation/intro#errors
@@ -4559,7 +4888,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function GeoWatcher(onChange, onError) {
 	        var _this = this;
 	
-	        var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 	
 	        _classCallCheck(this, GeoWatcher);
 	
