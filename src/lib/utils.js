@@ -79,6 +79,17 @@ const utils = {
     },
 
     /**
+     * Checks if the given object is a non-empty `Array`.
+     * @memberof utils
+     *
+     * @param {*} array - Object to be checked.
+     * @returns {Boolean}
+     */
+    isFilledArray(array) {
+        return utils.isArray(array) && array.length > 0;
+    },
+
+    /**
      * Checks if the given value is a plain `Object`.
      * @memberof utils
      *
@@ -422,6 +433,8 @@ const utils = {
                     destination[key] = value.concat();
                 } else if (utils.isDate(value)) {
                     destination[key] = new Date(value);
+                } else if (utils.isFunction(value)) { // should be before object
+                    destination[key] = value;
                 } else if (utils.isObject(value)) {
                     destination[key] = utils.extend({}, value);
                 } else {
