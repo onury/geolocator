@@ -18,35 +18,25 @@ Geolocator.js is a utility for getting geo-location information, geocoding, addr
  - Reverse Geocoding (address lookup)
  - Full address information (street, town, neighborhood, region, country, country code, postal code, etc...)
  - Fallback mechanism (from HTML5-geolocation to Geo-IP lookup)
- - **NEW**: Watch geographic position
- - **NEW**: Locate by mobile information
- - **NEW**: Get timezone information
- - **NEW**: Get distance matrix and duration information
- - **NEW**: Calculate distance between two geographic points
- - **NEW**: Various geographic conversion utilities
- - **NEW**: Get client IP
- - **NEW**: Fetched location includes country flag image (SVG) URL
- - **NEW**: Language support (depends on the service provider)
+ - Watch geographic position
+ - Locate by mobile information
+ - Get timezone information
+ - Get distance matrix and duration information
+ - Calculate distance between two geographic points
+ - Various geographic conversion utilities
+ - Get client IP
+ - Fetched location includes country flag image (SVG) URL
+ - Language support (depends on the service provider)
  - Supports Google Loader (loads Google APIs dynamically)
- - Dynamically creates Google Maps, **on demand** (with marker, info window, auto-adjusted zoom)
+ - Dynamically create Google Maps, **on demand** (with marker, info window, auto-adjusted zoom)
+ - **NEW**: Get static Google Map (image) URL for a location
  - Non-blocking script loading (external sources are loaded on the fly without interrupting page load)
  - No library/framework dependencies (such as jQuery, etc...)
- - **NEW**: Universal module (CommonJS/Node/AMD..)
+ - Universal module (CommonJS/AMD..)
  - Small file size (9KB minified, gzipped)
  - Browser Support: IE 9+, Chrome, Safari, Firefox, Opera...
 
 See a [**Live Demo**](https://onury.github.io/geolocator/?content=examples).
-
-### Breaking Changes
-
-If you're migrating from v1.x to v2, you should consider the following changes:
-
- - Geolocator **v2** is completely re-written from scratch; adding more features to it while keeping and improving the existing ones. So almost everything has changed, for good.
- - The most significant change is; we've got rid of separate callbacks for error and success. Now, we have Node-style, single callback for each async method; with `err` as the first argument. If it's a success, `err` will be `null`.
- - Most features make use of Google APIs. So you'll need a (single) Google API key to use them all. If you don't have a key, you can still use Geolocator like the previous versions, but with limited features.
- - `.location` property is dropped. You can always access the result, via the second argument of each async method's callback.
- - Geolocator now supports a single Geo-IP provider, Wikimedia. You can use `geolcoator.setGeoIPSource()` method to set a different Geo-IP source.
- - Read the [API documentation][api-docs] for details...
 
 ## Get Geolocator.js
 
@@ -64,11 +54,9 @@ Install via **NPM**:
 npm install geolocator
 ```
 
-_If somehow you need the legacy version v1.2.9 and don't need the better. [Here][legacy-version] it is._
-
 ## Usage:
 
-Example below, tries to get user's geo-location via HTML5 Geolocation and if user rejects, it will fallback to IP based geo-location.
+Example below, will attempt to get user's geo-location via HTML5 Geolocation and if user rejects, it will fallback to IP based geo-location.
 
 Inside the `<head>` of your HTML:
 ```html
@@ -86,13 +74,15 @@ Inside the `<head>` of your HTML:
     window.onload = function () {
         var options = {
             enableHighAccuracy: true,
-            timeout: 6000,
-            maximumAge: 0,
-            desiredAccuracy: 30,
-            fallbackToIP: true, // fallback to IP if Geolocation fails or rejected
-            addressLookup: true,
-            timezone: true,
-            map: "map-canvas"
+            timeout: 5000,
+            maximumWait: 10000,     // max wait time for desired accuracy
+            maximumAge: 0,          // disable cache
+            desiredAccuracy: 30,    // meters
+            fallbackToIP: true,     // fallback to IP if Geolocation fails or rejected
+            addressLookup: true,    // requires Google API key if true
+            timezone: true,         // requires Google API key if true
+            map: "map-canvas",      // interactive map element id (or options object)
+            staticMap: true         // map image URL (boolean or options object)
         };
         geolocator.locate(options, function (err, location) {
             if (err) return console.log(err);
@@ -113,12 +103,17 @@ Read [**API documentation**][api-docs] for lots of other features and examples.
 
 - Since Geolocation API is an HTML5 feature, make sure your `doctype` is HTML5 (e.g. `<!DOCTYPE html>`).
 - Make sure you're calling Geolocation APIs (such as `geolocator.locate()` and `geolocator.watch()`) from a secure origin (i.e. an **HTTPS** page). In Chrome 50, Geolocation API is [removed][chrome-unsecure] from **unsecured origins**. Other browsers are expected to follow.
-- Although some calls might work without a key, it is generally required by most Google APIs (such as Time Zone API). To get a free (or premium) key, [click here][google-docs]. After getting a key, you can enable multiple APIs for it. Make sure you [enable][google-console] all the APIs supported by Geolocator.
+- Although some calls might work without a key, it is generally required by most Google APIs (such as Time Zone API). To get a free (or premium) key, [click here][google-docs]. After getting a key, you can enable multiple APIs for it. Make sure you [enable][google-console] all the APIs supported by Geolocator. *(If you don't have a key, you can still use Geolocator like the previous versions, but with limited features.)*
+- Geolocator now supports a single Geo-IP provider, FreeGeoIP. You can use `geolcoator.setGeoIPSource()` method to set a different Geo-IP source.
 - On Firefox, callback is not fired for Geolocation, if user clicks "Not Now" instead of "Never". (bug [675533][bug-675533]).
 
 ## Under the Hood
 
 Geolocator v2 is written in ES2015 (ES6), compiled with [Babel][babel], bundled with [Webpack][webpack] and documented with [Docma][docma].
+
+## Change Log
+
+See version changes [here][changelog].
 
 ## License
 
@@ -126,6 +121,7 @@ MIT. See the [Disclaimer and License][license].
 
 
 [api-docs]:https://onury.github.io/geolocator/?api=geolocator
+[changelog]:https://onury.github.io/geolocator/?content=changelog
 [license]: https://github.com/onury/geolocator/blob/master/LICENSE
 [uncompressed]: https://raw.github.com/onury/geolocator/master/src/geolocator.js
 [compressed]: https://raw.github.com/onury/geolocator/master/src/geolocator.min.js
