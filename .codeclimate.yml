@@ -8,6 +8,7 @@ engines:
     - 28208e406543a5c1af52148b6f64c9ca
     - fac82291f007b4bc80fd72a514874422
     - c069c14bab11b3c5f97d495f8ea8c3f5
+    - ba40f771b40e745168d3a8e75007b28e
     config:
       languages:
       - javascript
