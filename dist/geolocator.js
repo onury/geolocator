@@ -393,7 +393,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (opts.region) url += '&region=' + opts.region;
 	            if (conf.google.key) url += '&key=' + conf.google.key;
 	
-	            var styles = !_utils2.default.isFilledArray(opts.styles) ? _utils2.default.isFilledArray(conf.google.styles) ? conf.google.styles : null : opts.styles;
+	            var styles = getStyles(opts);
 	            if (styles) url += '&' + _geo2.default.mapStylesToParams(styles);
 	
 	            if (_utils2.default.isFunction(callback)) return callback(null, url);
@@ -510,8 +510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            var conf = geolocator._.config,
 	                key = conf.google.key;
-	
-	            options.styles = !_utils2.default.isFilledArray(options.styles) ? _utils2.default.isFilledArray(conf.google.styles) ? conf.google.styles : null : options.styles;
+	            options.styles = getStyles(options);
 	
 	            geolocator.ensureGoogleLoaded(key, function (err) {
 	                if (err) {
@@ -2343,6 +2342,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    });
 	    watcher.clear(options.maximumWait + 100, complete);
+	}
+	
+	function getStyles(options) {
+	    var conf = geolocator._.config;
+	    return !_utils2.default.isFilledArray(options.styles) ? _utils2.default.isFilledArray(conf.google.styles) ? conf.google.styles : null : options.styles;
 	}
 	
 	// ---------------------------
