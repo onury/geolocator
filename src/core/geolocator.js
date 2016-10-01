@@ -364,9 +364,7 @@ class geolocator {
         if (opts.region) url += '&region=' + opts.region;
         if (conf.google.key) url += '&key=' + conf.google.key;
 
-        let styles = !utils.isFilledArray(opts.styles)
-            ? (utils.isFilledArray(conf.google.styles) ? conf.google.styles : null)
-            : opts.styles;
+        let styles = getStyles(opts);
         if (styles) url += '&' + geoHelper.mapStylesToParams(styles);
 
         if (utils.isFunction(callback)) return callback(null, url);
@@ -484,10 +482,7 @@ class geolocator {
 
         let conf = geolocator._.config,
             key = conf.google.key;
-
-        options.styles = !utils.isFilledArray(options.styles)
-            ? (utils.isFilledArray(conf.google.styles) ? conf.google.styles : null)
-            : options.styles;
+        options.styles = getStyles(options);
 
         geolocator.ensureGoogleLoaded(key, err => {
             if (err) {
@@ -2171,6 +2166,13 @@ function locateAccurate(options, onPositionReceived, onPositionError) {
         }
     });
     watcher.clear(options.maximumWait + 100, complete);
+}
+
+function getStyles(options) {
+    let conf = geolocator._.config;
+    return !utils.isFilledArray(options.styles)
+        ? (utils.isFilledArray(conf.google.styles) ? conf.google.styles : null)
+        : options.styles;
 }
 
 // ---------------------------
