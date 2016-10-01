@@ -1,6 +1,10 @@
 
 ## Change Log:
 
+### v2.1.1 (unreleased) (2016-10-01)
+
+- Minor revision, clean up.
+
 ### v2.1.0 (2016-09-30)
 
 - Feature: Get static Google Maps (image) via `.getStaticMap()` method. [#34](https://github.com/onury/geolocator/issues/34). *Make sure you have enabled Google Static Maps API in Google Developers console.*
