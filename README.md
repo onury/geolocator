@@ -1,5 +1,6 @@
 # Geolocator v2
 
+[![CDNJS](https://img.shields.io/cdnjs/v/geolocator.svg)](https://cdnjs.com/libraries/geolocator)
 ![bower](https://img.shields.io/bower/v/geolocator.svg)
 ![npm](https://img.shields.io/npm/v/geolocator.svg)
 ![release](https://img.shields.io/github/release/onury/geolocator.svg)
