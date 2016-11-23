@@ -5,7 +5,8 @@
 ![npm](https://img.shields.io/npm/v/geolocator.svg)
 ![release](https://img.shields.io/github/release/onury/geolocator.svg)
 [![Code Climate](https://codeclimate.com/github/onury/geolocator/badges/gpa.svg)](https://codeclimate.com/github/onury/geolocator)
-![license](http://img.shields.io/npm/l/perfy.svg)  
+![license](http://img.shields.io/npm/l/perfy.svg)
+![maintained](https://img.shields.io/maintenance/yes/2016.svg)  
 
 > © 2016, Onur Yıldırım (@onury)
 > MIT License. Please see the [Disclaimer and License][license].
@@ -106,7 +107,7 @@ Read [**API documentation**][api-docs] for lots of other features and examples.
 - Make sure you're calling Geolocation APIs (such as `geolocator.locate()` and `geolocator.watch()`) from a secure origin (i.e. an **HTTPS** page). In Chrome 50, Geolocation API is [removed][chrome-unsecure] from **unsecured origins**. Other browsers are expected to follow.
 - Although some calls might work without a key, it is generally required by most Google APIs (such as Time Zone API). To get a free (or premium) key, [click here][google-docs]. After getting a key, you can enable multiple APIs for it. Make sure you [enable][google-console] all the APIs supported by Geolocator. *(If you don't have a key, you can still use Geolocator like the previous versions, but with limited features.)*
 - Geolocator now supports a single Geo-IP provider, FreeGeoIP. You can use `geolcoator.setGeoIPSource()` method to set a different Geo-IP source.
-- On Firefox, callback is not fired for Geolocation, if user clicks "Not Now" instead of "Never". (bug [675533][bug-675533]).
+- <strike>On Firefox, callback is not fired for Geolocation, if user clicks "Not Now" instead of "Never".</strike> This is now fixed in Firefox version 53 with the new permission prompt redesign. (See bugzilla [675533][bug-675533].)
 
 ## Under the Hood
 
