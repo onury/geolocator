@@ -6,9 +6,9 @@
 ![release](https://img.shields.io/github/release/onury/geolocator.svg)
 [![Code Climate](https://codeclimate.com/github/onury/geolocator/badges/gpa.svg)](https://codeclimate.com/github/onury/geolocator)
 ![license](http://img.shields.io/npm/l/perfy.svg)
-![maintained](https://img.shields.io/maintenance/yes/2016.svg)  
+![maintained](https://img.shields.io/maintenance/yes/2017.svg)  
 
-> © 2016, Onur Yıldırım (@onury)
+> © 2017, Onur Yıldırım (@onury)
 > MIT License. Please see the [Disclaimer and License][license].
 
 Geolocator.js is a utility for getting geo-location information, geocoding, address look-ups, distance & durations, timezone information and more...
