@@ -1,7 +1,7 @@
 
 ## Change Log:
 
-### v2.1.1 (unreleased) (2016-11-30)
+### v2.1.1 (2017-03-11)
 
 - Improvement: Forcing the export mechanism to assign `geolocator` to `window` even if it's used via an `import` or `require` statement. i.e. this happens when used within babel/webpack bundled code or from within an electron app. See issues [#42](https://github.com/onury/geolocator/issues/42) and [#48](https://github.com/onury/geolocator/issues/48).
 - Minor revision, clean up.
