@@ -9,6 +9,7 @@
         "module": true,
         "undocumented": false,
         "undescribed": false,
+        "ignored": false,
         "hierarchy": true,
         "sort": "alphabetic",
         "relativePath": null,
@@ -40,6 +41,8 @@
             "sidebar": true,
             "collapsed": false,
             "badges": true,
+            "outline": "tree",
+            "symbolMeta": false,
             "search": true,
             "navbar": true,
             "navItems": [
