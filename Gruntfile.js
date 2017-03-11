@@ -98,7 +98,11 @@ module.exports = function (grunt) {
                     filename: params.libFileName + '.min.js'
                 },
                 plugins: [
-                    new webpack.optimize.UglifyJsPlugin({ minimize: true })
+                    new webpack.optimize.UglifyJsPlugin({
+                        minimize: true,
+                        sourceMap: true,
+                        warnings: true
+                    })
                 ]
             }
         },
