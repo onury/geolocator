@@ -558,9 +558,10 @@ class geolocator {
      *             request which requires a Google API key to be set in the
      *             Geolocator configuration.
      *             See {@link #geolocator.config|`geolocator.config()`}.
-     *      @param {String|Object} [options.map]
+     *      @param {String|MapOptions} [options.map]
      *             In order to create an interactive map from the fetched
-     *             location coordinates; either set this to map options object
+     *             location coordinates; either set this to a
+     *             {@link #geolocator~MapOptions|`MapOptions` object}
      *             or; the ID of a DOM element or DOM element itself which the
      *             map will be created within.
      *      @param {Boolean|Object} [options.staticMap=false]
@@ -739,9 +740,10 @@ class geolocator {
      *             request which requires a Google API key to be set in the
      *             Geolocator configuration.
      *             See {@link #geolocator.config|`geolocator.config()`}.
-     *      @param {String|Object} [options.map]
+     *      @param {String|MapOptions} [options.map]
      *             In order to create an interactive map from the fetched
-     *             location coordinates; either set this to map options object
+     *             location coordinates; either set this to a
+     *             {@link #geolocator~MapOptions|`MapOptions` object}
      *             or; the ID of a DOM element or DOM element itself which the
      *             map will be created within.
      *      @param {Boolean|Object} [options.staticMap=false]
@@ -859,9 +861,10 @@ class geolocator {
      *             request which requires a Google API key to be set in the
      *             Geolocator configuration.
      *             See {@link #geolocator.config|`geolocator.config()`}.
-     *      @param {String|Object} [options.map]
+     *      @param {String|MapOptions} [options.map]
      *             In order to create an interactive map from the fetched
-     *             location coordinates; either set this to map options object
+     *             location coordinates; either set this to a
+     *             {@link #geolocator~MapOptions|`MapOptions` object}
      *             or; the ID of a DOM element or DOM element itself which the
      *             map will be created within.
      *      @param {Boolean|Object} [options.staticMap=false]
@@ -1205,9 +1208,10 @@ class geolocator {
      *      	      The bounding box of the viewport within which to bias geocode
      *      	      results more prominently. e.g.:
      *      	      `[ southwestLat:Number, southwestLng:Number, northeastLat:Number, northeastLng:Number ]`
-     *      @param {String|Object} [options.map]
+     *      @param {String|MapOptions} [options.map]
      *             In order to create an interactive map from the fetched
-     *             location coordinates; either set this to map options object
+     *             location coordinates; either set this to a
+     *             {@link #geolocator~MapOptions|`MapOptions` object}
      *             or; the ID of a DOM element or DOM element itself which the
      *             map will be created within.
      *      @param {Boolean|Object} [options.staticMap=false]
@@ -1288,9 +1292,10 @@ class geolocator {
      *             human-readable address. The place ID is a unique identifier
      *             that can be used with other Google APIs. Note that if
      *             `placeId` is set, `latitude` and `longitude` are ignored.
-     *      @param {String|Object} [options.map]
+     *      @param {String|MapOptions} [options.map]
      *             In order to create an interactive map from the fetched
-     *             location coordinates; either set this to map options object
+     *             location coordinates; either set this to a
+     *             {@link #geolocator~MapOptions|`MapOptions` object}
      *             or; the ID of a DOM element or DOM element itself which the
      *             map will be created within.
      *      @param {Boolean|Object} [options.staticMap=false]
@@ -2405,4 +2410,37 @@ export default geolocator;
  *  @property {Number} timestamp
  *         Specifies the time when the location information was retrieved and
  *         the `Location` object created.
+ */
+
+/**
+ *  `MapOptions` inner type that specifies options for the map to be created.
+ *
+ *  @typedef geolocator~MapOptions
+ *  @type Object
+ *
+ *  @property {String|HTMLElement|Map} element
+ *         Either the ID of a DOM element or the element itself;
+ *         which the map will be created within; or a previously created
+ *         `google.maps.Map` instance. If a map instance is set, this
+ *         only will apply the options without re-creating it.
+ *  @property {Object} center
+ *         Center coordinates for the map to be created.
+ *      @property {Number} center.latitude
+ *             Latitude of the center point coordinates.
+ *      @property {Number} center.longitude
+ *             Longitude of the center point coordinates.
+ *  @property {String} mapTypeId
+ *         Type of the map to be created.
+ *         See {@link #geolocator.MapTypeId|`geolocator.MapTypeId` enumeration}
+ *         for possible values.
+ *  @property {String} title
+ *         Title text to be displayed within an `InfoWindow`, when the
+ *         marker is clicked. This only take effect if `marker` is
+ *         enabled.
+ *  @property {Boolean} marker
+ *         Whether to place a marker at the given coordinates.
+ *         If `title` is set, an `InfoWindow` will be opened when the
+ *         marker is clicked.
+ *  @property {Number} zoom
+ *             Zoom level to be set for the map.
  */
