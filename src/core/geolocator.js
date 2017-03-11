@@ -59,7 +59,7 @@ const defaultConfig = {
  *  Other browsers are expected to follow.
  *
  *  @license MIT
- *  @copyright 2016, Onur Yıldırım (onur@cutepilot.com)
+ *  @copyright 2017, Onur Yıldırım (onur@cutepilot.com)
  */
 class geolocator {
 
