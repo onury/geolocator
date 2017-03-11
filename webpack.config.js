@@ -18,7 +18,7 @@ module.exports = function (params) {
             publicPath: params.publicPath
         },
         module: {
-            loaders: [
+            rules: [
                 {
                     test: /(\.jsx|\.js)$/,
                     loader: 'babel-loader',
@@ -43,8 +43,8 @@ module.exports = function (params) {
             ]
         },
         resolve: {
-            root: params.srcPath,
-            extensions: ['', '.js']
+            modules: [params.srcPath],
+            extensions: ['.js']
         },
         // Whether to show progress. Defaults to `true`.
         progress: false,
