@@ -1,6 +1,4 @@
-<p align="center"><img width="340" height="275" src="https://raw.github.com/onury/geolocator/master/geolocator-logo.png" /></p>
-
----
+<p align="center"><img width="340" height="275" src="https://raw.github.com/onury/geolocator/master/geolocator-logo.png" /><br /><br /></p>
 
 [![CDNJS](https://img.shields.io/cdnjs/v/geolocator.svg)](https://cdnjs.com/libraries/geolocator)
 ![bower](https://img.shields.io/bower/v/geolocator.svg)
@@ -8,7 +6,7 @@
 ![release](https://img.shields.io/github/release/onury/geolocator.svg)
 [![Code Climate](https://codeclimate.com/github/onury/geolocator/badges/gpa.svg)](https://codeclimate.com/github/onury/geolocator)
 ![license](http://img.shields.io/npm/l/perfy.svg)
-![maintained](https://img.shields.io/maintenance/yes/2017.svg)  
+![maintained](https://img.shields.io/maintenance/yes/2017.svg) 
 
 > © 2017, Onur Yıldırım (@onury)
 > MIT License. Please see the [Disclaimer and License][license].
