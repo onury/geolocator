@@ -1,4 +1,4 @@
-# Geolocator v2
+<p align="center"><img width="340" height="275" src="https://raw.github.com/onury/geolocator/master/geolocator-logo.png" /></p>
 
 [![CDNJS](https://img.shields.io/cdnjs/v/geolocator.svg)](https://cdnjs.com/libraries/geolocator)
 ![bower](https://img.shields.io/bower/v/geolocator.svg)
@@ -31,7 +31,7 @@ Geolocator.js is a utility for getting geo-location information, geocoding, addr
  - Language support (depends on the service provider)
  - Supports Google Loader (loads Google APIs dynamically)
  - Dynamically create Google Maps, **on demand** (with marker, info window, auto-adjusted zoom)
- - **NEW**: Get static Google Map (image) URL for a location
+ - Get static Google Map (image) URL for a location
  - Non-blocking script loading (external sources are loaded on the fly without interrupting page load)
  - No library/framework dependencies (such as jQuery, etc...)
  - Universal module (CommonJS/AMD..)
