@@ -1,5 +1,7 @@
 <p align="center"><img width="340" height="275" src="https://raw.github.com/onury/geolocator/master/geolocator-logo.png" /></p>
 
+---
+
 [![CDNJS](https://img.shields.io/cdnjs/v/geolocator.svg)](https://cdnjs.com/libraries/geolocator)
 ![bower](https://img.shields.io/bower/v/geolocator.svg)
 ![npm](https://img.shields.io/npm/v/geolocator.svg)
