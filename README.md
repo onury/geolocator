@@ -9,7 +9,7 @@
 ![maintained](https://img.shields.io/maintenance/yes/2017.svg) 
 
 > © 2017, Onur Yıldırım (@onury)
-> MIT License. Please see the [Disclaimer and License][license].
+> MIT License. Please see the [Disclaimer][disclaimer] and [License][license].
 
 Geolocator.js is a utility for getting geo-location information, geocoding, address look-ups, distance & durations, timezone information and more...
 
@@ -119,12 +119,13 @@ See version changes [here][changelog].
 
 ## License
 
-MIT. See the [Disclaimer and License][license].
+MIT. See the [Disclaimer][disclaimer] and [License][license].
 
 
 [api-docs]:https://onury.github.io/geolocator/?api=geolocator
 [changelog]:https://onury.github.io/geolocator/?content=changelog
 [license]: https://github.com/onury/geolocator/blob/master/LICENSE
+[disclaimer]: https://github.com/onury/geolocator/blob/master/DISCLAIMER
 [uncompressed]: https://raw.github.com/onury/geolocator/master/src/geolocator.js
 [compressed]: https://raw.github.com/onury/geolocator/master/src/geolocator.min.js
 [cdnjs]:https://cdnjs.com/libraries/geolocator
