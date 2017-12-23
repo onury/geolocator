@@ -4,7 +4,6 @@
 [![bower](https://img.shields.io/bower/v/geolocator.svg)](https://github.com/onury/geolocator)
 [![npm](http://img.shields.io/npm/v/geolocator.svg)](https://www.npmjs.com/package/geolocator)
 [![release](https://img.shields.io/github/release/onury/geolocator.svg)](https://github.com/onury/geolocator)
-[![Code Climate](https://codeclimate.com/github/onury/geolocator/badges/gpa.svg)](https://codeclimate.com/github/onury/geolocator)
 [![dependencies](https://david-dm.org/onury/geolocator.svg)](https://david-dm.org/onury/geolocator)
 [![license](http://img.shields.io/npm/l/geolocator.svg)](https://github.com/onury/geolocator/blob/master/LICENSE)
 [![maintained](https://img.shields.io/maintenance/yes/2017.svg)](https://github.com/onury/geolocator/graphs/commit-activity)  
