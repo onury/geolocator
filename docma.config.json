@@ -106,5 +106,5 @@
             "examples": "./example/iframed.html"
         }
     ],
-    "dest": "../../onury.github.io/geolocator"
+    "dest": "../onury.github.io/geolocator"
 }
