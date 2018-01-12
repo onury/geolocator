@@ -6,9 +6,9 @@
 [![release](https://img.shields.io/github/release/onury/geolocator.svg)](https://github.com/onury/geolocator)
 [![dependencies](https://david-dm.org/onury/geolocator.svg)](https://david-dm.org/onury/geolocator)
 [![license](http://img.shields.io/npm/l/geolocator.svg)](https://github.com/onury/geolocator/blob/master/LICENSE)
-[![maintained](https://img.shields.io/maintenance/yes/2017.svg)](https://github.com/onury/geolocator/graphs/commit-activity)  
+[![maintained](https://img.shields.io/maintenance/yes/2018.svg)](https://github.com/onury/geolocator/graphs/commit-activity)  
 
-> © 2017, Onur Yıldırım ([@onury](https://github.com/onury))
+> © 2018, Onur Yıldırım ([@onury](https://github.com/onury))
 > MIT License. Please see the [Disclaimer][disclaimer] and [License][license].
 
 Geolocator.js is a utility for getting geo-location information, geocoding, address look-ups, distance & durations, timezone information and more...
