@@ -110,9 +110,11 @@ Read [**API documentation**][api-docs] for lots of other features and examples.
 
 ## Caveats
 
-- **[Mixed Content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/what-is-mixed-content) Restriction**: There are [alternative Geo-IP services][geo-src] to be used with this library. But most of these services do not provide a free API over HTTPS (SSL/TLS). You need to subscribe for a premium API key to use HTTPS. The caveat is; HTML5 Geolocation API is restricted to HTTPS and when you enable the `fallbackToIP` option, some browsers (such as Chrome and Firefox) will not allow mixed content. It will [block](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content/How_to_fix_website_with_mixed_content) HTTP content when the page is served over HTTPS.
+**[Mixed Content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/what-is-mixed-content) Restriction**: There are [alternative Geo-IP services][geo-src] to be used with this library. But most of these services do not provide a free API over HTTPS (SSL/TLS). You need to subscribe for a premium API key to use HTTPS. The caveat is; HTML5 Geolocation API is restricted to HTTPS and when you enable the `fallbackToIP` option, some browsers (such as Chrome and Firefox) will not allow mixed content. It will [block](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content/How_to_fix_website_with_mixed_content) HTTP content when the page is served over HTTPS.
 
-Currently, Geolocator will use [nekudo/shiny_geoip](https://github.com/nekudo/shiny_geoip) by default which seems to support HTTPS. If you know other free Geo-IP services over HTTPS, let me know and we add/use them as alternatives.
+Currently, Geolocator will use [nekudo/shiny_geoip](https://github.com/nekudo/shiny_geoip) by default which supports HTTPS. Please use this service responsibly and [support Nekudo](http://geoip.nekudo.com) if you can. 
+
+If you know other free Geo-IP services over HTTPS, let me know and we add/use them as alternatives.
 
 ## Under the Hood
 
