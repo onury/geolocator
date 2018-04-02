@@ -48,19 +48,10 @@ See a [**Live Demo**](https://onury.github.io/geolocator/?content=examples).
 
 ## Get Geolocator.js
 
-Link or download via [**CDNJS**][cdnjs].  
-
-Download full source code from [GitHub releases][releases].  
-
-Install via **Bower**:
-```
-bower install geolocator
-```
-
-Install via **NPM**:
-```
-npm install geolocator
-```
+- Link or download via [**CDNJS**][cdnjs].  
+- Download full source code from [GitHub releases][releases].  
+- Install via **Bower**: `bower install geolocator`
+- Install via **NPM**: `npm install geolocator`
 
 ## Usage:
 
@@ -90,7 +81,7 @@ Inside the `<head>` of your HTML:
             addressLookup: true,    // requires Google API key if true
             timezone: true,         // requires Google API key if true
             map: "map-canvas",      // interactive map element id (or options object)
-            staticMap: true         // map image URL (boolean or options object)
+            staticMap: true         // get a static map image URL (boolean or options object)
         };
         geolocator.locate(options, function (err, location) {
             if (err) return console.log(err);
