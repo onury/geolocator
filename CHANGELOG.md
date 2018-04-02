@@ -2,10 +2,11 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [2.1.2](https://github.com/onury/geolocator/compare/v2.1.1...v2.1.2) (2018-04-02)
+## [2.1.3](https://github.com/onury/geolocator/compare/v2.1.1...v2.1.3) (2018-04-02)
 
 ### Fixed
-- Changed default Geo-IP provider to [GeoBytes](http://geobytes.com). *(FreeGeoIP service is [shut down](https://github.com/apilayer/freegeoip#readme.))*. Fixes issue [#53](https://github.com/onury/geolocator/issues/53).
+- Changed default Geo-IP provider to [nekudo/shiny_geoip](https://github.com/nekudo/shiny_geoip). *(FreeGeoIP service is [shut down](https://github.com/apilayer/freegeoip#readme.))*. Fixes issue [#53](https://github.com/onury/geolocator/issues/53).
+- An issue with Geo-IP schema, occurred when a function is used instead of a mapper object.
 
 ### Added
 - Geo IP source: IPStack (requires a free API key). 
