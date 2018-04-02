@@ -107,7 +107,7 @@ describe('geolocator', function () {
                 expect(location.address).toEqual(jasmine.any(Object));
                 expect(location.timezone).toEqual(jasmine.any(Object));
                 expect(location.ip).toEqual(jasmine.any(String));
-                expect(location.provider).toEqual('geobytes');
+                expect(location.provider).toEqual('nekudo');
             }
             done();
         });
@@ -129,7 +129,7 @@ describe('geolocator', function () {
                 expect(location.address).toEqual(jasmine.any(Object));
                 expect(location.flag).toEqual(jasmine.any(String));
                 expect(location.ip).toEqual(jasmine.any(String));
-                expect(location.provider).toEqual('geobytes');
+                expect(location.provider).toEqual('nekudo');
             }
             done();
         });
