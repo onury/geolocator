@@ -1,17 +1,23 @@
-<p align="center"><img width="340" height="275" src="https://raw.github.com/onury/geolocator/master/geolocator-logo.png" /><br /><br /></p>
+<h1 align="center">
+    <a href="https://github.com/onury/geolocator">
+        <img width="340" height="275" src="https://raw.github.com/onury/geolocator/master/geolocator-logo.png" />
+    </a>
+</h1>
 
-[![CDNJS](https://img.shields.io/cdnjs/v/geolocator.svg)](https://cdnjs.com/libraries/geolocator)
-[![bower](https://img.shields.io/bower/v/geolocator.svg)](https://github.com/onury/geolocator)
-[![npm](http://img.shields.io/npm/v/geolocator.svg)](https://www.npmjs.com/package/geolocator)
-[![release](https://img.shields.io/github/release/onury/geolocator.svg)](https://github.com/onury/geolocator)
-[![dependencies](https://david-dm.org/onury/geolocator.svg)](https://david-dm.org/onury/geolocator)
-[![license](http://img.shields.io/npm/l/geolocator.svg)](https://github.com/onury/geolocator/blob/master/LICENSE)
-[![maintained](https://img.shields.io/maintenance/yes/2018.svg)](https://github.com/onury/geolocator/graphs/commit-activity)  
+<p align="center">
+<a href="https://cdnjs.com/libraries/geolocator"><img src="https://img.shields.io/cdnjs/v/geolocator.svg?style=flat-square" alt="CDNJS" /></a>
+<a href="https://github.com/onury/geolocator"><img src="https://img.shields.io/bower/v/geolocator.svg?style=flat-square" alt="bower" /></a>
+<a href="https://www.npmjs.com/package/geolocator"><img src="http://img.shields.io/npm/v/geolocator.svg?style=flat-square" alt="npm" /></a>
+<a href="https://github.com/onury/geolocator"><img src="https://img.shields.io/github/release/onury/geolocator.svg?style=flat-square" alt="release" /></a>
+<a href="https://david-dm.org/onury/geolocator"><img src="https://david-dm.org/onury/geolocator.svg?style=flat-square" alt="release" /></a>
+<a href="https://github.com/onury/geolocator/blob/master/LICENSE"><img src="http://img.shields.io/npm/l/geolocator.svg?style=flat-square" alt="license" /></a>
+<a href="https://github.com/onury/geolocator/graphs/commit-activity"><img src="https://img.shields.io/maintenance/yes/2018.svg?style=flat-square" alt="maintained" /></a>
+<br />
+<sub>© 2018, Onur Yıldırım (<b><a href="https://github.com/onury">@onury</a></b>). Please see the <a href="https://github.com/onury/geolocator/blob/master/DISCLAIMER">Disclaimer</a> and <a href="https://github.com/onury/geolocator/blob/master/LICENSE">License</a>.</sub>
+</p>
+<br />
 
-> © 2018, Onur Yıldırım ([@onury](https://github.com/onury))
-> MIT License. Please see the [Disclaimer][disclaimer] and [License][license].
-
-Geolocator.js is a utility for getting geo-location information, geocoding, address look-ups, distance & durations, timezone information and more...
+**Geolocator**.js is a utility for getting geo-location information, geocoding, address look-ups, distance & durations, timezone information and more...
 
 ## Features
 
@@ -114,7 +120,7 @@ Read [**API documentation**][api-docs] for lots of other features and examples.
 
 Currently, Geolocator will use [nekudo/shiny_geoip](https://github.com/nekudo/shiny_geoip) by default which supports HTTPS. Please use this service responsibly and [support Nekudo](http://geoip.nekudo.com) if you can. 
 
-If you know other free Geo-IP services over HTTPS, let me know and we add/use them as alternatives.
+If you know other free Geo-IP services over HTTPS, let me know and we can add/use them as alternatives.
 
 ## Under the Hood
 
