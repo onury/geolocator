@@ -164,9 +164,9 @@ module.exports = function (grunt) {
     grunt.registerTask('watch-compile', ['watch:compile']);
 
     // Open either one:
-    // http://localhost:9991/webpack-dev-server
-    // http://localhost:9991/example
-    // http://localhost:9991/webpack-dev-server/example
+    // http://localhost:8181/webpack-dev-server
+    // http://localhost:8181/example
+    // http://localhost:8181/webpack-dev-server/example
     grunt.registerTask('serve', ['webpack-dev-server:start']);
 
     grunt.registerTask('default', ['serve']);
