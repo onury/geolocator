@@ -840,7 +840,7 @@ class geolocator {
     /**
      *  Locates the user's location by the client's IP.
      *
-     *  This method uses GeoBytes' lookup service, by default.
+     *  This method uses a free lookup service, by default.
      *  In order to change the source provider, you can use
      *  {@link #geolocator.setGeoIPSource|`geolocator.setGeoIPSource()` method}.
      *
@@ -972,6 +972,8 @@ class geolocator {
             }
             if (utils.isPlainObject(source.schema)) {
                 response = utils.mapToSchema(response, source.schema);
+            } else if (utils.isFunction(source.schema)) {
+                response = source.schema(response);
             }
             response.provider = source.provider || 'unknown';
             setLocationURLs(response, options);
@@ -989,7 +991,7 @@ class geolocator {
      *  by user's IP; which is internally used by
      *  {@link #geolocator.locateByIP|`geolocator.locateByIP()` method}.
      *
-     *  By default, Geolocator uses GeoBytes as the Geo-IP source provider.
+     *  By default, Geolocator uses a free Geo-IP source provider.
      *  You can use this method to change this; or you can choose from
      *  ready-to-use
      *  {@link https://github.com/onury/geolocator/tree/master/src/geo-ip-sources|Geo-IP sources}.
@@ -2194,26 +2196,34 @@ geolocator._ = {
     cb: {}
 };
 
-// setting default Geo-IP source, geobytes
+// setting default Geo-IP source
+
 geolocator.setGeoIPSource({
-    provider: 'geobytes',
-    url: 'http://gd.geobytes.com/GetCityDetails',
+    provider: 'nekudo',
+    url: 'https://geoip.nekudo.com/api',
     callbackParam: 'callback',
-    schema: {
-        ip: 'geobytesipaddress',
-        coords: {
-            latitude: 'geobyteslatitude',
-            longitude: 'geobyteslongitude'
-        },
-        address: {
-            city: 'geobytescity',
-            state: 'geobytesregion',
-            stateCode: 'geobytescode',
-            postalCode: '',
-            countryCode: 'geobytesinternet',
-            country: 'geobytescountry',
-            region: 'geobytesregion'
-        }
+    schema: function (res) {
+        var loc = res.location || {};
+        var tz = (loc.time_zone || '').replace(/\\/g, '');
+        return {
+            ip: res.ip,
+            coords: {
+                latitude: loc.latitude,
+                longitude: loc.longitude
+            },
+            address: {
+                city: res.city,
+                state: '',
+                stateCode: '',
+                postalCode: '',
+                countryCode: res.country.code,
+                country: res.country.name,
+                region: ''
+            },
+            timezone: {
+                id: tz
+            }
+        };
     }
 });
 
