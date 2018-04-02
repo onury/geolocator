@@ -103,7 +103,7 @@ Read [**API documentation**][api-docs] for lots of other features and examples.
 - Since Geolocation API is an HTML5 feature, make sure your `doctype` is HTML5 (e.g. `<!DOCTYPE html>`).
 - Make sure you're calling Geolocation APIs (such as `geolocator.locate()` and `geolocator.watch()`) from a secure origin (i.e. an **HTTPS** page). In Chrome 50+, Geolocation API is [removed][chrome-unsecure] from **unsecured origins**. Other browsers are expected to follow.
 - Although some calls might work without a key, it is generally required by most Google APIs (such as Time Zone API). To get a free (or premium) key, [click here][google-docs]. After getting a key, you can enable multiple APIs for it. Make sure you [enable][google-console] all the APIs supported by Geolocator. *(If you don't have a key, you can still use Geolocator like the previous versions, but with limited features.)*
-- Geolocator now uses a single Geo-IP provider (Nekudo, based on the Maxmind GeoLite2 Database) for locating by IP. You can use `geolcoator.setGeoIPSource()` method to set a [different Geo-IP source][geo-src], but see the [Caveats](#caveats) section before you do so.
+- Geolocator now uses a single Geo-IP provider ([Nekudo](http://geoip.nekudo.com), based on the [Maxmind GeoLite2 Database](http://dev.maxmind.com/geoip/geoip2/geolite2/)) for locating by IP. You can use `geolcoator.setGeoIPSource()` method to set a [different Geo-IP source][geo-src], but see the [Caveats](#caveats) section before you do so.
 
 ## Caveats
 
