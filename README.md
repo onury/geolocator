@@ -106,7 +106,7 @@ Read [**API documentation**][api-docs] for lots of other features and examples.
 - Since Geolocation API is an HTML5 feature, make sure your `doctype` is HTML5 (e.g. `<!DOCTYPE html>`).
 - Make sure you're calling Geolocation APIs (such as `geolocator.locate()` and `geolocator.watch()`) from a secure origin (i.e. an **HTTPS** page). In Chrome 50, Geolocation API is [removed][chrome-unsecure] from **unsecured origins**. Other browsers are expected to follow.
 - Although some calls might work without a key, it is generally required by most Google APIs (such as Time Zone API). To get a free (or premium) key, [click here][google-docs]. After getting a key, you can enable multiple APIs for it. Make sure you [enable][google-console] all the APIs supported by Geolocator. *(If you don't have a key, you can still use Geolocator like the previous versions, but with limited features.)*
-- Geolocator now supports a single Geo-IP provider, FreeGeoIP. You can use `geolcoator.setGeoIPSource()` method to set a different Geo-IP source.
+- Geolocator now supports a single Geo-IP provider, Geobytes. You can use `geolcoator.setGeoIPSource()` method to set a [different Geo-IP source][geo-src].
 - <strike>On Firefox, callback is not fired for Geolocation, if user clicks "Not Now" instead of "Never".</strike> This is now fixed in Firefox version 53 with the new permission prompt redesign. (See bugzilla [675533][bug-675533].)
 
 ## Under the Hood
@@ -130,6 +130,7 @@ MIT. See the [Disclaimer][disclaimer] and [License][license].
 [compressed]: https://raw.github.com/onury/geolocator/master/src/geolocator.min.js
 [cdnjs]:https://cdnjs.com/libraries/geolocator
 [demo]: http://rawgit.com/onury/geolocator/master/example/index.html
+[geo-src]:https://github.com/onury/geolocator/tree/master/src/geo-ip-sources
 [example-img]: https://raw.github.com/onury/geolocator/master/screenshots/geolocator-example.jpg
 [npm-package]: https://www.npmjs.com/package/geolocator
 [releases]:https://github.com/onury/geolocator/releases
