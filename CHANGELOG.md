@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 - Geo IP source: IPStack (requires a free API key). 
-_Note that this is a [separate file](https://github.com/onury/geolocator/blob/master/src/geo-ip-sources/ipstack.js), you can include in your HTML. Or you can use a [different provider](https://github.com/onury/geolocator/tree/master/src/geo-ip-sources) if you like._
+_Note that this is a [separate file](https://github.com/onury/geolocator/blob/master/src/geo-ip-sources/ipstack.js), you can include in your HTML. Or you can use a [different provider](https://github.com/onury/geolocator/tree/master/src/geo-ip-sources) if you like. See the [Caveats](https://github.com/onury/geolocator#caveats) section before you do so._
 
 ## [2.1.1](https://github.com/onury/geolocator/compare/v2.1.0...v2.1.1) (2017-03-11)
 
