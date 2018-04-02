@@ -33,7 +33,7 @@
 
 geolocator.setGeoIPSource({
     provider: 'geobytes',
-    url: 'https://gd.geobytes.com/GetCityDetails',
+    url: 'http://gd.geobytes.com/GetCityDetails',
     callbackParam: 'callback',
     schema: {
         ip: 'geobytesipaddress',

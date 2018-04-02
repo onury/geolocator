@@ -840,7 +840,7 @@ class geolocator {
     /**
      *  Locates the user's location by the client's IP.
      *
-     *  This method uses FreeGeoIP's lookup service, by default.
+     *  This method uses GeoBytes' lookup service, by default.
      *  In order to change the source provider, you can use
      *  {@link #geolocator.setGeoIPSource|`geolocator.setGeoIPSource()` method}.
      *
@@ -921,7 +921,7 @@ class geolocator {
      *          options: Object // map options
      *      },
      *      staticMap: "//maps.googleapis.com/maps/api/staticmap?center=41.0214,28.9948&maptype=roadmap&size=600x300&scale=1&zoom=9&format=png&language=en&markers=color%3Ared%7C41.0214%2C228.9948&key=YOUR-GOOGLE-API-KEY",
-     *      provider: "freegeoip",
+     *      provider: "geobytes",
      *      timestamp: 1466216325223
      *  }
      */
@@ -989,7 +989,7 @@ class geolocator {
      *  by user's IP; which is internally used by
      *  {@link #geolocator.locateByIP|`geolocator.locateByIP()` method}.
      *
-     *  By default, Geolocator uses FreeGeoIP as the Geo-IP source provider.
+     *  By default, Geolocator uses GeoBytes as the Geo-IP source provider.
      *  You can use this method to change this; or you can choose from
      *  ready-to-use
      *  {@link https://github.com/onury/geolocator/tree/master/src/geo-ip-sources|Geo-IP sources}.
@@ -2194,28 +2194,25 @@ geolocator._ = {
     cb: {}
 };
 
-// setting default Geo-IP source, FreeGeoIP
+// setting default Geo-IP source, geobytes
 geolocator.setGeoIPSource({
-    provider: 'freegeoip',
-    url: 'https://freegeoip.net/json',
+    provider: 'geobytes',
+    url: 'http://gd.geobytes.com/GetCityDetails',
     callbackParam: 'callback',
     schema: {
-        ip: 'ip',
+        ip: 'geobytesipaddress',
         coords: {
-            latitude: 'latitude',
-            longitude: 'longitude'
+            latitude: 'geobyteslatitude',
+            longitude: 'geobyteslongitude'
         },
         address: {
-            city: 'city',
-            state: 'region_name',
-            stateCode: 'region_code',
-            postalCode: 'zip_code',
-            countryCode: 'country_code',
-            country: 'country_name',
-            region: 'region_name'
-        },
-        timezone: {
-            id: 'time_zone'
+            city: 'geobytescity',
+            state: 'geobytesregion',
+            stateCode: 'geobytescode',
+            postalCode: '',
+            countryCode: 'geobytesinternet',
+            country: 'geobytescountry',
+            region: 'geobytesregion'
         }
     }
 });
