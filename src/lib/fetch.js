@@ -2,9 +2,7 @@ import utils from './utils';
 
 /**
  * Utility for making `XMLHttpRequest` and `JSONP` requests.
- *
- * @license MIT
- * @copyright 2016, Onur Yıldırım (onur@cutepilot.com)
+ * @copyright 2018, Onur Yıldırım <onur@cutepilot.com>
  */
 class fetch {
 
