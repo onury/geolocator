@@ -1,4 +1,3 @@
-
 let _toString = Object.prototype.toString;
 
 /**
@@ -6,9 +5,6 @@ let _toString = Object.prototype.toString;
  * made publically accessible.
  * @type {Object}
  * @readonly
- *
- * @license MIT
- * @copyright 2016, Onur Yıldırım (onur@cutepilot.com)
  */
 const utils = {
 
