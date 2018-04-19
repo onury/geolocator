@@ -59,7 +59,7 @@ const defaultConfig = {
  *  Other browsers are expected to follow.
  *
  *  @license MIT
- *  @copyright 2017, Onur Yıldırım (onur@cutepilot.com)
+ *  @copyright 2018, Onur Yıldırım <onur@cutepilot.com>
  */
 class geolocator {
 
@@ -644,7 +644,7 @@ class geolocator {
     static locate(options, callback) {
         options = utils.extend({
             enableHighAccuracy: true,
-            timeout: 5000,
+            timeout: 6000,
             maximumWait: 10000,
             maximumAge: 0,
             desiredAccuracy: 30,
@@ -2231,7 +2231,7 @@ geolocator.setGeoIPSource({
 // EXPORT
 // ---------------------------
 
-export default geolocator;
+export { geolocator };
 
 // ---------------------------
 // ADDITIONAL DOCUMENTATION
