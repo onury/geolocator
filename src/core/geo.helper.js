@@ -5,9 +5,6 @@ import GeoError from './geo.error';
 
 /**
  *  Helper methods.
- *
- *  @license MIT
- *  @copyright 2016, Onur Yıldırım (onur@cutepilot.com)
  *  @type {Object}
  *  @private
  */
