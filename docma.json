@@ -37,7 +37,7 @@
     "template": {
         "path": "default",
         "options": {
-            "title": "Geolocator v2",
+            "title": "Geolocator",
             "sidebar": true,
             "collapsed": false,
             "badges": true,
