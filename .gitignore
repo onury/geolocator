@@ -11,3 +11,4 @@ example/iframed.html
 example/test.html
 .grunt
 _specRunner.html
+Gruntfile.js
