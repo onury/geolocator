@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## 2.1.4 [Unreleased]
+
+### Changed
+- Default value for `timeout` option is changed to `6000` for `.locate()` method.
+- Improved minification and reduced library size.
+- (Dev) removed grunt in favour of npm scripts.
+
 ## [2.1.3](https://github.com/onury/geolocator/compare/v2.1.1...v2.1.3) (2018-04-02)
 
 ### Fixed
