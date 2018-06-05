@@ -119,9 +119,9 @@ Read [**API documentation**][api-docs] for lots of other features and examples.
 
     This library currently only works on client-side (browser). Any kind of server-side functionality (including Server Side Rendering) is not yet oficially supported.
 
-    There is a discussion about at least preventing it from throwing on server; or maybe adding support for some (if not all) methods to work on server. If you're intereseted and willing to contribute;
+    There is a [discussion](https://github.com/onury/geolocator/issues/55) about at least preventing it from throwing on server; or maybe adding support for some (if not all) methods to work on server. If you're intereseted and willing to contribute;
 
-    - Continue discussion on this thread,
+    - Continue discussion on [this thread](https://github.com/onury/geolocator/issues/55),
     - PRs are welcome since I need help improving and maintaining this library.
 
 ## Under the Hood
