@@ -4814,7 +4814,7 @@ var geoHelper = {
 
             if (gErr) return callback(gErr, null);
 
-            response = options.raw ? response : geoHelper.formatGeocodeResults(response.results);
+            response = conf.raw ? response : geoHelper.formatGeocodeResults(response.results);
             callback(null, response);
         });
     },
