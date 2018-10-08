@@ -24,7 +24,7 @@
 //     geoplugin_currencyConverter: 1
 // }
 
-geolocator.setIPGeoSource({
+geolocator.setGeoIPSource({
     provider: 'geoplugin',
     // for HTTPS, requires a key and a different endpoint: ssl.geoplugin.net/json.gp
     url: 'http://www.geoplugin.net/json.gp',
