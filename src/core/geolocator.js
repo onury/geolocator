@@ -59,7 +59,7 @@ const defaultConfig = {
  *  Other browsers are expected to follow.
  *
  *  @license MIT
- *  @copyright 2018, Onur Yıldırım <onur@cutepilot.com>
+ *  @copyright 2019, Onur Yıldırım <onur@cutepilot.com>
  */
 class geolocator {
 
@@ -939,35 +939,9 @@ class geolocator {
         // check options and Google key
         checkGoogleKey(options || {});
 
-        let jsonpOpts = {
-            url: source.url,
-            async: true,
-            clean: true
-            // params: {}
-        };
-        if (source.callbackParam) {
-            jsonpOpts.callbackParam = source.callbackParam;
-            jsonpOpts.rootName = 'geolocator._.cb';
-        } else if (!source.globalVar) {
-            throw new GeoError(
-                GeoError.Code.INVALID_GEO_IP_SOURCE,
-                'Either callbackParam or globalVar should be set for Geo-IP source.'
-            );
-        }
-        return fetch.jsonp(jsonpOpts, (err, response) => {
-            if (err) {
-                return callback(GeoError.create(err), null);
-            }
-            if (source.globalVar) {
-                if (window[source.globalVar]) {
-                    response = utils.clone(window[source.globalVar]);
-                    delete window[source.globalVar];
-                } else {
-                    response = null;
-                }
-            }
+        function updateResponse(response) {
             if (!response) {
-                err = new GeoError(GeoError.Code.INVALID_RESPONSE);
+                const err = new GeoError(GeoError.Code.INVALID_RESPONSE);
                 return callback(err, null);
             }
             if (utils.isPlainObject(source.schema)) {
@@ -983,7 +957,50 @@ class geolocator {
             }
             let cb = callbackMap(options, callback);
             fetchAddressAndTimezone(response, options, cb);
-        });
+        }
+
+        if (source.xhr) {
+            let opts = {
+                url: source.url,
+                async: true
+            };
+            return fetch.get(opts, (err, xhr) => {
+                const response = xhr.responseText ? JSON.parse(xhr.responseText) : null;
+                if (err) return callback(GeoError.create(err), null);
+                updateResponse(response);
+            });
+
+        }
+
+        if (source.callbackParam || source.globalVar) {
+            let jsonpOpts = {
+                url: source.url,
+                async: true,
+                clean: true
+                // params: {}
+            };
+            if (source.callbackParam) {
+                jsonpOpts.callbackParam = source.callbackParam;
+                jsonpOpts.rootName = 'geolocator._.cb';
+            }
+            return fetch.jsonp(jsonpOpts, (err, response) => {
+                if (err) return callback(GeoError.create(err), null);
+                if (source.globalVar) {
+                    if (window[source.globalVar]) {
+                        response = utils.clone(window[source.globalVar]);
+                        delete window[source.globalVar];
+                    } else {
+                        response = null;
+                    }
+                }
+                updateResponse(response);
+            });
+        }
+
+        throw new GeoError(
+            GeoError.Code.INVALID_GEO_IP_SOURCE,
+            'Either xhr, callbackParam or globalVar should be set for Geo-IP source.'
+        );
     }
 
     /**
@@ -1669,17 +1686,14 @@ class geolocator {
     static getIP(callback) {
         let conf = geolocator._.config;
 
-        let jsonpOpts = {
+        // ipify.org supports CORS, so we'll use XMLHttpRequest instead of a
+        // JSONP request.
+        let opts = {
             url: utils.setProtocol(enums.URL.IP, conf.https),
-            async: true,
-            clean: true,
-            params: {
-                format: 'jsonp'
-            },
-            callbackParam: 'callback',
-            rootName: 'geolocator._.cb'
+            async: true
         };
-        return fetch.jsonp(jsonpOpts, (err, response) => {
+        return fetch.get(opts, (err, xhr) => {
+            const response = xhr.responseText;
             if (err) {
                 return callback(GeoError.create(err), null);
             }
@@ -1687,9 +1701,32 @@ class geolocator {
                 err = new GeoError(GeoError.Code.INVALID_RESPONSE);
                 return callback(err, null);
             }
-            if (typeof response === 'object') response.timestamp = utils.time();
-            callback(null, response);
+            callback(null, {
+                ip: response,
+                timestamp: utils.time()
+            });
         });
+        // let jsonpOpts = {
+        //     url: utils.setProtocol(enums.URL.IP, conf.https),
+        //     async: true,
+        //     clean: true,
+        //     params: {
+        //         format: 'jsonp'
+        //     },
+        //     callbackParam: 'callback',
+        //     rootName: 'geolocator._.cb'
+        // };
+        // return fetch.jsonp(jsonpOpts, (err, response) => {
+        //     if (err) {
+        //         return callback(GeoError.create(err), null);
+        //     }
+        //     if (!response) {
+        //         err = new GeoError(GeoError.Code.INVALID_RESPONSE);
+        //         return callback(err, null);
+        //     }
+        //     if (typeof response === 'object') response.timestamp = utils.time();
+        //     callback(null, response);
+        // });
     }
 
     /**
@@ -2151,6 +2188,7 @@ function locateAccurate(options, onPositionReceived, onPositionError) {
             : options.onProgress;
 
     function complete() {
+        watcher = null;
         if (!loc) {
             onPositionError(new GeoError(GeoError.Code.POSITION_UNAVAILABLE));
         } else {
@@ -2159,6 +2197,7 @@ function locateAccurate(options, onPositionReceived, onPositionError) {
     }
 
     watcher = geolocator.watch(options, (err, location) => {
+        if (!watcher) return;
         if (err) {
             return watcher.clear(() => {
                 onPositionError(err);
@@ -2166,13 +2205,13 @@ function locateAccurate(options, onPositionReceived, onPositionError) {
         }
         loc = location;
         // ignore the first event if not the only result; for more accuracy.
-        if ((watcher.cycle > 1) && (loc.coords.accuracy <= options.desiredAccuracy)) {
+        if (watcher.cycle > 1 && loc.coords.accuracy <= options.desiredAccuracy) {
             watcher.clear(complete);
         } else {
             onProgress(loc);
         }
     });
-    watcher.clear(options.maximumWait + 100, complete);
+    if (watcher) watcher.clear(options.maximumWait + 100, complete);
 }
 
 function getStyles(options) {
@@ -2199,31 +2238,27 @@ geolocator._ = {
 // setting default Geo-IP source
 
 geolocator.setGeoIPSource({
-    provider: 'nekudo',
-    url: 'https://geoip.nekudo.com/api',
-    callbackParam: 'callback',
-    schema: function (res) {
-        var loc = res.location || {};
-        var tz = (loc.time_zone || '').replace(/\\/g, '');
-        return {
-            ip: res.ip,
-            coords: {
-                latitude: loc.latitude,
-                longitude: loc.longitude
-            },
-            address: {
-                city: res.city,
-                state: '',
-                stateCode: '',
-                postalCode: '',
-                countryCode: res.country.code,
-                country: res.country.name,
-                region: ''
-            },
-            timezone: {
-                id: tz
-            }
-        };
+    provider: 'geojs.io',
+    url: 'https://get.geojs.io/v1/ip/geo.json',
+    xhr: true,
+    schema: {
+        ip: 'ip',
+        coords: {
+            latitude: 'latitude',
+            longitude: 'longitude'
+        },
+        address: {
+            city: 'city',
+            state: 'region',
+            stateCode: '',
+            postalCode: '',
+            countryCode: 'country_code',
+            country: 'country',
+            region: 'region'
+        },
+        timezone: {
+            id: 'timezone'
+        }
     }
 });
 
