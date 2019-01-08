@@ -11,4 +11,5 @@ example/iframed.html
 example/test.html
 .grunt
 _specRunner.html
+/test/.cov/
 Gruntfile.js
