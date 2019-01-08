@@ -2,7 +2,7 @@ import utils from './utils';
 
 /**
  * Utility for making `XMLHttpRequest` and `JSONP` requests.
- * @copyright 2018, Onur Yıldırım <onur@cutepilot.com>
+ * @copyright 2019, Onur Yıldırım <onur@cutepilot.com>
  */
 class fetch {
 
@@ -288,9 +288,13 @@ class fetch {
      */
     static xhr(options, callback) {
         let xhr, err;
+        let isXDR = false;
 
         if ('XMLHttpRequest' in window) {
             xhr = new XMLHttpRequest();
+        } else if ('XDomainRequest' in window) { // IE9
+            xhr = new XDomainRequest();
+            isXDR = true;
         } else {
             throw new Error('XMLHttpRequest is not supported!');
         }
@@ -300,10 +304,7 @@ class fetch {
             ? callback
             : utils.noop;
 
-        if (utils.isString(options)) {
-            options = { url: options };
-        }
-
+        if (utils.isString(options)) options = { url: options };
         if (utils.isPlainObject(options)) {
             options = utils.extend({
                 method: 'GET',
@@ -331,23 +332,32 @@ class fetch {
         }
         // console.log(JSON.stringify(options));
 
+        function xError() {
+            let crossDomain = xhr.status === 0
+                ? '. Make sure you have permission if this is a cross-domain request.'
+                : '';
+            err = new Error(`The request returned status: ${xhr.status}${crossDomain}`);
+            // console.log(xhr);
+            callback(err, xhr);
+        }
+
         if (hasCallback) {
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === fetch.XHR_READY_STATE.DONE) {
-                    if (xhr.status === 200) {
-                        callback(null, xhr);
-                    } else {
-                        // let response = utils.safeJsonParse(xhr.responseText);
-                        // if (response && response.error)
-                        let crossDomain = xhr.status === 0
-                            ? '. Make sure you have permission if this is a cross-domain request.'
-                            : '';
-                        err = new Error(`The request returned status: ${xhr.status}${crossDomain}`);
-                        // console.log(xhr);
-                        callback(err, xhr);
+            if (isXDR) { // IE9
+                xhr.onload = () => {
+                    callback(null, xhr);
+                };
+                xhr.onerror = xError;
+            } else {
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === fetch.XHR_READY_STATE.DONE) {
+                        if (xhr.status === 200) {
+                            callback(null, xhr);
+                        } else {
+                            xError();
+                        }
                     }
-                }
-            };
+                };
+            }
 
             if (utils.isNumber(options.timeout) && options.timeout > 0) {
                 xhr.timeout = options.timeout;
@@ -361,18 +371,22 @@ class fetch {
         // console.log(options);
         xhr.open(options.method, options.url, options.async, options.username, options.password);
 
-        // xhr.setRequestHeader() method should b called œafter open(), but
-        // before send().
-        if (utils.isPlainObject(options.headers)) {
-            Object.keys(options.headers).forEach(key => {
-                let value = options.headers[key];
-                xhr.setRequestHeader(key, value);
-            });
-        }
+        // if this is XDomainRequest, it doesn't support setting custom headers;
+        // or overriding the mime type.
+        if (!isXDR) {
+            if (utils.isPlainObject(options.headers)) {
+                // xhr.setRequestHeader() method should be called after open(), but
+                // before send().
+                Object.keys(options.headers).forEach(key => {
+                    let value = options.headers[key];
+                    xhr.setRequestHeader(key, value);
+                });
+            }
 
-        // xhr.overrideMimeType() method must be called before send().
-        if (options.mimeType) {
-            xhr.overrideMimeType(options.mimeType);
+            // xhr.overrideMimeType() method must be called before send().
+            if (options.mimeType) {
+                xhr.overrideMimeType(options.mimeType);
+            }
         }
 
         xhr.send(options.data);
