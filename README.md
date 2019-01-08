@@ -11,9 +11,9 @@
 <a href="https://github.com/onury/geolocator"><img src="https://img.shields.io/github/release/onury/geolocator.svg?style=flat-square" alt="release" /></a>
 <a href="https://david-dm.org/onury/geolocator"><img src="https://david-dm.org/onury/geolocator.svg?style=flat-square" alt="release" /></a>
 <a href="https://github.com/onury/geolocator/blob/master/LICENSE"><img src="http://img.shields.io/npm/l/geolocator.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/onury/geolocator/graphs/commit-activity"><img src="https://img.shields.io/maintenance/yes/2018.svg?style=flat-square" alt="maintained" /></a>
+<a href="https://github.com/onury/geolocator/graphs/commit-activity"><img src="https://img.shields.io/maintenance/yes/2019.svg?style=flat-square" alt="maintained" /></a>
 <br />
-<sub>© 2018, Onur Yıldırım (<b><a href="https://github.com/onury">@onury</a></b>). Please see the <a href="https://github.com/onury/geolocator/blob/master/DISCLAIMER">Disclaimer</a> and <a href="https://github.com/onury/geolocator/blob/master/LICENSE">License</a>.</sub>
+<sub>© 2019, Onur Yıldırım (<b><a href="https://github.com/onury">@onury</a></b>). Please see the <a href="https://github.com/onury/geolocator/blob/master/DISCLAIMER">Disclaimer</a> and <a href="https://github.com/onury/geolocator/blob/master/LICENSE">License</a>.</sub>
 </p>
 <br />
 
@@ -103,7 +103,8 @@ Read [**API documentation**][api-docs] for lots of other features and examples.
 - Since Geolocation API is an HTML5 feature, make sure your `doctype` is HTML5 (e.g. `<!DOCTYPE html>`).
 - Make sure you're calling Geolocation APIs (such as `geolocator.locate()` and `geolocator.watch()`) from a secure origin (i.e. an **HTTPS** page). In Chrome 50+, Geolocation API is [removed][chrome-unsecure] from **unsecured origins**. Other browsers are expected to follow.
 - Although some calls might work without a key, it is generally required by most Google APIs (such as Time Zone API). To get a free (or premium) key, [click here][google-docs]. After getting a key, you can enable multiple APIs for it. Make sure you [enable][google-console] all the APIs supported by Geolocator. *(If you don't have a key, you can still use Geolocator like the previous versions, but with limited features.)*
-- Geolocator now uses a single Geo-IP provider ([Nekudo](http://geoip.nekudo.com), based on the [Maxmind GeoLite2 Database](http://dev.maxmind.com/geoip/geoip2/geolite2/)) for locating by IP. You can use `geolcoator.setGeoIPSource()` method to set a [different Geo-IP source][geo-src], but see the [Caveats](#caveats) section before you do so.
+- Geolocator now uses a single Geo-IP provider ([GeoJS](https://www.geojs.io) for locating by IP. You can use `geolcoator.setGeoIPSource()` method to set a [different Geo-IP source][geo-src], but see the [Caveats](#caveats) section before you do so.
+- **Most importantly**; please use this library for anonymous usage data only. And **get consent** from your users that you're collecting their **personal data** and present your reasons.
 
 ## Caveats
 
@@ -111,9 +112,9 @@ Read [**API documentation**][api-docs] for lots of other features and examples.
 
     There are [alternative Geo-IP services][geo-src] to be used with this library. But most of these services do not provide a free API over HTTPS (SSL/TLS). You need to subscribe for a premium API key to use HTTPS. The caveat is; HTML5 Geolocation API is restricted to HTTPS and when you enable the `fallbackToIP` option, some browsers (such as Chrome and Firefox) will not allow mixed content. It will [block](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content/How_to_fix_website_with_mixed_content) HTTP content when the page is served over HTTPS.
 
-    Currently, Geolocator will use [nekudo/shiny_geoip](https://github.com/nekudo/shiny_geoip) by default which supports HTTPS. Please use this service responsibly and [support Nekudo](http://geoip.nekudo.com) if you can.
-
-    If you know other free Geo-IP services over HTTPS, let me know and we can add/use them as alternatives.
+    Currently, Geolocator will use [GeoJS](https://www.geojs.io) by default which is free and supports HTTPS. **Please use this service responsibly**. For example, do NOT call `locate()` or `.locatebyIP()` on every user/request but only on site entrance. Their location or IP will not change suddenly unless they can teleport!.. 
+    
+    Also, [**support GeoJS**](https://www.geojs.io) if you can so we can continue using this nice free service. If you know other free Geo-IP services over HTTPS, let me know and we can add/use them as alternatives.
 
 - **Isomorphic Applications / SSR Support**:
 
