@@ -43,8 +43,6 @@
  - Small file size (9KB minified, gzipped)
  - Browser Support: IE 9+, Chrome, Safari, Firefox, Opera...
 
-See a [**Live Demo**](https://onury.github.io/geolocator/?content=examples).
-
 ## Get Geolocator.js
 
 - Link or download via [**CDNJS**][cdnjs].
