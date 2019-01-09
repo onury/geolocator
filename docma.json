@@ -11,9 +11,12 @@
         "undescribed": false,
         "ignored": false,
         "hierarchy": true,
-        "sort": "alphabetic",
+        "sort": "grouped",
         "relativePath": null,
-        "filter": null
+        "filter": null,
+        "allowUnknownTags": true,
+        "plugins": [],
+        "includePattern": ".+\\.js(doc|x)?$"
     },
     "markdown": {
         "gfm": true,
@@ -32,64 +35,81 @@
         "base": "/geolocator",
         "entrance": "content:guide",
         "routing": "query",
-        "server": "github"
+        "server": "github",
+        "favicon": "./design/favicon.ico"
     },
     "template": {
-        "path": "default",
+        "path": "zebra",
         "options": {
-            "title": "Geolocator",
-            "sidebar": true,
-            "collapsed": false,
-            "badges": true,
-            "outline": "tree",
-            "symbolMeta": false,
-            "search": true,
-            "navbar": true,
-            "navItems": [
-                {
-                    "iconClass": "ico-mouse-pointer",
-                    "label": "Guide",
-                    "href": "./"
-                },
-                {
-                    "iconClass": "ico-location ico-md",
-                    "label": "Examples",
-                    "href": "./?content=examples"
-                },
-                {
-                    "iconClass": "ico-book",
-                    "label": "API Reference",
-                    "href": "./?api=geolocator"
-                },
-                {
-                    "iconClass": "ico-md ico-download",
-                    "label": "Download",
-                    "items": [
-                        {
-                            "label": "Link via CDNJS",
-                            "href": "https://cdnjs.com/libraries/geolocator",
-                            "target": "_blank"
-                        },
-                        { "separator": true },
-                        { "label": "<code>npm install geolocator</code>" },
-                        { "label": "<code>bower install geolocator</code>" },
-                        { "separator": true },
-                        {
-                            "label": "Download as Archive",
-                            "href": "https://github.com/onury/geolocator/releases",
-                            "target": "_blank"
-                        },
-                        { "separator": true },
-                        { "label": "Change Log", "href": "?content=changelog" }
-                    ]
-                },
-                {
-                    "iconClass": "ico-md ico-github",
-                    "label": "GitHub",
-                    "href": "https://github.com/onury/geolocator",
-                    "target": "_blank"
-                }
-            ]
+            "title": {
+                "label": "Geolocator",
+                "href": "/geolocator/"
+            },
+            "logo": "img/geolocator-logo-sm.png", // URL String or { dark: String, light: String }
+            "sidebar": {
+                "enabled": true,
+                "outline": "tree", // "flat" | "tree"
+                "collapsed": false,
+                "toolbar": true,
+                "itemsFolded": false,
+                "itemsOverflow": "crop", // "crop" | "shrink"
+                "badges": true, // true | false | <string-value>
+                "search": true,
+                "animations": true
+            },
+            "symbols": {
+                "autoLink": true, // "internal" | "external" | true (both)
+                "params": "list", // "list" | "table"
+                "enums": "list", // "list" | "table"
+                "props": "list", // "list" | "table"
+                "meta": false
+            },
+            "contentView": {
+                "bookmarks": "h1,h2,h3"
+            },
+            "navbar": {
+                "enabled": true,
+                "fixed": true,
+                "dark": false,
+                "animations": true,
+                "menu": [
+                    {
+                        "label": "Guide",
+                        "href": "./"
+                    },
+                    {
+                        "label": "API Reference",
+                        "href": "./?api=geolocator"
+                    },
+                    {
+                        "label": "Download",
+                        "items": [
+                            {
+                                "label": "Link via CDNJS",
+                                "href": "https://cdnjs.com/libraries/geolocator",
+                                "target": "_blank"
+                            },
+                            { "separator": true },
+                            { "label": "<code>npm install geolocator</code>" },
+                            { "label": "<code>bower install geolocator</code>" },
+                            { "separator": true },
+                            {
+                                "label": "Download as Archive",
+                                "href": "https://github.com/onury/geolocator/releases",
+                                "target": "_blank"
+                            },
+                            { "separator": true },
+                            { "label": "Change Log", "href": "?content=changelog" }
+                        ]
+                    },
+                    {
+                        "iconClass": "fa-lg fab fa-github",
+                        "label": "",
+                        "href": "https://github.com/onury/geolocator",
+                        "target": "_blank"
+                    }
+                ]
+            }
         }
     },
     "src": [
@@ -98,13 +118,16 @@
                 "./src/core/geolocator.js",
                 "./src/core/enums.js"
             ],
-            "geolocator-error": "./src/core/geo.error.js"
+            "geolocator-error": "./src/core/geo.error.js",
+            "guide": "./README.md"
         },
-        "./CHANGELOG.md",
-        {
-            "guide": "./README.md",
-            "examples": "./example/iframed.html"
-        }
+        "./CHANGELOG.md"
     ],
-    "dest": "../onury.github.io/geolocator"
+    "assets": {
+        "/img": [
+            "./design/geolocator-logo-sm.png"
+        ]
+    },
+    "dest": "../onury.github.io/geolocator",
+    "clean": true
 }
