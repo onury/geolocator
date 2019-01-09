@@ -2,12 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## 2.1.4 [Unreleased]
+## [2.1.5](https://github.com/onury/geolocator/compare/v2.1.3...v2.1.5) (2019-01-09)
+
+### Fixed
+- An issue where `locateByIP()` method would fail due to external service being shut down. Added a new (default) Geo-IP service provider to [GeoJS](https://www.geojs.io) with `HTTPS` support.
+- An issue where XHR request handlers would not be invoked in IE9.
 
 ### Changed
+- `getIP()` method now uses XHR request instead of JSONP, since CORS is supported by the service.
+- Added ability fetch location-by-IP data via XHR. (Set `xhr` to `true` when passing a new Geo-IP source to `setGeoIPSource()` method.)
 - Default value for `timeout` option is changed to `6000` for `.locate()` method.
 - Improved minification and reduced library size.
-- (Dev) removed grunt in favour of npm scripts.
+- (Dev) Removed grunt in favour of npm scripts. Removed Jasmine in favour of Jest. 
+
 
 ## [2.1.3](https://github.com/onury/geolocator/compare/v2.1.1...v2.1.3) (2018-04-02)
 
@@ -18,6 +25,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 - Geo IP source: IPStack (requires a free API key). 
 _Note that this is a [separate file](https://github.com/onury/geolocator/blob/master/src/geo-ip-sources/ipstack.js), you can include in your HTML. Or you can use a [different provider](https://github.com/onury/geolocator/tree/master/src/geo-ip-sources) if you like. See the [Caveats](https://github.com/onury/geolocator#caveats) section before you do so._
+
 
 ## [2.1.1](https://github.com/onury/geolocator/compare/v2.1.0...v2.1.1) (2017-03-11)
 
