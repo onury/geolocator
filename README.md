@@ -6,7 +6,6 @@
 
 <p align="center">
 <a href="https://cdnjs.com/libraries/geolocator"><img src="https://img.shields.io/cdnjs/v/geolocator.svg?style=flat-square" alt="CDNJS" /></a>
-<a href="https://github.com/onury/geolocator"><img src="https://img.shields.io/bower/v/geolocator.svg?style=flat-square" alt="bower" /></a>
 <a href="https://www.npmjs.com/package/geolocator"><img src="http://img.shields.io/npm/v/geolocator.svg?style=flat-square" alt="npm" /></a>
 <a href="https://github.com/onury/geolocator"><img src="https://img.shields.io/github/release/onury/geolocator.svg?style=flat-square" alt="release" /></a>
 <a href="https://david-dm.org/onury/geolocator"><img src="https://david-dm.org/onury/geolocator.svg?style=flat-square" alt="release" /></a>
