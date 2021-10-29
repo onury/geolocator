@@ -8,9 +8,7 @@
 <a href="https://cdnjs.com/libraries/geolocator"><img src="https://img.shields.io/cdnjs/v/geolocator.svg?style=flat-square" alt="CDNJS" /></a>
 <a href="https://www.npmjs.com/package/geolocator"><img src="http://img.shields.io/npm/v/geolocator.svg?style=flat-square" alt="npm" /></a>
 <a href="https://github.com/onury/geolocator"><img src="https://img.shields.io/github/release/onury/geolocator.svg?style=flat-square" alt="release" /></a>
-<a href="https://david-dm.org/onury/geolocator"><img src="https://david-dm.org/onury/geolocator.svg?style=flat-square" alt="release" /></a>
 <a href="https://github.com/onury/geolocator/blob/master/LICENSE"><img src="http://img.shields.io/npm/l/geolocator.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/onury/geolocator/graphs/commit-activity"><img src="https://img.shields.io/maintenance/yes/2019.svg?style=flat-square" alt="maintained" /></a>
 <br />
 <sub>© 2019, Onur Yıldırım (<b><a href="https://github.com/onury">@onury</a></b>). Please see the <a href="https://github.com/onury/geolocator/blob/master/DISCLAIMER">Disclaimer</a> and <a href="https://github.com/onury/geolocator/blob/master/LICENSE">License</a>.</sub>
 </p>
