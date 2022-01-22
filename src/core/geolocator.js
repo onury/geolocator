@@ -6,6 +6,15 @@ import GeoWatcher from './geo.watcher';
 import enums from './enums';
 
 /**
+ * Define the "window" for accessing window.source.etc.
+ *  @private
+ *  @type {Object}
+ */
+const theWindow = ((w, d) => {
+    return {{...(w || (d && d.defaultView) || {})}};
+})(window, document);
+
+/**
  *  Radius of earth in kilometers.
  *  @private
  *  @type {Number}
@@ -986,9 +995,9 @@ class geolocator {
             return fetch.jsonp(jsonpOpts, (err, response) => {
                 if (err) return callback(GeoError.create(err), null);
                 if (source.globalVar) {
-                    if (window[source.globalVar]) {
-                        response = utils.clone(window[source.globalVar]);
-                        delete window[source.globalVar];
+                    if (theWindow[source.globalVar]) {
+                        response = utils.clone(theWindow[source.globalVar]);
+                        delete theWindow[source.globalVar];
                     } else {
                         response = null;
                     }
@@ -1757,7 +1766,7 @@ class geolocator {
      *  @example
      *  geolocator.ensureGoogleLoaded(function (err) {
      *      if (err) return;
-     *      console.log('google' in window); // true
+     *      console.log('google' in theWindow); // true
      *  });
      */
     static ensureGoogleLoaded(key, callback) {
@@ -1789,7 +1798,7 @@ class geolocator {
      *  @returns {Boolean} - Returns `true` if already loaded.
      */
     static isGoogleLoaded() {
-        return ('google' in window) && google.maps;
+        return !!(theWindow && theWindow.google && google.maps);
     }
 
     /**
