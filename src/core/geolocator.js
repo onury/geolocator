@@ -1818,7 +1818,7 @@ class geolocator {
      *  @return {Boolean}
      */
     static isGeolocationSupported() {
-        return navigator && ('geolocation' in navigator);
+        return !!(navigator && navigator.geolocation);
     }
 
     /**
