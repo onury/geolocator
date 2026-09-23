@@ -1,4 +1,4 @@
-backup
+_backup/
 design
 wiki
 node_modules
@@ -14,3 +14,6 @@ example/test.html
 _specRunner.html
 /test/.cov/
 Gruntfile.js
+
+# ---- Author's working notes: planning, specs, working agreements ----
+_notes/
